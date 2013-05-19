@@ -8,6 +8,7 @@
 
 #import "BaseRequest.h"
 #import "NetworkController.h"
+#import "NSString+BTC2Extensions.h"
 
 @interface BaseRequest()
 @property (atomic, assign) BOOL isExecuting;
@@ -200,6 +201,54 @@
     [NetworkController decreaseActivity];
 }
 
+- (NSString *)httpEncodedValue:(id)value {
+    if ([value isKindOfClass:[NSString class]]) {
+        return [value btc2UrlEncode];
+    }
+    if ([value isKindOfClass:[NSData class]]) {
+        // Assume we're already escaped :-S
+        return [[NSString alloc] initWithData:value encoding:NSUTF8StringEncoding];
+    }
+    if ([value isKindOfClass:[NSNumber class]]) {
+        //        if (strcmp([value objCType], @encode(BOOL)) == 0) {
+        //            return [value boolValue] ? @"true" : @"false";
+        //        }
+        return [value stringValue];
+    }
+    NSLog(@"WARN: Can't URL encode value: %@", value);
+    return nil;
+}
+
+- (BOOL)appendToParameters:(NSMutableString *)params value:(id)value forKey:(NSString *)key {
+    NSString *encodedValue = [self httpEncodedValue:value];
+    if (!encodedValue)
+        return NO;
+    if (params.length) {
+        [params appendFormat:@"&%@=%@", key, encodedValue];
+    } else {
+        [params appendFormat:@"%@=%@", key, encodedValue];
+    }
+    return YES;
+}
+
+-(NSData*)httpDataWithDictionary:(NSDictionary*)dictData {
+    NSMutableString* dataString = [NSMutableString stringWithCapacity:0];
+    
+    for (NSString* key in dictData.allKeys) {
+        id rawDictValue = [dictData objectForKey:key];
+        
+        if ([rawDictValue isKindOfClass:[NSArray class]]) {
+            // For arrays, append k=v multiple times
+            for (id value in rawDictValue) {
+                [self appendToParameters:dataString value:value forKey:key];
+            }
+        } else {
+            [self appendToParameters:dataString value:rawDictValue forKey:key];
+        }
+    }
+    
+    return [dataString dataUsingEncoding:NSUTF8StringEncoding];
+}
 
 #pragma mark - URL Connection Delegates
 
