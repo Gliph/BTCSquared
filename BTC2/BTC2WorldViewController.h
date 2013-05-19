@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface BTC2WorldViewController : UICollectionViewController
-
+@property (nonatomic, strong) NSMutableArray* peripherals;
 @end

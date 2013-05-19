@@ -16,4 +16,9 @@
 #define kPeripheralModeStarted  @"kPeripheralModeStarted"
 #define kNeutralModeStarted     @"kNeutralModeStarted"
 
+#define kUserDeviceNameKey      @"kUserDeviceNameKey"
+#define kUserWalletKey          @"kUserWalletKey"
+
+#define kPeripheralAddedNotification @"kPeripheralAddedNotification"
+
 #endif
