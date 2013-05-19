@@ -34,6 +34,8 @@
 		8376DB071748894F00B95961 /* ImageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DB061748894F00B95961 /* ImageRequest.m */; };
 		8376DB0A1748896500B95961 /* BaseRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DB091748896500B95961 /* BaseRequest.m */; };
 		8376DB0C1748899300B95961 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8376DB0B1748899300B95961 /* Storyboard.storyboard */; };
+		8376DB13174893C700B95961 /* BTC2WorldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DB12174893C700B95961 /* BTC2WorldViewController.m */; };
+		8376DB16174893FF00B95961 /* BTC2CircleLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DB15174893FF00B95961 /* BTC2CircleLayout.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +84,10 @@
 		8376DB081748896500B95961 /* BaseRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseRequest.h; sourceTree = "<group>"; };
 		8376DB091748896500B95961 /* BaseRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseRequest.m; sourceTree = "<group>"; };
 		8376DB0B1748899300B95961 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Storyboard.storyboard; path = ../Storyboard.storyboard; sourceTree = "<group>"; };
+		8376DB11174893C700B95961 /* BTC2WorldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2WorldViewController.h; sourceTree = "<group>"; };
+		8376DB12174893C700B95961 /* BTC2WorldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2WorldViewController.m; sourceTree = "<group>"; };
+		8376DB14174893FF00B95961 /* BTC2CircleLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2CircleLayout.h; sourceTree = "<group>"; };
+		8376DB15174893FF00B95961 /* BTC2CircleLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2CircleLayout.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +147,8 @@
 				682416B9174897A600FB0441 /* coinbase-logo@2x.png */,
 				8376DAED1748888C00B95961 /* BTC2Manager.h */,
 				8376DAEE1748888C00B95961 /* BTC2Manager.m */,
+				8376DB14174893FF00B95961 /* BTC2CircleLayout.h */,
+				8376DB15174893FF00B95961 /* BTC2CircleLayout.m */,
 				8331DF0B174887B200733BC3 /* Supporting Files */,
 			);
 			path = BTC2;
@@ -174,6 +182,8 @@
 				68B893F41748ABEB00B8DFBD /* BTC2TransactionsViewController.m */,
 				68B893F61748ABFC00B8DFBD /* BTC2NewTransactionViewController.h */,
 				68B893F71748ABFC00B8DFBD /* BTC2NewTransactionViewController.m */,
+				8376DB11174893C700B95961 /* BTC2WorldViewController.h */,
+				8376DB12174893C700B95961 /* BTC2WorldViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -299,6 +309,8 @@
 				68B893F51748ABEB00B8DFBD /* BTC2TransactionsViewController.m in Sources */,
 				68B893F81748ABFC00B8DFBD /* BTC2NewTransactionViewController.m in Sources */,
 				68B893FB1748B20200B8DFBD /* BTC2TransactionCell.m in Sources */,
+				8376DB13174893C700B95961 /* BTC2WorldViewController.m in Sources */,
+				8376DB16174893FF00B95961 /* BTC2CircleLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
