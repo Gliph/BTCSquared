@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BTC2NewTransactionViewController : UIViewController
+@interface BTC2NewTransactionViewController : UIViewController<UITextViewDelegate>
 
 @end

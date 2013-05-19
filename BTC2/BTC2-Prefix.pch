@@ -20,5 +20,6 @@
 #define kUserWalletKey          @"kUserWalletKey"
 
 #define kPeripheralAddedNotification @"kPeripheralAddedNotification"
+#define kWalletAddedNotification     @"kWalletAddedNotification"
 
 #endif

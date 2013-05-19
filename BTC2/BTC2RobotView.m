@@ -28,7 +28,10 @@
 
 -(void)retrieveRobot{ // Hackathon code.. Don't judge me!
     
+
     if (!self.hasRobot) {
+        self.hasRobot = YES;
+
         UIImageView* imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.roboSize.width, self.roboSize.height)];
         imgView.layer.cornerRadius = self.roboSize.width/2.0;
         imgView.layer.borderWidth = 5;
@@ -53,7 +56,6 @@
         ImageRequest* imgReq = [[ImageRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
         
         self.nameLabel.text = name;
-        self.hasRobot = YES;
         
         imgReq.finishBlock = ^(UIImage* img){
             imgView.alpha = 0;

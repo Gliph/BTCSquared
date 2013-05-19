@@ -7,6 +7,8 @@
 //
 
 #import "BTC2TransactionsViewController.h"
+#import "UIColor+BTC2Extensions.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface BTC2TransactionsViewController ()
 
@@ -26,7 +28,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = self.view.bounds;
+    gradient.colors = @[(id)[UIColor btc2RandomColor].CGColor,
+                        (id)[UIColor btc2RandomColor].CGColor];
+    [self.view.layer insertSublayer:gradient atIndex:0];
 }
 
 - (void)didReceiveMemoryWarning

@@ -9,6 +9,8 @@
 #import "BTC2ViewController.h"
 #import "ImageRequest.h"
 #import "BTC2RobotView.h"
+#import "UIColor+BTC2Extensions.h"
+#import <QuartzCore/QuartzCore.h>
 
 typedef enum BTC2Scene {
     BTC2SceneName = 0,
@@ -43,7 +45,13 @@ typedef enum BTC2Scene {
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [UIApplication sharedApplication].statusBarHidden = YES;
+
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = self.view.bounds;
+    gradient.colors = @[(id)[UIColor btc2RandomColor].CGColor,
+                        (id)[UIColor btc2RandomColor].CGColor];
+    [self.view.layer insertSublayer:gradient atIndex:0];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{

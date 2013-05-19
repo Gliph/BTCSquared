@@ -243,9 +243,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8331DF00174887B200733BC3 /* BTC2 */ = {
+		8331DF00174887B200733BC3 /* BTCSquared */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8331DF1E174887B200733BC3 /* Build configuration list for PBXNativeTarget "BTC2" */;
+			buildConfigurationList = 8331DF1E174887B200733BC3 /* Build configuration list for PBXNativeTarget "BTCSquared" */;
 			buildPhases = (
 				8331DEFD174887B200733BC3 /* Sources */,
 				8331DEFE174887B200733BC3 /* Frameworks */,
@@ -255,7 +255,7 @@
 			);
 			dependencies = (
 			);
-			name = BTC2;
+			name = BTCSquared;
 			productName = BTC2;
 			productReference = 8331DF01174887B200733BC3 /* BTC2.app */;
 			productType = "com.apple.product-type.application";
@@ -282,7 +282,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8331DF00174887B200733BC3 /* BTC2 */,
+				8331DF00174887B200733BC3 /* BTCSquared */,
 			);
 		};
 /* End PBXProject section */
@@ -436,7 +436,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8331DF1E174887B200733BC3 /* Build configuration list for PBXNativeTarget "BTC2" */ = {
+		8331DF1E174887B200733BC3 /* Build configuration list for PBXNativeTarget "BTCSquared" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8331DF1F174887B200733BC3 /* Debug */,

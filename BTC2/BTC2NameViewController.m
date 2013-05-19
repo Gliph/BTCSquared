@@ -7,10 +7,13 @@
 //
 
 #import "BTC2NameViewController.h"
+#import "UIColor+BTC2Extensions.h"
+#import "BTC2RobotView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface BTC2NameViewController ()
 @property (nonatomic, strong) IBOutlet UITextField *nameField;
-@property (nonatomic, strong) IBOutlet UIImageView *roboImage;
+@property (weak, nonatomic) IBOutlet BTC2RobotView *roboView;
 @end
 
 @implementation BTC2NameViewController
@@ -28,12 +31,25 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = self.view.bounds;
+    gradient.colors = @[(id)[UIColor btc2RandomColor].CGColor,
+                        (id)[UIColor btc2RandomColor].CGColor];
+    [self.view.layer insertSublayer:gradient atIndex:0];
+    
+    self.roboView.roboName = @"HaxxorRobot";
+    self.roboView.roboSize = self.roboView.bounds.size;
+    [self.roboView retrieveRobot];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (IBAction)updateName:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
