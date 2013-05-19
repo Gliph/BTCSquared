@@ -29,7 +29,8 @@
     imgView.layer.borderColor = [UIColor blackColor].CGColor;
     imgView.clipsToBounds = YES;
     imgView.backgroundColor = [UIColor colorWithRed:0.5 green:0.2 blue:0.1 alpha:0.5];
-
+    imgView.alpha = 0;
+    
     newFrame.size = self.roboSize;
     
     [self addSubview:imgView];
@@ -40,7 +41,14 @@
     ImageRequest* imgReq = [[ImageRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
     
     imgReq.finishBlock = ^(UIImage* img){
+        imgView.alpha = 0;
         imgView.image = img;
+        
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             imgView.alpha = 1;
+                         }];
+    
     };
     
     [imgReq execute];

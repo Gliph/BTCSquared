@@ -8,6 +8,7 @@
 
 #import "BTC2WorldViewController.h"
 #import "BTC2CircleLayout.h"
+#import "BTC2RobotViewCell.h"
 
 @interface BTC2WorldViewController ()
 
@@ -27,6 +28,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+//    [self.collectionView registerClass:[BTC2RobotViewCell class] forCellWithReuseIdentifier:@"RoboCell"];
 	// Do any additional setup after loading the view.
 
 }
@@ -53,13 +56,16 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return 5;
+    return 10;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    UICollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"RoboCell" forIndexPath:indexPath];
+    BTC2RobotViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"RoboCell" forIndexPath:indexPath];
+
+    cell.roboView.roboName = [NSString stringWithFormat:@"%d", indexPath.row];
+    cell.roboView.roboSize = CGSizeMake(100, 100);
     
-    cell.backgroundColor = [UIColor redColor];
+    [cell.roboView retrieveRobot];
     
     return cell;
 }

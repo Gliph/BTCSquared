@@ -180,6 +180,33 @@
                                 </connections>
                             </tableViewCell>
                         </prototypes>
+                        <collectionViewLayout key="collectionViewLayout" id="lM8-LH-S9H" customClass="BTC2CircleLayout"/>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="RoboCell" id="rGT-cE-5d6" customClass="BTC2RobotViewCell">
+                                <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dor-eF-maR" customClass="BTC2RobotView">
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <constraints>
+                                    <constraint firstItem="Dor-eF-maR" firstAttribute="top" secondItem="rGT-cE-5d6" secondAttribute="top" type="default" id="3UB-Ld-mhs"/>
+                                    <constraint firstItem="Dor-eF-maR" firstAttribute="trailing" secondItem="rGT-cE-5d6" secondAttribute="trailing" type="default" id="Lg2-qU-zXJ"/>
+                                    <constraint firstItem="Dor-eF-maR" firstAttribute="leading" secondItem="rGT-cE-5d6" secondAttribute="leading" type="default" id="og8-BV-lsC"/>
+                                    <constraint firstItem="Dor-eF-maR" firstAttribute="bottom" secondItem="rGT-cE-5d6" secondAttribute="bottom" type="default" id="vXw-os-Sia"/>
+                                </constraints>
+                                <size key="customSize" width="100" height="100"/>
+                                <connections>
+                                    <outlet property="roboView" destination="Dor-eF-maR" id="FVF-oy-hei"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
                         <connections>
                             <outlet property="dataSource" destination="LOA-vG-aoB" id="M7P-dO-kuw"/>
                             <outlet property="delegate" destination="LOA-vG-aoB" id="uu5-KC-2xe"/>
@@ -207,6 +234,23 @@
                 <relationship kind="outlet" name="equivalentValueLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
             </relationships>
+        <class className="BTC2RobotView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2RobotView.h"/>
+        </class>
+        <class className="BTC2RobotViewCell" superclassName="UICollectionViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2RobotViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="roboView" candidateClass="BTC2RobotView"/>
+            </relationships>
+        </class>
+        <class className="BTC2ViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2ViewController.h"/>
+        </class>
+        <class className="BTC2WorldViewController" superclassName="UICollectionViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2WorldViewController.h"/>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
         </class>
         <class className="BTC2TransactionCell" superclassName="UITableViewCell">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2TransactionCell.h"/>

@@ -36,6 +36,7 @@
 		8376DB0C1748899300B95961 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8376DB0B1748899300B95961 /* Storyboard.storyboard */; };
 		8376DB13174893C700B95961 /* BTC2WorldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DB12174893C700B95961 /* BTC2WorldViewController.m */; };
 		8376DB16174893FF00B95961 /* BTC2CircleLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DB15174893FF00B95961 /* BTC2CircleLayout.m */; };
+		8376DB191748ABB800B95961 /* BTC2RobotViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DB181748ABB800B95961 /* BTC2RobotViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +89,8 @@
 		8376DB12174893C700B95961 /* BTC2WorldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2WorldViewController.m; sourceTree = "<group>"; };
 		8376DB14174893FF00B95961 /* BTC2CircleLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2CircleLayout.h; sourceTree = "<group>"; };
 		8376DB15174893FF00B95961 /* BTC2CircleLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2CircleLayout.m; sourceTree = "<group>"; };
+		8376DB171748ABB800B95961 /* BTC2RobotViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2RobotViewCell.h; sourceTree = "<group>"; };
+		8376DB181748ABB800B95961 /* BTC2RobotViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2RobotViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +198,8 @@
 				8376DAF21748888C00B95961 /* BTC2RobotView.m */,
 				68B893F91748B20200B8DFBD /* BTC2TransactionCell.h */,
 				68B893FA1748B20200B8DFBD /* BTC2TransactionCell.m */,
+				8376DB171748ABB800B95961 /* BTC2RobotViewCell.h */,
+				8376DB181748ABB800B95961 /* BTC2RobotViewCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -311,6 +316,7 @@
 				68B893FB1748B20200B8DFBD /* BTC2TransactionCell.m in Sources */,
 				8376DB13174893C700B95961 /* BTC2WorldViewController.m in Sources */,
 				8376DB16174893FF00B95961 /* BTC2CircleLayout.m in Sources */,
+				8376DB191748ABB800B95961 /* BTC2RobotViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
