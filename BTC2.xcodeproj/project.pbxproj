@@ -37,6 +37,7 @@
 		8376DB13174893C700B95961 /* BTC2WorldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DB12174893C700B95961 /* BTC2WorldViewController.m */; };
 		8376DB16174893FF00B95961 /* BTC2CircleLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DB15174893FF00B95961 /* BTC2CircleLayout.m */; };
 		8376DB191748ABB800B95961 /* BTC2RobotViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DB181748ABB800B95961 /* BTC2RobotViewCell.m */; };
+		8376DB1D1748B49700B95961 /* UIColor+BTC2Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DB1C1748B49700B95961 /* UIColor+BTC2Extensions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -91,6 +92,8 @@
 		8376DB15174893FF00B95961 /* BTC2CircleLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2CircleLayout.m; sourceTree = "<group>"; };
 		8376DB171748ABB800B95961 /* BTC2RobotViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2RobotViewCell.h; sourceTree = "<group>"; };
 		8376DB181748ABB800B95961 /* BTC2RobotViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2RobotViewCell.m; sourceTree = "<group>"; };
+		8376DB1B1748B49700B95961 /* UIColor+BTC2Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+BTC2Extensions.h"; sourceTree = "<group>"; };
+		8376DB1C1748B49700B95961 /* UIColor+BTC2Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+BTC2Extensions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +156,8 @@
 				8376DB14174893FF00B95961 /* BTC2CircleLayout.h */,
 				8376DB15174893FF00B95961 /* BTC2CircleLayout.m */,
 				8331DF0B174887B200733BC3 /* Supporting Files */,
+				8376DB1B1748B49700B95961 /* UIColor+BTC2Extensions.h */,
+				8376DB1C1748B49700B95961 /* UIColor+BTC2Extensions.m */,
 			);
 			path = BTC2;
 			sourceTree = "<group>";
@@ -317,6 +322,7 @@
 				8376DB13174893C700B95961 /* BTC2WorldViewController.m in Sources */,
 				8376DB16174893FF00B95961 /* BTC2CircleLayout.m in Sources */,
 				8376DB191748ABB800B95961 /* BTC2RobotViewCell.m in Sources */,
+				8376DB1D1748B49700B95961 /* UIColor+BTC2Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
