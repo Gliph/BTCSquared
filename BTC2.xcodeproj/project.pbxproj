@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		682416BA174897A600FB0441 /* coinbase-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 682416B8174897A600FB0441 /* coinbase-logo.png */; };
+		682416BB174897A600FB0441 /* coinbase-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 682416B9174897A600FB0441 /* coinbase-logo@2x.png */; };
+		682416BE1748A97400FB0441 /* BTC2NameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 682416BD1748A97400FB0441 /* BTC2NameViewController.m */; };
+		68B893F51748ABEB00B8DFBD /* BTC2TransactionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B893F41748ABEB00B8DFBD /* BTC2TransactionsViewController.m */; };
+		68B893F81748ABFC00B8DFBD /* BTC2NewTransactionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B893F71748ABFC00B8DFBD /* BTC2NewTransactionViewController.m */; };
+		68B893FB1748B20200B8DFBD /* BTC2TransactionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B893FA1748B20200B8DFBD /* BTC2TransactionCell.m */; };
 		8331DF05174887B200733BC3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8331DF04174887B200733BC3 /* UIKit.framework */; };
 		8331DF07174887B200733BC3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8331DF06174887B200733BC3 /* Foundation.framework */; };
 		8331DF09174887B200733BC3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8331DF08174887B200733BC3 /* CoreGraphics.framework */; };
@@ -31,6 +37,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		682416B8174897A600FB0441 /* coinbase-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "coinbase-logo.png"; sourceTree = "<group>"; };
+		682416B9174897A600FB0441 /* coinbase-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "coinbase-logo@2x.png"; sourceTree = "<group>"; };
+		682416BC1748A97400FB0441 /* BTC2NameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2NameViewController.h; sourceTree = "<group>"; };
+		682416BD1748A97400FB0441 /* BTC2NameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2NameViewController.m; sourceTree = "<group>"; };
+		68B893F31748ABEB00B8DFBD /* BTC2TransactionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2TransactionsViewController.h; sourceTree = "<group>"; };
+		68B893F41748ABEB00B8DFBD /* BTC2TransactionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2TransactionsViewController.m; sourceTree = "<group>"; };
+		68B893F61748ABFC00B8DFBD /* BTC2NewTransactionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2NewTransactionViewController.h; sourceTree = "<group>"; };
+		68B893F71748ABFC00B8DFBD /* BTC2NewTransactionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2NewTransactionViewController.m; sourceTree = "<group>"; };
+		68B893F91748B20200B8DFBD /* BTC2TransactionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2TransactionCell.h; sourceTree = "<group>"; };
+		68B893FA1748B20200B8DFBD /* BTC2TransactionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2TransactionCell.m; sourceTree = "<group>"; };
 		8331DF01174887B200733BC3 /* BTC2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BTC2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8331DF04174887B200733BC3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		8331DF06174887B200733BC3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -121,6 +137,8 @@
 				8376DB0E174889F900B95961 /* Views */,
 				8376DB0D174889F200B95961 /* ViewControllers */,
 				8376DB0B1748899300B95961 /* Storyboard.storyboard */,
+				682416B8174897A600FB0441 /* coinbase-logo.png */,
+				682416B9174897A600FB0441 /* coinbase-logo@2x.png */,
 				8376DAED1748888C00B95961 /* BTC2Manager.h */,
 				8376DAEE1748888C00B95961 /* BTC2Manager.m */,
 				8331DF0B174887B200733BC3 /* Supporting Files */,
@@ -150,6 +168,12 @@
 				8376DAF41748888C00B95961 /* BTC2ViewController.m */,
 				8376DAEB1748888C00B95961 /* BTC2DebugViewController.h */,
 				8376DAEC1748888C00B95961 /* BTC2DebugViewController.m */,
+				682416BC1748A97400FB0441 /* BTC2NameViewController.h */,
+				682416BD1748A97400FB0441 /* BTC2NameViewController.m */,
+				68B893F31748ABEB00B8DFBD /* BTC2TransactionsViewController.h */,
+				68B893F41748ABEB00B8DFBD /* BTC2TransactionsViewController.m */,
+				68B893F61748ABFC00B8DFBD /* BTC2NewTransactionViewController.h */,
+				68B893F71748ABFC00B8DFBD /* BTC2NewTransactionViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -159,6 +183,8 @@
 			children = (
 				8376DAF11748888C00B95961 /* BTC2RobotView.h */,
 				8376DAF21748888C00B95961 /* BTC2RobotView.m */,
+				68B893F91748B20200B8DFBD /* BTC2TransactionCell.h */,
+				68B893FA1748B20200B8DFBD /* BTC2TransactionCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -246,6 +272,8 @@
 				8331DF19174887B200733BC3 /* Default@2x.png in Resources */,
 				8331DF1B174887B200733BC3 /* Default-568h@2x.png in Resources */,
 				8376DB0C1748899300B95961 /* Storyboard.storyboard in Resources */,
+				682416BA174897A600FB0441 /* coinbase-logo.png in Resources */,
+				682416BB174897A600FB0441 /* coinbase-logo@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +295,10 @@
 				8376DAFE174888C600B95961 /* NetworkController.m in Sources */,
 				8376DB071748894F00B95961 /* ImageRequest.m in Sources */,
 				8376DB0A1748896500B95961 /* BaseRequest.m in Sources */,
+				682416BE1748A97400FB0441 /* BTC2NameViewController.m in Sources */,
+				68B893F51748ABEB00B8DFBD /* BTC2TransactionsViewController.m in Sources */,
+				68B893F81748ABFC00B8DFBD /* BTC2NewTransactionViewController.m in Sources */,
+				68B893FB1748B20200B8DFBD /* BTC2TransactionCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
