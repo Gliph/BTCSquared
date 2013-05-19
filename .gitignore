@@ -1,0 +1,18 @@
+# standard
+*~
+*.pyc
+*.pyo
+*.swo
+*.swp
+*.mo
+*.egg-info
+
+# Mac
+.DS_Store
+
+# iOS project files
+*.xcuserdata*
+*.xcbkptlist
+*.xcscheme
+*.xcuserstate
+*.xcworkspace*

@@ -1,5 +1,5 @@
 //
-//  BTC2AppDelegate.h
+//  BTC2ViewController.h
 //  BTC2
 //
 //  Created by Joakim Fernstad on 5/17/13.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BTC2AppDelegate : UIResponder <UIApplicationDelegate>
-
-@property (strong, nonatomic) UIWindow *window;
+@interface BTC2DebugViewController : UIViewController
 
 @end

@@ -16,6 +16,18 @@
 		8331DF17174887B200733BC3 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 8331DF16174887B200733BC3 /* Default.png */; };
 		8331DF19174887B200733BC3 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8331DF18174887B200733BC3 /* Default@2x.png */; };
 		8331DF1B174887B200733BC3 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8331DF1A174887B200733BC3 /* Default-568h@2x.png */; };
+		8376DAF51748888C00B95961 /* BTC2CentralDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DAEA1748888C00B95961 /* BTC2CentralDelegate.m */; };
+		8376DAF61748888C00B95961 /* BTC2DebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DAEC1748888C00B95961 /* BTC2DebugViewController.m */; };
+		8376DAF71748888C00B95961 /* BTC2Manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DAEE1748888C00B95961 /* BTC2Manager.m */; };
+		8376DAF81748888C00B95961 /* BTC2PeripheralDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DAF01748888C00B95961 /* BTC2PeripheralDelegate.m */; };
+		8376DAF91748888C00B95961 /* BTC2RobotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DAF21748888C00B95961 /* BTC2RobotView.m */; };
+		8376DAFA1748888C00B95961 /* BTC2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DAF41748888C00B95961 /* BTC2ViewController.m */; };
+		8376DAFE174888C600B95961 /* NetworkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DAFD174888C600B95961 /* NetworkController.m */; };
+		8376DB031748893500B95961 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8376DB011748892700B95961 /* QuartzCore.framework */; };
+		8376DB041748893500B95961 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8376DAFF1748892100B95961 /* CoreBluetooth.framework */; };
+		8376DB071748894F00B95961 /* ImageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DB061748894F00B95961 /* ImageRequest.m */; };
+		8376DB0A1748896500B95961 /* BaseRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DB091748896500B95961 /* BaseRequest.m */; };
+		8376DB0C1748899300B95961 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8376DB0B1748899300B95961 /* Storyboard.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +44,28 @@
 		8331DF16174887B200733BC3 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		8331DF18174887B200733BC3 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		8331DF1A174887B200733BC3 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		8376DAE91748888C00B95961 /* BTC2CentralDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2CentralDelegate.h; sourceTree = "<group>"; };
+		8376DAEA1748888C00B95961 /* BTC2CentralDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2CentralDelegate.m; sourceTree = "<group>"; };
+		8376DAEB1748888C00B95961 /* BTC2DebugViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2DebugViewController.h; sourceTree = "<group>"; };
+		8376DAEC1748888C00B95961 /* BTC2DebugViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2DebugViewController.m; sourceTree = "<group>"; };
+		8376DAED1748888C00B95961 /* BTC2Manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2Manager.h; sourceTree = "<group>"; };
+		8376DAEE1748888C00B95961 /* BTC2Manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2Manager.m; sourceTree = "<group>"; };
+		8376DAEF1748888C00B95961 /* BTC2PeripheralDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2PeripheralDelegate.h; sourceTree = "<group>"; };
+		8376DAF01748888C00B95961 /* BTC2PeripheralDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2PeripheralDelegate.m; sourceTree = "<group>"; };
+		8376DAF11748888C00B95961 /* BTC2RobotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2RobotView.h; sourceTree = "<group>"; };
+		8376DAF21748888C00B95961 /* BTC2RobotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2RobotView.m; sourceTree = "<group>"; };
+		8376DAF31748888C00B95961 /* BTC2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2ViewController.h; sourceTree = "<group>"; };
+		8376DAF41748888C00B95961 /* BTC2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2ViewController.m; sourceTree = "<group>"; };
+		8376DAFB174888B700B95961 /* BTC2UUIDs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTC2UUIDs.h; sourceTree = "<group>"; };
+		8376DAFC174888C600B95961 /* NetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkController.h; sourceTree = "<group>"; };
+		8376DAFD174888C600B95961 /* NetworkController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkController.m; sourceTree = "<group>"; };
+		8376DAFF1748892100B95961 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		8376DB011748892700B95961 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		8376DB051748894F00B95961 /* ImageRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageRequest.h; sourceTree = "<group>"; };
+		8376DB061748894F00B95961 /* ImageRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageRequest.m; sourceTree = "<group>"; };
+		8376DB081748896500B95961 /* BaseRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseRequest.h; sourceTree = "<group>"; };
+		8376DB091748896500B95961 /* BaseRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseRequest.m; sourceTree = "<group>"; };
+		8376DB0B1748899300B95961 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Storyboard.storyboard; path = ../Storyboard.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +74,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8331DF05174887B200733BC3 /* UIKit.framework in Frameworks */,
+				8376DB031748893500B95961 /* QuartzCore.framework in Frameworks */,
+				8376DB041748893500B95961 /* CoreBluetooth.framework in Frameworks */,
 				8331DF07174887B200733BC3 /* Foundation.framework in Frameworks */,
 				8331DF09174887B200733BC3 /* CoreGraphics.framework in Frameworks */,
 			);
@@ -68,6 +104,8 @@
 		8331DF03174887B200733BC3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8376DB011748892700B95961 /* QuartzCore.framework */,
+				8376DAFF1748892100B95961 /* CoreBluetooth.framework */,
 				8331DF04174887B200733BC3 /* UIKit.framework */,
 				8331DF06174887B200733BC3 /* Foundation.framework */,
 				8331DF08174887B200733BC3 /* CoreGraphics.framework */,
@@ -78,8 +116,13 @@
 		8331DF0A174887B200733BC3 /* BTC2 */ = {
 			isa = PBXGroup;
 			children = (
-				8331DF13174887B200733BC3 /* BTC2AppDelegate.h */,
-				8331DF14174887B200733BC3 /* BTC2AppDelegate.m */,
+				8376DB1017488A1200B95961 /* Delegates */,
+				8376DB0F174889FE00B95961 /* Requests */,
+				8376DB0E174889F900B95961 /* Views */,
+				8376DB0D174889F200B95961 /* ViewControllers */,
+				8376DB0B1748899300B95961 /* Storyboard.storyboard */,
+				8376DAED1748888C00B95961 /* BTC2Manager.h */,
+				8376DAEE1748888C00B95961 /* BTC2Manager.m */,
 				8331DF0B174887B200733BC3 /* Supporting Files */,
 			);
 			path = BTC2;
@@ -88,6 +131,7 @@
 		8331DF0B174887B200733BC3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8376DAFB174888B700B95961 /* BTC2UUIDs.h */,
 				8331DF0C174887B200733BC3 /* BTC2-Info.plist */,
 				8331DF0D174887B200733BC3 /* InfoPlist.strings */,
 				8331DF10174887B200733BC3 /* main.m */,
@@ -97,6 +141,52 @@
 				8331DF1A174887B200733BC3 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8376DB0D174889F200B95961 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				8376DAF31748888C00B95961 /* BTC2ViewController.h */,
+				8376DAF41748888C00B95961 /* BTC2ViewController.m */,
+				8376DAEB1748888C00B95961 /* BTC2DebugViewController.h */,
+				8376DAEC1748888C00B95961 /* BTC2DebugViewController.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		8376DB0E174889F900B95961 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8376DAF11748888C00B95961 /* BTC2RobotView.h */,
+				8376DAF21748888C00B95961 /* BTC2RobotView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		8376DB0F174889FE00B95961 /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				8376DB051748894F00B95961 /* ImageRequest.h */,
+				8376DB061748894F00B95961 /* ImageRequest.m */,
+				8376DB081748896500B95961 /* BaseRequest.h */,
+				8376DB091748896500B95961 /* BaseRequest.m */,
+				8376DAFC174888C600B95961 /* NetworkController.h */,
+				8376DAFD174888C600B95961 /* NetworkController.m */,
+			);
+			name = Requests;
+			sourceTree = "<group>";
+		};
+		8376DB1017488A1200B95961 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				8331DF13174887B200733BC3 /* BTC2AppDelegate.h */,
+				8331DF14174887B200733BC3 /* BTC2AppDelegate.m */,
+				8376DAE91748888C00B95961 /* BTC2CentralDelegate.h */,
+				8376DAEA1748888C00B95961 /* BTC2CentralDelegate.m */,
+				8376DAEF1748888C00B95961 /* BTC2PeripheralDelegate.h */,
+				8376DAF01748888C00B95961 /* BTC2PeripheralDelegate.m */,
+			);
+			name = Delegates;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,6 +245,7 @@
 				8331DF17174887B200733BC3 /* Default.png in Resources */,
 				8331DF19174887B200733BC3 /* Default@2x.png in Resources */,
 				8331DF1B174887B200733BC3 /* Default-568h@2x.png in Resources */,
+				8376DB0C1748899300B95961 /* Storyboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,6 +258,15 @@
 			files = (
 				8331DF11174887B200733BC3 /* main.m in Sources */,
 				8331DF15174887B200733BC3 /* BTC2AppDelegate.m in Sources */,
+				8376DAF51748888C00B95961 /* BTC2CentralDelegate.m in Sources */,
+				8376DAF61748888C00B95961 /* BTC2DebugViewController.m in Sources */,
+				8376DAF71748888C00B95961 /* BTC2Manager.m in Sources */,
+				8376DAF81748888C00B95961 /* BTC2PeripheralDelegate.m in Sources */,
+				8376DAF91748888C00B95961 /* BTC2RobotView.m in Sources */,
+				8376DAFA1748888C00B95961 /* BTC2ViewController.m in Sources */,
+				8376DAFE174888C600B95961 /* NetworkController.m in Sources */,
+				8376DB071748894F00B95961 /* ImageRequest.m in Sources */,
+				8376DB0A1748896500B95961 /* BaseRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +381,7 @@
 				8331DF20174887B200733BC3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
