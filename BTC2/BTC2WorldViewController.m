@@ -9,6 +9,8 @@
 #import "BTC2WorldViewController.h"
 #import "BTC2CircleLayout.h"
 #import "BTC2RobotViewCell.h"
+#import "UIColor+BTC2Extensions.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface BTC2WorldViewController ()
 
@@ -32,11 +34,22 @@
 //    [self.collectionView registerClass:[BTC2RobotViewCell class] forCellWithReuseIdentifier:@"RoboCell"];
 	// Do any additional setup after loading the view.
 
+    UIView* background = [[UIView alloc] initWithFrame:self.view.bounds];
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = self.view.bounds;
+    gradient.colors = @[(id)[UIColor btc2RandomColor].CGColor,
+                        (id)[UIColor btc2RandomColor].CGColor];
+    [background.layer insertSublayer:gradient atIndex:0];
+    
+    self.collectionView.backgroundView = background;
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
 
+    self.collectionView.scrollEnabled = NO;
+    
     BTC2CircleLayout* layout = (BTC2CircleLayout*)self.collectionView.collectionViewLayout;
     layout.cellSize = CGSizeMake(100, 100);
     layout.radius   = 130;
@@ -56,7 +69,7 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return 10;
+    return 5;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
