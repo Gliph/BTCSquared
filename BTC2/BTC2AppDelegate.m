@@ -2,19 +2,28 @@
 //  BTC2AppDelegate.m
 //  BTC2
 //
-//  Created by Joakim Fernstad on 5/18/13.
+//  Created by Joakim Fernstad on 5/17/13.
 //  Copyright (c) 2013 Joakim Fernstad. All rights reserved.
 //
 
 #import "BTC2AppDelegate.h"
+#import "BTC2DebugViewController.h"
+#import "BTC2ViewController.h"
 
 @implementation BTC2AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+//    UIStoryboard* story = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
+//    BTC2DebugViewController* vc = [story instantiateInitialViewController];
+
+    UIStoryboard* story = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
+    BTC2ViewController* vc = [story instantiateInitialViewController];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.rootViewController = vc;
     [self.window makeKeyAndVisible];
     return YES;
 }

@@ -11,4 +11,9 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+
+#define kCentralModeStarted     @"kCentralModeStarted"
+#define kPeripheralModeStarted  @"kPeripheralModeStarted"
+#define kNeutralModeStarted     @"kNeutralModeStarted"
+
 #endif
