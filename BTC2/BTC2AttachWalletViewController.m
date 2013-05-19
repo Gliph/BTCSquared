@@ -1,20 +1,20 @@
 //
-//  BTC2TransactionsViewController.m
+//  BTC2AttachWalletViewController.m
 //  BTC2
 //
-//  Created by Nicholas Asch on 2013-05-18.
+//  Created by Joakim Fernstad on 5/19/13.
 //  Copyright (c) 2013 Joakim Fernstad. All rights reserved.
 //
 
-#import "BTC2TransactionsViewController.h"
+#import "BTC2AttachWalletViewController.h"
 #import "UIColor+BTC2Extensions.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface BTC2TransactionsViewController ()
+@interface BTC2AttachWalletViewController ()
 
 @end
 
-@implementation BTC2TransactionsViewController
+@implementation BTC2AttachWalletViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -28,6 +28,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	// Do any additional setup after loading the view.
 
     CAGradientLayer *gradient = [CAGradientLayer layer];
     gradient.frame = self.view.bounds;
@@ -41,8 +42,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-- (IBAction)close:(id)sender {
+- (IBAction)attachWallet:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 @end

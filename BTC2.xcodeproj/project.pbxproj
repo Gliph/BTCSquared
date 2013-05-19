@@ -13,6 +13,7 @@
 		68B893F51748ABEB00B8DFBD /* BTC2TransactionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B893F41748ABEB00B8DFBD /* BTC2TransactionsViewController.m */; };
 		68B893F81748ABFC00B8DFBD /* BTC2NewTransactionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B893F71748ABFC00B8DFBD /* BTC2NewTransactionViewController.m */; };
 		68B893FB1748B20200B8DFBD /* BTC2TransactionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B893FA1748B20200B8DFBD /* BTC2TransactionCell.m */; };
+		830CB39E17496B2300939102 /* BTC2AttachWalletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 830CB39D17496B2300939102 /* BTC2AttachWalletViewController.m */; };
 		8331DF05174887B200733BC3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8331DF04174887B200733BC3 /* UIKit.framework */; };
 		8331DF07174887B200733BC3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8331DF06174887B200733BC3 /* Foundation.framework */; };
 		8331DF09174887B200733BC3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8331DF08174887B200733BC3 /* CoreGraphics.framework */; };
@@ -52,7 +53,9 @@
 		68B893F71748ABFC00B8DFBD /* BTC2NewTransactionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2NewTransactionViewController.m; sourceTree = "<group>"; };
 		68B893F91748B20200B8DFBD /* BTC2TransactionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2TransactionCell.h; sourceTree = "<group>"; };
 		68B893FA1748B20200B8DFBD /* BTC2TransactionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2TransactionCell.m; sourceTree = "<group>"; };
-		8331DF01174887B200733BC3 /* BTC2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BTC2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		830CB39C17496B2300939102 /* BTC2AttachWalletViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2AttachWalletViewController.h; sourceTree = "<group>"; };
+		830CB39D17496B2300939102 /* BTC2AttachWalletViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2AttachWalletViewController.m; sourceTree = "<group>"; };
+		8331DF01174887B200733BC3 /* BTCSquared.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BTCSquared.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8331DF04174887B200733BC3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		8331DF06174887B200733BC3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8331DF08174887B200733BC3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -127,7 +130,7 @@
 		8331DF02174887B200733BC3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8331DF01174887B200733BC3 /* BTC2.app */,
+				8331DF01174887B200733BC3 /* BTCSquared.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -197,6 +200,8 @@
 				68B893F71748ABFC00B8DFBD /* BTC2NewTransactionViewController.m */,
 				8376DB11174893C700B95961 /* BTC2WorldViewController.h */,
 				8376DB12174893C700B95961 /* BTC2WorldViewController.m */,
+				830CB39C17496B2300939102 /* BTC2AttachWalletViewController.h */,
+				830CB39D17496B2300939102 /* BTC2AttachWalletViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -257,7 +262,7 @@
 			);
 			name = BTCSquared;
 			productName = BTC2;
-			productReference = 8331DF01174887B200733BC3 /* BTC2.app */;
+			productReference = 8331DF01174887B200733BC3 /* BTCSquared.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -329,6 +334,7 @@
 				8376DB191748ABB800B95961 /* BTC2RobotViewCell.m in Sources */,
 				8376DB1D1748B49700B95961 /* UIColor+BTC2Extensions.m in Sources */,
 				83792FF01748CC8F0077A2FF /* NSString+BTC2Extensions.m in Sources */,
+				830CB39E17496B2300939102 /* BTC2AttachWalletViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

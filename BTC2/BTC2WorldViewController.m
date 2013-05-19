@@ -12,6 +12,8 @@
 
 #import "BTC2NameViewController.h"
 #import "BTC2NewTransactionViewController.h"
+#import "BTC2AttachWalletViewController.h"
+#import "BTC2TransactionsViewController.h"
 
 #import "UIColor+BTC2Extensions.h"
 #import <QuartzCore/QuartzCore.h>
@@ -242,14 +244,17 @@
 -(void)transactions:(id)sender{
     NSLog(@"-> transactions");
 
-//    BTC2NewTransactionViewController* transactionViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"BTC2NewTransactionViewController"];
-//    
-//    [self presentViewController:transactionViewController animated:YES completion:nil];
+    BTC2TransactionsViewController* transactions = [self.storyboard instantiateViewControllerWithIdentifier:@"BTC2TransactionsViewController"];
+    
+    [self presentViewController:transactions animated:YES completion:nil];
     
 }
 -(void)attachWallet:(id)sender{
     NSLog(@"-> attachWallet");
 
+    BTC2AttachWalletViewController* attachWallet = [self.storyboard instantiateViewControllerWithIdentifier:@"BTC2AttachWalletViewController"];
+
+    [self presentViewController:attachWallet animated:YES completion:nil];
 }
 -(void)changeName:(id)sender{
     NSLog(@"-> changeName");
