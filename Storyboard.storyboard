@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Abq-DI-rb0">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="Abq-DI-rb0">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -81,24 +81,35 @@
                         <collectionViewLayout key="collectionViewLayout" id="c6S-p8-Ka1" customClass="BTC2CircleLayout"/>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="RoboCell" id="bQl-07-tPb" customClass="BTC2RobotViewCell">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="98" height="96"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="98" height="96"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="frC-tZ-C2N" customClass="BTC2RobotView">
+                                        <view contentMode="scaleToFill" id="frC-tZ-C2N" customClass="BTC2RobotView">
+                                            <rect key="frame" x="0.0" y="0.0" width="98" height="96"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" id="HZZ-ck-AY4">
+                                                    <rect key="frame" x="0.0" y="75" width="98" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <color key="shadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <size key="shadowOffset" width="0.0" height="0.0"/>
+                                                </label>
+                                            </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <connections>
+                                                <outlet property="nameLabel" destination="HZZ-ck-AY4" id="k3S-s7-7SB"/>
+                                            </connections>
                                         </view>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
-                                <constraints>
-                                    <constraint firstItem="frC-tZ-C2N" firstAttribute="leading" secondItem="bQl-07-tPb" secondAttribute="leading" type="default" id="2hX-kH-dZi"/>
-                                    <constraint firstItem="frC-tZ-C2N" firstAttribute="bottom" secondItem="bQl-07-tPb" secondAttribute="bottom" type="default" id="UW3-sy-fOH"/>
-                                    <constraint firstItem="frC-tZ-C2N" firstAttribute="trailing" secondItem="bQl-07-tPb" secondAttribute="trailing" type="default" id="Ymz-9e-koF"/>
-                                    <constraint firstItem="frC-tZ-C2N" firstAttribute="top" secondItem="bQl-07-tPb" secondAttribute="top" type="default" id="gGC-vX-iHv"/>
-                                </constraints>
+                                <size key="customSize" width="98" height="96"/>
                                 <connections>
                                     <outlet property="roboView" destination="frC-tZ-C2N" id="Pab-me-gUK"/>
                                 </connections>
@@ -256,6 +267,9 @@
         </class>
         <class className="BTC2RobotView" superclassName="UIView">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2RobotView.h"/>
+            <relationships>
+                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
+            </relationships>
         </class>
         <class className="BTC2RobotViewCell" superclassName="UICollectionViewCell">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2RobotViewCell.h"/>
@@ -280,9 +294,6 @@
         </class>
         <class className="BTC2WorldViewController" superclassName="UICollectionViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2WorldViewController.h"/>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
         </class>
         <class className="UICollectionReusableView" superclassName="UIView">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionReusableView.h"/>

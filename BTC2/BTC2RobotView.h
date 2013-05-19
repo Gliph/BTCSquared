@@ -11,5 +11,6 @@
 @interface BTC2RobotView : UIView
 @property (nonatomic, strong) NSString* roboName;
 @property (nonatomic, assign) CGSize roboSize;
+@property (nonatomic, assign) BOOL hasRobot;
 -(void)retrieveRobot;
 @end

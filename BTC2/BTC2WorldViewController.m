@@ -13,7 +13,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface BTC2WorldViewController ()
-
+-(void)peripheralAdded:(NSNotification*)not;
 @end
 
 @implementation BTC2WorldViewController
@@ -31,9 +31,6 @@
 {
     [super viewDidLoad];
 
-//    [self.collectionView registerClass:[BTC2RobotViewCell class] forCellWithReuseIdentifier:@"RoboCell"];
-	// Do any additional setup after loading the view.
-
     UIView* background = [[UIView alloc] initWithFrame:self.view.bounds];
     CAGradientLayer *gradient = [CAGradientLayer layer];
     gradient.frame = self.view.bounds;
@@ -42,6 +39,11 @@
     [background.layer insertSublayer:gradient atIndex:0];
     
     self.collectionView.backgroundView = background;
+ 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(peripheralAdded:)
+                                                 name:kPeripheralAddedNotification
+                                               object:nil];
     
 }
 
@@ -51,7 +53,7 @@
     self.collectionView.scrollEnabled = NO;
     
     BTC2CircleLayout* layout = (BTC2CircleLayout*)self.collectionView.collectionViewLayout;
-    layout.cellSize = CGSizeMake(100, 100);
+    layout.cellSize = CGSizeMake(100, 120);
     layout.radius   = 130;
 
 }
@@ -62,6 +64,22 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)peripheralAdded:(NSNotification*)not{
+    NSLog(@"peripheralAdded");
+    if (!self.peripherals.count) {
+        self.peripherals = [[NSMutableArray alloc] initWithCapacity:1];
+    }
+    
+    [self.peripherals addObject:not.object];
+//    self.peripherals = [NSArray arrayWithArray:newArray];
+    
+//    NSLog(@"%@", self.peripherals);
+    
+    [self.collectionView reloadData];
+//    NSIndexPath* newPath = [NSIndexPath indexPathForRow:self.peripherals.count inSection:0];
+//    [self.collectionView insertItemsAtIndexPaths:@[newPath]];
+}
+
 #pragma mark - Collection View Datasource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
@@ -69,16 +87,18 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return 5;
+    return self.peripherals.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     BTC2RobotViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"RoboCell" forIndexPath:indexPath];
-
-    cell.roboView.roboName = [NSString stringWithFormat:@"%d", indexPath.row];
+    
+    cell.roboView.roboName = [self.peripherals objectAtIndex:indexPath.row];
     cell.roboView.roboSize = CGSizeMake(100, 100);
     
-    [cell.roboView retrieveRobot];
+    if (!cell.roboView.hasRobot) {
+        [cell.roboView retrieveRobot];
+    }
     
     return cell;
 }
