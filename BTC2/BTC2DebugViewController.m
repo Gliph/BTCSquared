@@ -11,6 +11,7 @@
 
 @interface BTC2DebugViewController ()
 @property (nonatomic, strong) BTC2Manager* BTC2Manager;
+@property (weak, nonatomic) IBOutlet UILabel *deviceName;
 -(void)modeNotification:(NSNotification*)not;
 @end
 

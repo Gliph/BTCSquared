@@ -68,8 +68,9 @@
 - (void)centralManager:(CBCentralManager *)central didRetrievePeripherals:(NSArray *)peripherals{
     NSLog(@"didRetrievePeripherals %@", peripherals);
     
-    // TODO: Add peripherals to array (if not already added)
-    // 
+    // TODO: Add peripherals to array
+    // If not already in list, connect and read wallet address.
+    
 }
 - (void)centralManager:(CBCentralManager *)central didRetrieveConnectedPeripherals:(NSArray *)peripherals{
     NSLog(@"didRetrieveConnectedPeripherals");
@@ -79,6 +80,12 @@
 }
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
     NSLog(@"didConnectPeripheral");
+
+    // Connection is good.
+    // Set myself as delegate to peripheral.
+    // Discover services
+    //
+
 }
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
     NSLog(@"didFailToConnectPeripheral");
@@ -103,6 +110,8 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error{
     NSLog(@"didDiscoverServices");
+
+    // Discover characteristics
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverIncludedServicesForService:(CBService *)service error:(NSError *)error{
@@ -111,10 +120,16 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error{
     NSLog(@"didDiscoverCharacteristicsForService");
+
+    // If found wallet address characteristic, read it
+
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
     NSLog(@"didUpdateValueForCharacteristic");
+
+    // Let system know a characteristic has been read
+
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{

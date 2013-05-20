@@ -8,7 +8,7 @@
 
 #import "BTC2AppDelegate.h"
 #import "BTC2DebugViewController.h"
-#import "BTC2ViewController.h"
+#import "BTC2WorldViewController.h"
 
 @implementation BTC2AppDelegate
 
@@ -19,7 +19,7 @@
 //    BTC2DebugViewController* vc = [story instantiateInitialViewController];
 
     UIStoryboard* story = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
-    BTC2ViewController* vc = [story instantiateInitialViewController];
+    BTC2WorldViewController* vc = [story instantiateInitialViewController];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
