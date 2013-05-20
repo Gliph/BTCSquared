@@ -53,7 +53,13 @@
                 [central scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:BTC2WalletServiceUUID]] options:nil];
             }
             break;
-            
+        case CBCentralManagerStatePoweredOff:
+            [self cleanup];
+            break;
+        case CBCentralManagerStateUnsupported:
+        case CBCentralManagerStateResetting:
+        case CBCentralManagerStateUnauthorized:
+        case CBCentralManagerStateUnknown:
         default:
             break;
     }
@@ -61,6 +67,9 @@
 }
 - (void)centralManager:(CBCentralManager *)central didRetrievePeripherals:(NSArray *)peripherals{
     NSLog(@"didRetrievePeripherals %@", peripherals);
+    
+    // TODO: Add peripherals to array (if not already added)
+    // 
 }
 - (void)centralManager:(CBCentralManager *)central didRetrieveConnectedPeripherals:(NSArray *)peripherals{
     NSLog(@"didRetrieveConnectedPeripherals");

@@ -44,7 +44,7 @@
     self.shouldAdvertise = YES;
     
     if (self.peripheralManager.state == CBPeripheralManagerStatePoweredOn) {
-        adDict = @{CBAdvertisementDataServiceUUIDsKey: BTC2WalletServiceUUID,
+        adDict = @{CBAdvertisementDataServiceUUIDsKey: @[[CBUUID UUIDWithString:BTC2WalletServiceUUID]], // ... ARRAY of CBUUIDs
                    CBAdvertisementDataLocalNameKey: self.deviceName};
         
         [self.peripheralManager startAdvertising:adDict];
