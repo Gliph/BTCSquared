@@ -27,6 +27,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(modeNotification:) name:kCentralModeStarted object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(modeNotification:) name:kPeripheralModeStarted object:nil];
     
+    self.BTC2Manager = [[BTC2Manager alloc] init];
+
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
@@ -40,10 +42,14 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (IBAction)startCentral:(id)sender {
+    [self.BTC2Manager enterCentralMode];
+}
+- (IBAction)startPeripheralMode:(id)sender {
+    [self.BTC2Manager enterPeripheralMode];
+}
 - (IBAction)start:(id)sender {
-    self.BTC2Manager = [[BTC2Manager alloc] init];
-
-    
+    [self.BTC2Manager startCycle];
 }
 - (IBAction)stop:(id)sender {
     NSLog(@" STOP (Neutral mode)!");
