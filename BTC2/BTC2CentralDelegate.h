@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 
-@interface BTC2CentralDelegate : NSObject<CBCentralManagerDelegate>
+@interface BTC2CentralDelegate : NSObject<CBCentralManagerDelegate, CBPeripheralDelegate>
 @property (nonatomic, readonly) CBCentralManager* centralManager;
 -(void)startScan;
 -(void)cleanup;

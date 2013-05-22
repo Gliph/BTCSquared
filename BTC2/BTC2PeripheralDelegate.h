@@ -12,6 +12,7 @@
 @interface BTC2PeripheralDelegate : NSObject<CBPeripheralManagerDelegate>
 @property (nonatomic, readonly) CBPeripheralManager* peripheralManager;
 @property (nonatomic, strong) NSString* deviceName;
+@property (nonatomic, strong) NSString* walletAddress;
 -(void)startAdvertising;
 -(void)stopAdvertising;
 -(void)cleanup;

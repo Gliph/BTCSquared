@@ -19,6 +19,8 @@ typedef enum BTC2ManagerState {
 @property (nonatomic, strong) NSTimer* stateTimer;
 @property (nonatomic, assign) BTC2ManagerState managerState;
 -(void)changeState:(NSTimer*)timer;
+-(void)startCycleTimer;
+-(void)stopCycleTimer;
 @end
 
 @implementation BTC2Manager
@@ -31,15 +33,13 @@ typedef enum BTC2ManagerState {
     if ((self = [super init])){
         self.central = [[BTC2CentralDelegate alloc] init];
         self.peripheral = [[BTC2PeripheralDelegate alloc] init];
-
-        [self startCycle];
     }
     
     return self;
 }
 
--(void)startCycle{
-    [self enterCentralMode];
+
+-(void)startCycleTimer{
     self.stateTimer = [NSTimer timerWithTimeInterval:10
                                               target:self
                                             selector:@selector(changeState:)
@@ -47,6 +47,17 @@ typedef enum BTC2ManagerState {
                                              repeats:YES];
     
     [[NSRunLoop mainRunLoop] addTimer:self.stateTimer forMode:NSDefaultRunLoopMode];
+}
+
+-(void)stopCycleTimer{
+    if (self.stateTimer.isValid) {
+        [self.stateTimer invalidate];
+    }
+}
+
+-(void)startCycle{
+    [self enterCentralMode];
+    [self startCycleTimer];
 }
 
 -(void)changeState:(NSTimer*)timer{
@@ -90,9 +101,8 @@ typedef enum BTC2ManagerState {
 -(void)enterNeutralMode{
     NSLog(@"enterNeutralMode");
     [[NSNotificationCenter defaultCenter] postNotificationName:kNeutralModeStarted object:nil];
-    if (self.stateTimer.isValid) {
-        [self.stateTimer invalidate];
-    }
+
+    [self stopCycleTimer];
     self.managerState = BTC2ManagerStateNeutral;
     [self.central cleanup];
     [self.peripheral cleanup];

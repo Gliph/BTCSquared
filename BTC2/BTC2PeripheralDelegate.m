@@ -23,10 +23,11 @@
 
 -(id)init{
     if ((self = [super init])) {
-        self.deviceName = @"NoName";
+        self.deviceName     = @"HaxxorRobot";
+        self.walletAddress  = @"1DdeszrHwfCFA9yNdoTAotSEgNpaVmv2DP"; // Donations welcome. ;)
+
         self.peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
-        self.shouldAdvertise = NO;
-        [self.peripheralManager addService:self.walletService];
+        self.shouldAdvertise   = NO;
     }
     return self;
 }
@@ -47,6 +48,8 @@
         adDict = @{CBAdvertisementDataServiceUUIDsKey: @[[CBUUID UUIDWithString:BTC2WalletServiceUUID]], // ... ARRAY of CBUUIDs
                    CBAdvertisementDataLocalNameKey: self.deviceName};
         
+        // System removes all services when switching to central mode. Re-add every time we start over
+        [self.peripheralManager addService:self.walletService];
         [self.peripheralManager startAdvertising:adDict];
     }
 }
@@ -58,26 +61,30 @@
     }
 }
 
+// Wallet service
 -(CBMutableService*)walletService{
 
-    CBMutableService* service = nil;
+    CBMutableService* walletService = nil;
     CBMutableCharacteristic* walletCharacteristic = nil;
+    CBMutableCharacteristic* customNameCharacteristic = nil;
     
     if (!m_walletService) {
         
-        NSData* fakeData = [@"SomeFakeData" dataUsingEncoding:NSUTF8StringEncoding];
-        walletCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:BTC2WalletCharUUID]
+        walletCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:BTC2WalletCharacteristicUUID]
                                                                   properties:CBCharacteristicPropertyRead
-                                                                       value:fakeData
+                                                                       value:[self.walletAddress dataUsingEncoding:NSUTF8StringEncoding]
                                                                  permissions:CBAttributePermissionsReadable];
 
+        customNameCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:BTC2WalletCharacteristicUUID]
+                                                                      properties:CBCharacteristicPropertyRead
+                                                                           value:[self.deviceName dataUsingEncoding:NSUTF8StringEncoding]
+                                                                     permissions:CBAttributePermissionsReadable];
         
-        service = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:BTC2WalletServiceUUID]
-                                                 primary:YES];
+        walletService = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:BTC2WalletServiceUUID] primary:YES];
         
-        service.characteristics = @[walletCharacteristic];
+        walletService.characteristics = @[walletCharacteristic, customNameCharacteristic];
         
-        m_walletService = service;
+        m_walletService = walletService;
     }
     
     return m_walletService;
