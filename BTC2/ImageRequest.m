@@ -59,7 +59,7 @@
     [request setHTTPMethod:@"GET"];
     
     self.request = request;
-    NSLog(@"Shooting off URL: %@", self.requestURL);
+    DLog(@"Shooting off URL: %@", self.requestURL);
 }
 
 -(id)objectFromResponse{

@@ -61,7 +61,7 @@ typedef enum BTC2ManagerState {
 }
 
 -(void)changeState:(NSTimer*)timer{
-    NSLog(@"changeState");
+    DLog(@"changeState");
 
     switch (self.managerState) {
         case BTC2ManagerStateNeutral:
@@ -81,7 +81,7 @@ typedef enum BTC2ManagerState {
 
 
 -(void)enterCentralMode{
-    NSLog(@"enterCentralMode");
+    DLog(@"enterCentralMode");
     [[NSNotificationCenter defaultCenter] postNotificationName:kCentralModeStarted object:nil];
     
     self.managerState = BTC2ManagerStateCentral;
@@ -90,7 +90,7 @@ typedef enum BTC2ManagerState {
 }
 
 -(void)enterPeripheralMode{
-    NSLog(@"enterPeripheralMode");
+    DLog(@"enterPeripheralMode");
     [[NSNotificationCenter defaultCenter] postNotificationName:kPeripheralModeStarted object:nil];
 
     self.managerState = BTC2ManagerStatePeripheral;
@@ -99,7 +99,7 @@ typedef enum BTC2ManagerState {
 }
 
 -(void)enterNeutralMode{
-    NSLog(@"enterNeutralMode");
+    DLog(@"enterNeutralMode");
     [[NSNotificationCenter defaultCenter] postNotificationName:kNeutralModeStarted object:nil];
 
     [self stopCycleTimer];

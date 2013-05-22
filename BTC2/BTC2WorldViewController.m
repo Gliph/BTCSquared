@@ -188,9 +188,9 @@
 
     // Debug
     if (canPerformAction) {
-        NSLog(@"collectionView:canPerformAction:forItemAtIndexPath %s | %@", sel_getName(action), indexPath);
+        DLog(@"collectionView:canPerformAction:forItemAtIndexPath %s | %@", sel_getName(action), indexPath);
     }else{
-        NSLog(@" REJECTED %s | %@", sel_getName(action), indexPath);
+        DLog(@" REJECTED %s | %@", sel_getName(action), indexPath);
     }
     
     return NO;
@@ -203,13 +203,13 @@
 
     shouldShowMenu = (hasWallet && indexPath.row > 0) || !indexPath.row;
 
-    NSLog(@"shouldShowMenuForItemAtIndexPath: %@ %@", shouldShowMenu?@"Yes":@"No", indexPath);
+    DLog(@"shouldShowMenuForItemAtIndexPath: %@ %@", shouldShowMenu?@"Yes":@"No", indexPath);
 
     return shouldShowMenu;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender{
-    NSLog(@"performAction: %s", sel_getName(action));
+    DLog(@"performAction: %s", sel_getName(action));
     
     
 }
@@ -222,7 +222,7 @@
 
 
 -(void)peripheralAdded:(NSNotification*)not{
-    NSLog(@"peripheralAdded");
+    DLog(@"peripheralAdded");
     if (!self.peripherals.count) {
         self.peripherals = [[NSMutableArray alloc] initWithCapacity:1];
     }
@@ -230,7 +230,7 @@
     [self.peripherals addObject:not.object];
     //    self.peripherals = [NSArray arrayWithArray:newArray];
     
-    //    NSLog(@"%@", self.peripherals);
+    //    DLog(@"%@", self.peripherals);
     
     [self.collectionView reloadData];
     //    NSIndexPath* newPath = [NSIndexPath indexPathForRow:self.peripherals.count inSection:0];
@@ -242,7 +242,7 @@
 
 // Menu actions
 -(void)transactions:(id)sender{
-    NSLog(@"-> transactions");
+    DLog(@"-> transactions");
 
     BTC2TransactionsViewController* transactions = [self.storyboard instantiateViewControllerWithIdentifier:@"BTC2TransactionsViewController"];
     
@@ -250,32 +250,32 @@
     
 }
 -(void)attachWallet:(id)sender{
-    NSLog(@"-> attachWallet");
+    DLog(@"-> attachWallet");
 
     BTC2AttachWalletViewController* attachWallet = [self.storyboard instantiateViewControllerWithIdentifier:@"BTC2AttachWalletViewController"];
 
     [self presentViewController:attachWallet animated:YES completion:nil];
 }
 -(void)changeName:(id)sender{
-    NSLog(@"-> changeName");
+    DLog(@"-> changeName");
     
     BTC2NameViewController* nameChangeViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"BTC2NameViewController"];
     
     [self presentViewController:nameChangeViewController animated:YES completion:^{
-        NSLog(@"Closed modal");
+        DLog(@"Closed modal");
     }];
     
 }
 
 -(void)sendBTC:(id)sender{
-    NSLog(@"-> sendBTC");
+    DLog(@"-> sendBTC");
     BTC2NewTransactionViewController* transactionViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"BTC2NewTransactionViewController"];
     
     [self presentViewController:transactionViewController animated:YES completion:nil];
     
 }
 -(void)requestBTC:(id)sender{
-    NSLog(@"-> requestBTC");
+    DLog(@"-> requestBTC");
 }
 
 -(void)showFriends:(id)sender{

@@ -117,7 +117,7 @@
     [self.connection start];
     
     if (self.isCancelled) {
-        NSLog(@" - Abort before start [0x%x]", [self hash]);
+        DLog(@" - Abort before start [0x%x]", [self hash]);
         [self.connection cancel];
         [self finish];
         return;
@@ -128,7 +128,7 @@
     }while(!self.isFinished && !self.isCancelled);
     
     if (self.isCancelled) {
-        NSLog(@" - Abort during execution");
+        DLog(@" - Abort during execution");
         [self.connection cancel];
         [self finish];
     }
@@ -137,7 +137,7 @@
     return YES;
 }
 -(void)finish{
-    NSLog(@"%@ finished", [self description]);
+    DLog(@"%@ finished", [self description]);
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
     
@@ -148,7 +148,7 @@
     [self didChangeValueForKey:@"isExecuting"];
     
     if (self.isCancelled) {
-        NSLog(@"GOT CANCELLED! %@", self);
+        DLog(@"GOT CANCELLED! %@", self);
     }
     
     [self endBackgroundTask];
@@ -158,7 +158,7 @@
     if (!self.isCancelled) {
         if (self.request) {
             
-            NSLog(@"Executing %@", [self description]);
+            DLog(@"Executing %@", [self description]);
             [NetworkController increaseActivity];
             [self beginBackgroundTask];
             
@@ -195,7 +195,7 @@
 #pragma mark - Base methods
 
 -(void)cancel{
-    NSLog(@"Cancelled called [0x%x]", [self hash]);
+    DLog(@"Cancelled called [0x%x]", [self hash]);
     [super cancel]; // NSOperation cancel
     [NetworkController decreaseActivity];
 }
@@ -204,7 +204,7 @@
 #pragma mark - URL Connection Delegates
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSHTTPURLResponse *)response{
-    NSLog(@"didReceiveResponse: %@, Code: %d", response.URL, response.statusCode);
+    DLog(@"didReceiveResponse: %@, Code: %d", response.URL, response.statusCode);
     // TODO: Handle failed connection responses here.
 }
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data{
@@ -215,7 +215,7 @@
     [self.storedData appendData:data];
 }
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{
-    NSLog(@"Connection failed with error: %@", error);
+    DLog(@"Connection failed with error: %@", error);
     
     if (self.hasBlocks) {
         BaseResponseCode code = BaseRequestFail;
@@ -249,7 +249,7 @@
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection{
-    NSLog(@"");
+    DLog(@"");
     
     if (self.hasBlocks) {
         dispatch_async(dispatch_get_main_queue(), ^{

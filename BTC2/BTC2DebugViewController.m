@@ -52,7 +52,7 @@
     [self.BTC2Manager startCycle];
 }
 - (IBAction)stop:(id)sender {
-    NSLog(@" STOP (Neutral mode)!");
+    DLog(@" STOP (Neutral mode)!");
     [self.BTC2Manager enterNeutralMode];
 }
 
@@ -60,7 +60,7 @@
 
     UIColor* background = [UIColor whiteColor];
     
-    NSLog(@"modeNotification: %@", not);
+    DLog(@"modeNotification: %@", not);
     
     if ([not.name caseInsensitiveCompare:kCentralModeStarted] == NSOrderedSame) {
         background = [UIColor colorWithRed:0.1 green:0.5 blue:0.1 alpha:1];

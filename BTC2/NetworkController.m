@@ -42,13 +42,13 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 #endif
 
-//    NSLog(@"+1");
+//    DLog(@"+1");
 }
 +(void)decreaseActivity{
 
     if ([NetworkController instance].indicatorCounter > 0) {
         [NetworkController instance].indicatorCounter--;
-//        NSLog(@"-1");
+//        DLog(@"-1");
     }
 
     // Save from over decrasing, might be unnecessary

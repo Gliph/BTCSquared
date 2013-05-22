@@ -93,11 +93,11 @@
 #pragma mark - CBPeripheralManagerDelegate
 
 - (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral{
-    NSLog(@"peripheralManagerDidUpdateState state: %d", peripheral.state);
+    DLog(@"peripheralManagerDidUpdateState state: %d", peripheral.state);
     
     switch (peripheral.state) {
         case CBPeripheralManagerStatePoweredOn:
-            NSLog(@"Powered ON. Start advertising");
+            DLog(@"Powered ON. Start advertising");
             if (self.shouldAdvertise) {
                 [self startAdvertising];
             }
@@ -109,31 +109,31 @@
 
 }
 - (void)peripheralManagerDidStartAdvertising:(CBPeripheralManager *)peripheral error:(NSError *)error{
-    NSLog(@"peripheralManagerDidStartAdvertising");
+    DLog(@"peripheralManagerDidStartAdvertising");
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didAddService:(CBService *)service error:(NSError *)error{
-    NSLog(@"didAddService");
+    DLog(@"didAddService");
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic{
-    NSLog(@"didSubscribeToCharacteristic");
+    DLog(@"didSubscribeToCharacteristic");
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic{
-    NSLog(@"didUnsubscribeFromCharacteristic");
+    DLog(@"didUnsubscribeFromCharacteristic");
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request{
-    NSLog(@"didReceiveReadRequest");
+    DLog(@"didReceiveReadRequest");
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray *)requests{
-    NSLog(@"didReceiveWriteRequests");
+    DLog(@"didReceiveWriteRequests");
 }
 
 - (void)peripheralManagerIsReadyToUpdateSubscribers:(CBPeripheralManager *)peripheral{
-    NSLog(@"peripheralManagerIsReadyToUpdateSubscribers");
+    DLog(@"peripheralManagerIsReadyToUpdateSubscribers");
 }
 
 @end

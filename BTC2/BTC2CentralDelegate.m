@@ -36,7 +36,7 @@
 }
 
 -(void)cleanup{
-    NSLog(@" Cleanup: STOPPING SCAN");
+    DLog(@" Cleanup: STOPPING SCAN");
 
     self.shouldScan = NO;
     
@@ -71,7 +71,7 @@
 }
 
 -(void)scanForPeripherals{
-    NSLog(@"Start scanning for peripherals");
+    DLog(@"Start scanning for peripherals");
     
     [self.centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:BTC2WalletServiceUUID]] options:nil];
 }
@@ -79,21 +79,21 @@
 
 -(void)disconnectPeripheral{
     if (self.connectedPeripheral) {
-        NSLog(@"Disconnecting peripheral: %@", self.connectedPeripheral.name);
+        DLog(@"Disconnecting peripheral: %@", self.connectedPeripheral.name);
         [self.centralManager cancelPeripheralConnection:self.connectedPeripheral];
         [self stopConnectionTimer];
     }
 }
 
 -(void)connectionDidTimeout:(NSTimer*)timer{
-    NSLog(@" + Connection timed out: %@", self.connectedPeripheral.name);
+    DLog(@" + Connection timed out: %@", self.connectedPeripheral.name);
     [self disconnectPeripheral];
 }
 
 #pragma mark - CBCentralManagerDelegate
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central{
-    NSLog(@"centralManagerDidUpdateState state: %d", central.state);
+    DLog(@"centralManagerDidUpdateState state: %d", central.state);
 
     switch (central.state) {
         case CBCentralManagerStatePoweredOn: // Good to go
@@ -114,17 +114,17 @@
 
 }
 - (void)centralManager:(CBCentralManager *)central didRetrievePeripherals:(NSArray *)peripherals{
-    NSLog(@"didRetrievePeripherals %@", peripherals);
+    DLog(@"didRetrievePeripherals %@", peripherals);
     
     // TODO: Add peripherals to array
     // If not already in list, connect and read wallet address.
     
 }
 - (void)centralManager:(CBCentralManager *)central didRetrieveConnectedPeripherals:(NSArray *)peripherals{
-    NSLog(@"didRetrieveConnectedPeripherals");
+    DLog(@"didRetrieveConnectedPeripherals");
 }
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI{
-    NSLog(@"didDiscoverPeripheral %@: %@", peripheral.name, peripheral.UUID);
+    DLog(@"didDiscoverPeripheral %@: %@", peripheral.name, peripheral.UUID);
 
     self.connectedPeripheral = peripheral;
     [self startConnectionTimer];
@@ -133,7 +133,7 @@
 
 }
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
-    NSLog(@"didConnectPeripheral: %@", peripheral.name);
+    DLog(@"didConnectPeripheral: %@", peripheral.name);
 
     [self stopConnectionTimer];
     self.connectedPeripheral.delegate = self;
@@ -141,33 +141,33 @@
 
 }
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
-    NSLog(@"didFailToConnectPeripheral - Reason: %@", error);
+    DLog(@"didFailToConnectPeripheral - Reason: %@", error);
 }
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
-    NSLog(@"didDisconnectPeripheral - Reason: %@", error);
+    DLog(@"didDisconnectPeripheral - Reason: %@", error);
     self.connectedPeripheral = nil;
 }
 
 #pragma mark - CBPeripheralDelegate
 
 - (void)peripheralDidUpdateName:(CBPeripheral *)peripheral{
-    NSLog(@"peripheralDidUpdateName: %@", peripheral.name);
+    DLog(@"peripheralDidUpdateName: %@", peripheral.name);
 }
 
 - (void)peripheralDidInvalidateServices:(CBPeripheral *)peripheral{
-    NSLog(@"peripheralDidInvalidateServices");
+    DLog(@"peripheralDidInvalidateServices");
 }
 
 - (void)peripheralDidUpdateRSSI:(CBPeripheral *)peripheral error:(NSError *)error{
-    NSLog(@"peripheralDidUpdateRSSI: %@. Err: %@", peripheral.RSSI, error);
+    DLog(@"peripheralDidUpdateRSSI: %@. Err: %@", peripheral.RSSI, error);
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error{
-    NSLog(@"didDiscoverServices - Err: %@", error);
+    DLog(@"didDiscoverServices - Err: %@", error);
 
     // Discover characteristics
     for (CBService* service in peripheral.services) {
-        NSLog(@" = Service UUID: %@", service.UUID);
+        DLog(@" = Service UUID: %@", service.UUID);
         
         // Only read our custom service. Apple gets cranky if we read the GAP service characteristics
         if ([service.UUID isEqual:[CBUUID UUIDWithString:BTC2WalletServiceUUID]]) {
@@ -178,11 +178,11 @@
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverIncludedServicesForService:(CBService *)service error:(NSError *)error{
-    NSLog(@"didDiscoverIncludedServicesForService. Err: %@", error);
+    DLog(@"didDiscoverIncludedServicesForService. Err: %@", error);
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error{
-    NSLog(@"didDiscoverCharacteristicsForService. Err: %@", error);
+    DLog(@"didDiscoverCharacteristicsForService. Err: %@", error);
 
     // If found wallet address characteristic, read it
     for (CBCharacteristic* characteristic in service.characteristics){
@@ -191,33 +191,33 @@
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
-    NSLog(@"didUpdateValueForCharacteristic. Err: %@", error);
+    DLog(@"didUpdateValueForCharacteristic. Err: %@", error);
 
     // Let system know a characteristic has been read
     NSString* stringValue = [[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding];
-    NSLog(@" Characteristic [%@] : %@", characteristic.UUID, stringValue);
+    DLog(@" Characteristic [%@] : %@", characteristic.UUID, stringValue);
 
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
-    NSLog(@"didWriteValueForCharacteristic. Err: %@", error);
+    DLog(@"didWriteValueForCharacteristic. Err: %@", error);
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
-    NSLog(@"didUpdateNotificationStateForCharacteristic. Err: %@", error);
+    DLog(@"didUpdateNotificationStateForCharacteristic. Err: %@", error);
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverDescriptorsForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
-    NSLog(@"didDiscoverDescriptorsForCharacteristic. Err: %@", error);
+    DLog(@"didDiscoverDescriptorsForCharacteristic. Err: %@", error);
 
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForDescriptor:(CBDescriptor *)descriptor error:(NSError *)error{
-    NSLog(@"didUpdateValueForDescriptor. Err: %@", error);
+    DLog(@"didUpdateValueForDescriptor. Err: %@", error);
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForDescriptor:(CBDescriptor *)descriptor error:(NSError *)error{
-    NSLog(@"didWriteValueForDescriptor. Err: %@", error);
+    DLog(@"didWriteValueForDescriptor. Err: %@", error);
 }
 
 
