@@ -8,11 +8,33 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
+#import "BTC2IdentificationModel.h"
+#import "BTC2ServiceProviderModel.h"
 
 @interface BTC2PeripheralDelegate : NSObject<CBPeripheralManagerDelegate>
 @property (nonatomic, readonly) CBPeripheralManager* peripheralManager;
-@property (nonatomic, strong) NSString* deviceName;
+@property (nonatomic, assign) BOOL useEncryption;
+
+//
+// Information we provide
+//
+
+// Wallet service
 @property (nonatomic, strong) NSString* walletAddress;
+@property (nonatomic, strong) NSString* notice;
+
+// ID Service
+@property (nonatomic, strong) BTC2IdentificationModel* avatar;
+
+// Service provider service
+@property (nonatomic, strong) BTC2ServiceProviderModel* serviceProvider;
+
+//
+// Information the central provide
+//
+
+// TODO:
+
 -(void)startAdvertising;
 -(void)stopAdvertising;
 -(void)cleanup;

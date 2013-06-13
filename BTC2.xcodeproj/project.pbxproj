@@ -40,6 +40,8 @@
 		8376DB191748ABB800B95961 /* BTC2RobotViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DB181748ABB800B95961 /* BTC2RobotViewCell.m */; };
 		8376DB1D1748B49700B95961 /* UIColor+BTC2Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8376DB1C1748B49700B95961 /* UIColor+BTC2Extensions.m */; };
 		83792FF01748CC8F0077A2FF /* NSString+BTC2Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 83792FEF1748CC8F0077A2FF /* NSString+BTC2Extensions.m */; };
+		8381D1C41769675C009E2BA4 /* BTC2IdentificationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8381D1C31769675C009E2BA4 /* BTC2IdentificationModel.m */; };
+		8381D1C717696771009E2BA4 /* BTC2ServiceProviderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8381D1C617696771009E2BA4 /* BTC2ServiceProviderModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +102,10 @@
 		8376DB1C1748B49700B95961 /* UIColor+BTC2Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+BTC2Extensions.m"; sourceTree = "<group>"; };
 		83792FEE1748CC8F0077A2FF /* NSString+BTC2Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+BTC2Extensions.h"; sourceTree = "<group>"; };
 		83792FEF1748CC8F0077A2FF /* NSString+BTC2Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+BTC2Extensions.m"; sourceTree = "<group>"; };
+		8381D1C21769675C009E2BA4 /* BTC2IdentificationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2IdentificationModel.h; sourceTree = "<group>"; };
+		8381D1C31769675C009E2BA4 /* BTC2IdentificationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2IdentificationModel.m; sourceTree = "<group>"; };
+		8381D1C517696771009E2BA4 /* BTC2ServiceProviderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2ServiceProviderModel.h; sourceTree = "<group>"; };
+		8381D1C617696771009E2BA4 /* BTC2ServiceProviderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2ServiceProviderModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +160,7 @@
 				8376DB0F174889FE00B95961 /* Requests */,
 				8376DB0E174889F900B95961 /* Views */,
 				8376DB0D174889F200B95961 /* ViewControllers */,
+				8381D1C117696738009E2BA4 /* Models */,
 				8376DB0B1748899300B95961 /* Storyboard.storyboard */,
 				682416B8174897A600FB0441 /* coinbase-logo.png */,
 				682416B9174897A600FB0441 /* coinbase-logo@2x.png */,
@@ -243,6 +250,17 @@
 				8376DAF01748888C00B95961 /* BTC2PeripheralDelegate.m */,
 			);
 			name = Delegates;
+			sourceTree = "<group>";
+		};
+		8381D1C117696738009E2BA4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8381D1C21769675C009E2BA4 /* BTC2IdentificationModel.h */,
+				8381D1C31769675C009E2BA4 /* BTC2IdentificationModel.m */,
+				8381D1C517696771009E2BA4 /* BTC2ServiceProviderModel.h */,
+				8381D1C617696771009E2BA4 /* BTC2ServiceProviderModel.m */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -335,6 +353,8 @@
 				8376DB1D1748B49700B95961 /* UIColor+BTC2Extensions.m in Sources */,
 				83792FF01748CC8F0077A2FF /* NSString+BTC2Extensions.m in Sources */,
 				830CB39E17496B2300939102 /* BTC2AttachWalletViewController.m in Sources */,
+				8381D1C41769675C009E2BA4 /* BTC2IdentificationModel.m in Sources */,
+				8381D1C717696771009E2BA4 /* BTC2ServiceProviderModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

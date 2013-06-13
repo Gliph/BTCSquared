@@ -7,6 +7,8 @@
 //
 
 #import "BTC2Manager.h"
+#import "BTC2IdentificationModel.h"
+#import "BTC2ServiceProviderModel.h"
 
 typedef enum BTC2ManagerState {
     BTC2ManagerStateNeutral = 0,
@@ -33,6 +35,17 @@ typedef enum BTC2ManagerState {
     if ((self = [super init])){
         self.central = [[BTC2CentralDelegate alloc] init];
         self.peripheral = [[BTC2PeripheralDelegate alloc] init];
+     
+        BTC2ServiceProviderModel* provider = [[BTC2ServiceProviderModel alloc] init];
+        provider.serviceName = @"someservice";
+        provider.serviceUserID = @"imauser";
+        
+        self.peripheral.serviceProvider = provider;
+        
+        BTC2IdentificationModel* identity = [[BTC2IdentificationModel alloc] init];
+        identity.pseudonym = @"HaxxorBot";
+        identity.avatarID = @"stork";
+        identity.avatarServiceName = @"robohash";
     }
     
     return self;
