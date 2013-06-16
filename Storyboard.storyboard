@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="Abq-DI-rb0">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="OVg-Q5-MDi">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -76,8 +76,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="start:" destination="OVg-Q5-MDi" eventType="touchUpInside" id="0QG-D7-zlU"/>
-                                    <action selector="stop:" destination="OVg-Q5-MDi" eventType="touchUpInside" id="aBr-00-oUo"/>
+                                    <action selector="start:" destination="OVg-Q5-MDi" eventType="touchUpInside" id="aki-6E-NUj"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -494,6 +493,87 @@
     <resources>
         <image name="coinbase-logo.png" width="240" height="56"/>
     </resources>
+    <classes>
+        <class className="BTC2AttachWalletViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2AttachWalletViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="attachWallet:"/>
+            </relationships>
+        </class>
+        <class className="BTC2CircleLayout" superclassName="UICollectionViewLayout">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2CircleLayout.h"/>
+        </class>
+        <class className="BTC2DebugViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2DebugViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="start:"/>
+                <relationship kind="action" name="startCentral:"/>
+                <relationship kind="action" name="startPeripheralMode:"/>
+                <relationship kind="action" name="stop:"/>
+                <relationship kind="outlet" name="deviceName" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="BTC2NameViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2NameViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="updateName:"/>
+                <relationship kind="outlet" name="nameField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="roboView" candidateClass="BTC2RobotView"/>
+            </relationships>
+        </class>
+        <class className="BTC2NewTransactionViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2NewTransactionViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="sendBitcoin:"/>
+                <relationship kind="outlet" name="btcInputField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="createTransactionButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="equivalentValueLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="BTC2RobotView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2RobotView.h"/>
+            <relationships>
+                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="BTC2RobotViewCell" superclassName="UICollectionViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2RobotViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="roboView" candidateClass="BTC2RobotView"/>
+            </relationships>
+        </class>
+        <class className="BTC2TransactionCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2TransactionCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="amountLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="createDateLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="otherLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="statusLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="BTC2TransactionsViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2TransactionsViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="close:"/>
+            </relationships>
+        </class>
+        <class className="BTC2WorldViewController" superclassName="UICollectionViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BTC2WorldViewController.h"/>
+        </class>
+        <class className="UICollectionReusableView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionReusableView.h"/>
+        </class>
+        <class className="UICollectionViewCell" superclassName="UICollectionReusableView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionViewCell.h"/>
+        </class>
+        <class className="UICollectionViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionViewController.h"/>
+        </class>
+        <class className="UICollectionViewLayout" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionViewLayout.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
