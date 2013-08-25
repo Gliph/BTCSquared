@@ -1,5 +1,5 @@
 //
-//  BTC2PeripheralDelegate.h
+//  BTC2PeripheralManager.h
 //  BTC2
 //
 //  Created by Joakim Fernstad on 5/17/13.
@@ -11,7 +11,7 @@
 #import "BTC2IdentificationModel.h"
 #import "BTC2ServiceProviderModel.h"
 
-@interface BTC2PeripheralDelegate : NSObject<CBPeripheralManagerDelegate>
+@interface BTC2PeripheralManager : NSObject<CBPeripheralManagerDelegate>
 @property (nonatomic, readonly) CBPeripheralManager* peripheralManager;
 @property (nonatomic, assign) BOOL useEncryption;
 
@@ -34,7 +34,7 @@
 //
 
 // TODO:
-
++ (BTC2PeripheralManager*)manager;
 -(void)startAdvertising;
 -(void)stopAdvertising;
 -(void)cleanup;

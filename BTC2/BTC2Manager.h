@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BTC2CentralDelegate.h"
-#import "BTC2PeripheralDelegate.h"
+#import "BTC2CentralManager.h"
+#import "BTC2PeripheralManager.h"
 
 @interface BTC2Manager : NSObject
-@property (nonatomic, strong) BTC2CentralDelegate* central;
-@property (nonatomic, strong) BTC2PeripheralDelegate* peripheral;
+@property (nonatomic, strong) BTC2CentralManager* central;
+@property (nonatomic, strong) BTC2PeripheralManager* peripheral;
 -(void)enterCentralMode;
 -(void)enterPeripheralMode;
 -(void)enterNeutralMode;

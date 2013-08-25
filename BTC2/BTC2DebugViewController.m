@@ -8,10 +8,12 @@
 
 #import "BTC2DebugViewController.h"
 #import "BTC2Manager.h"
+#import "BTC2Events.h"
 
 @interface BTC2DebugViewController ()
 @property (nonatomic, strong) BTC2Manager* BTC2Manager;
 @property (weak, nonatomic) IBOutlet UILabel *deviceName;
+@property (weak, nonatomic) IBOutlet UIButton *connectButton;
 -(void)modeNotification:(NSNotification*)not;
 @end
 
@@ -54,6 +56,11 @@
 - (IBAction)stop:(id)sender {
     DLog(@" STOP (Neutral mode)!");
     [self.BTC2Manager enterNeutralMode];
+}
+- (IBAction)connectPeripheral:(id)sender {
+    if (self.BTC2Manager.central.foundPeripheral) {
+        [self.BTC2Manager.central.centralManager connectPeripheral:self.BTC2Manager.central.foundPeripheral options:nil];
+    }
 }
 
 -(void)modeNotification:(NSNotification*)not{

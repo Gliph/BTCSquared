@@ -1,35 +1,52 @@
 //
-//  BTC2CentralDelegate.m
+//  BTC2CentralManager.m
 //  BTC2
 //
 //  Created by Joakim Fernstad on 5/17/13.
 //  Copyright (c) 2013 Joakim Fernstad. All rights reserved.
 //
 
-#import "BTC2CentralDelegate.h"
+#import "BTC2CentralManager.h"
 #import "BTC2UUIDs.h"
+#import "BTC2DeviceSession.h"
+#import "BTC2Events.h"
 
 #define CONNECTION_TIMEOUT 10       // TODO: parametrize
 
-@interface BTC2CentralDelegate ()
+@interface BTC2CentralManager ()
 @property (nonatomic, readwrite, strong) CBCentralManager* centralManager;
-@property (nonatomic, strong) CBPeripheral* connectedPeripheral;
+@property (nonatomic, strong) CBPeripheral* connectedPeripheral; // Obsolete
 @property (nonatomic, assign) BOOL shouldScan;
 @property (nonatomic, strong) NSTimer* connectionTimeout; // Allow x seconds to connect, then stop
+@property (nonatomic, strong) dispatch_queue_t centralQueue;
+@property (nonatomic, strong) NSMutableArray* deviceSessions;
+-(void)addDevice:(BTC2DeviceSession*)newSession;
 -(void)connectionDidTimeout:(NSTimer*)timer;
 -(void)disconnectPeripheral;
 -(void)scanForPeripherals;
 -(void)startConnectionTimer;
 -(void)stopConnectionTimer;
+-(BTC2DeviceSession*)sessionForPeripheral:(CBPeripheral*)peripheral; // Convenient data mining
 @end
 
-@implementation BTC2CentralDelegate
-@synthesize centralManager;
-@synthesize shouldScan;
+@implementation BTC2CentralManager
+
++ (BTC2CentralManager*)manager {
+    
+    static BTC2CentralManager *manager = nil;
+    static dispatch_once_t once;
+    
+	dispatch_once(&once, ^(void){
+        manager = [[super allocWithZone:NULL] init];
+    });
+    
+    return manager;
+}
 
 -(id)init{
     if ((self = [super init])) {
-        self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+        self.centralQueue = dispatch_queue_create("ph.gli.btc2.centralqueue", DISPATCH_QUEUE_SERIAL);
+        self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:self.centralQueue];
         self.shouldScan = NO;
     }
     return self;
@@ -43,6 +60,50 @@
     [self disconnectPeripheral];
     [self.centralManager stopScan];
 }
+
+-(void)addDevice:(BTC2DeviceSession*)newSession{
+    if (!self.deviceSessions) {
+        self.deviceSessions = [NSMutableArray arrayWithCapacity:1];
+    }
+    
+    [self.deviceSessions addObject:newSession];
+}
+
+-(BTC2DeviceSession*)sessionForPeripheral:(CBPeripheral*)peripheral{
+    NSUInteger idx = NSNotFound;
+    BTC2DeviceSession* foundSession = nil;
+    
+    idx = [self.deviceSessions indexOfObjectPassingTest:^BOOL(BTC2DeviceSession* s, NSUInteger idx, BOOL *stop) {
+        if (s.peripheral == peripheral) {
+            *stop = YES;
+            return YES;
+        }
+        return NO;
+    }];
+    
+    if (idx != NSNotFound) {
+        foundSession = [self.deviceSessions objectAtIndex:idx];
+    }
+    
+    return foundSession;
+}
+
+-(NSArray*)activeSessions{
+    NSIndexSet* idxs = nil;
+    NSArray* active = nil;
+    
+    idxs = [self.deviceSessions indexesOfObjectsPassingTest:^BOOL(BTC2DeviceSession* s, NSUInteger idx, BOOL *stop) {
+        if (s.peripheral.isConnected) return YES;
+        return NO;
+    }];
+    
+    if (idxs.count) {
+        active = [self.deviceSessions objectsAtIndexes:idxs];
+    }
+    
+    return active;
+}
+
 
 -(void)startScan{
     if (self.centralManager.state == CBCentralManagerStateUnknown) {
@@ -73,7 +134,7 @@
 -(void)scanForPeripherals{
     DLog(@"Start scanning for peripherals");
     
-    [self.centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:BTC2WalletServiceUUID]] options:nil];
+    [self.centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:kBTC2WalletServiceUUID]] options:nil];
 }
 
 
@@ -126,16 +187,31 @@
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI{
     DLog(@"didDiscoverPeripheral %@: %@", peripheral.name, peripheral.UUID);
 
+    BTC2DeviceSession* session = [self sessionForPeripheral:peripheral];
+    
+    if (!session) {
+        // New session
+        session = [[BTC2DeviceSession alloc] init];
+        session.peripheral = peripheral;
+        
+        [self addDevice:session];
+        
+        // TODO: This is not posted on the main thread, which it needs to be. 
+        [[NSNotificationCenter defaultCenter] postNotificationName:kBTC2DidDiscoverPeripheralNotification object:session];
+    }
+    
     self.connectedPeripheral = peripheral;
-    [self startConnectionTimer];
-    [central stopScan];
-    [central connectPeripheral:peripheral options:nil];
+    self.foundPeripheral = peripheral;
+    
+//    [self startConnectionTimer];
+//    [central stopScan];
+//    [central connectPeripheral:peripheral options:nil];
 
 }
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
     DLog(@"didConnectPeripheral: %@", peripheral.name);
 
-    [self stopConnectionTimer];
+//    [self stopConnectionTimer];
     self.connectedPeripheral.delegate = self;
     [self.connectedPeripheral discoverServices:peripheral.services];
 
@@ -147,79 +223,6 @@
     DLog(@"didDisconnectPeripheral - Reason: %@", error);
     self.connectedPeripheral = nil;
 }
-
-#pragma mark - CBPeripheralDelegate
-
-- (void)peripheralDidUpdateName:(CBPeripheral *)peripheral{
-    DLog(@"peripheralDidUpdateName: %@", peripheral.name);
-}
-
-- (void)peripheralDidInvalidateServices:(CBPeripheral *)peripheral{
-    DLog(@"peripheralDidInvalidateServices");
-}
-
-- (void)peripheralDidUpdateRSSI:(CBPeripheral *)peripheral error:(NSError *)error{
-    DLog(@"peripheralDidUpdateRSSI: %@. Err: %@", peripheral.RSSI, error);
-}
-
-- (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error{
-    DLog(@"didDiscoverServices - Err: %@", error);
-
-    // Discover characteristics
-    for (CBService* service in peripheral.services) {
-        DLog(@" = Service UUID: %@", service.UUID);
-        
-        // Only read our custom service. Apple gets cranky if we read the GAP service characteristics
-        if ([service.UUID isEqual:[CBUUID UUIDWithString:BTC2WalletServiceUUID]]) {
-            [peripheral discoverCharacteristics:service.characteristics
-                                     forService:service];
-        }
-    }
-}
-
-- (void)peripheral:(CBPeripheral *)peripheral didDiscoverIncludedServicesForService:(CBService *)service error:(NSError *)error{
-    DLog(@"didDiscoverIncludedServicesForService. Err: %@", error);
-}
-
-- (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error{
-    DLog(@"didDiscoverCharacteristicsForService. Err: %@", error);
-
-    // If found wallet address characteristic, read it
-    for (CBCharacteristic* characteristic in service.characteristics){
-        [peripheral readValueForCharacteristic:characteristic];
-    }
-}
-
-- (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
-    DLog(@"didUpdateValueForCharacteristic. Err: %@", error);
-
-    // Let system know a characteristic has been read
-    NSString* stringValue = [[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding];
-    DLog(@" Characteristic [%@] : %@", characteristic.UUID, stringValue);
-
-}
-
-- (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
-    DLog(@"didWriteValueForCharacteristic. Err: %@", error);
-}
-
-- (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
-    DLog(@"didUpdateNotificationStateForCharacteristic. Err: %@", error);
-}
-
-- (void)peripheral:(CBPeripheral *)peripheral didDiscoverDescriptorsForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
-    DLog(@"didDiscoverDescriptorsForCharacteristic. Err: %@", error);
-
-}
-
-- (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForDescriptor:(CBDescriptor *)descriptor error:(NSError *)error{
-    DLog(@"didUpdateValueForDescriptor. Err: %@", error);
-}
-
-- (void)peripheral:(CBPeripheral *)peripheral didWriteValueForDescriptor:(CBDescriptor *)descriptor error:(NSError *)error{
-    DLog(@"didWriteValueForDescriptor. Err: %@", error);
-}
-
 
 
 @end

@@ -33,8 +33,8 @@ typedef enum BTC2ManagerState {
 -(id)init{
 
     if ((self = [super init])){
-        self.central = [[BTC2CentralDelegate alloc] init];
-        self.peripheral = [[BTC2PeripheralDelegate alloc] init];
+        self.central = [[BTC2CentralManager alloc] init];
+        self.peripheral = [[BTC2PeripheralManager alloc] init];
      
         BTC2ServiceProviderModel* provider = [[BTC2ServiceProviderModel alloc] init];
         provider.serviceName = @"someservice";
@@ -98,7 +98,7 @@ typedef enum BTC2ManagerState {
     [[NSNotificationCenter defaultCenter] postNotificationName:kCentralModeStarted object:nil];
     
     self.managerState = BTC2ManagerStateCentral;
-    [self.peripheral cleanup];
+//    [self.peripheral cleanup];
     [self.central startScan];
 }
 
@@ -107,7 +107,7 @@ typedef enum BTC2ManagerState {
     [[NSNotificationCenter defaultCenter] postNotificationName:kPeripheralModeStarted object:nil];
 
     self.managerState = BTC2ManagerStatePeripheral;
-    [self.central cleanup];
+//    [self.central cleanup];
     [self.peripheral startAdvertising];
 }
 

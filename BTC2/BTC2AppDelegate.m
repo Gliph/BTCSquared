@@ -48,6 +48,7 @@
 //        [[NSNotificationCenter defaultCenter] postNotificationName:kPeripheralAddedNotification object:@"Robota"]; // [[NSUserDefaults standardUserDefaults] objectForKey:kUserDeviceNameKey]
 //    });
     
+    srand((int)([NSDate timeIntervalSinceReferenceDate])); // Randomize the random numbers
     
     return YES;
 }
