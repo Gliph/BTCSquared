@@ -69,7 +69,7 @@ To make coin transfer easy for the peripheral side, we need to duplicate the cha
 A bit complex but luckily the user doesn't have to know. 
 
 ### Identification service
-This service defines a way to present users to each other. It consists of 3 (6) characteristics currently but that may be reduced. 
+This service defines a way to present users to each other. It consists of 4 (8) characteristics currently but that may be reduced. 
 
 - Pseudonym Read characteristic. Central READs the peripherals pseudonym. This should be used in the UI. 
 - Pseudonym Write characteristic. Central WRITEs it's pseudonym to the peripheral. 
