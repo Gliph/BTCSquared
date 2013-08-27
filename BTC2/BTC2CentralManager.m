@@ -211,8 +211,10 @@
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
     DLog(@"didConnectPeripheral: %@", peripheral.name);
 
+    BTC2DeviceSession* session = [self sessionForPeripheral:peripheral];
+
 //    [self stopConnectionTimer];
-    self.connectedPeripheral.delegate = self;
+    self.connectedPeripheral.delegate = session;
     [self.connectedPeripheral discoverServices:peripheral.services];
 
 }

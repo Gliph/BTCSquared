@@ -31,12 +31,14 @@ extern NSString* const kBTC2WalletNoticeIndicateUUID;
 extern NSString* const kBTC2IDServiceUUID;
 // Central initiates
 extern NSString* const kBTC2IDPseudonymReadUUID;
-extern NSString* const kBTC2IDAvatarReadUUID;
+extern NSString* const kBTC2IDAvatarServiceReadUUID;
+extern NSString* const kBTC2IDAvatarIDReadUUID;
 extern NSString* const kBTC2IDAvatarURLReadUUID;
 //extern NSString* const BTC2IDImageReadUUID;
 // Peripheral initiates
 extern NSString* const kBTC2IDPseudonymWriteUUID;
-extern NSString* const kBTC2IDAvatarWriteUUID;
+extern NSString* const kBTC2IDAvatarServiceWriteUUID;
+extern NSString* const kBTC2IDAvatarIDWriteUUID;
 extern NSString* const kBTC2IDAvatarURLWriteUUID;
 //extern NSString* const BTC2IDImageWriteUUID;
 

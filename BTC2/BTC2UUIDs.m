@@ -29,14 +29,16 @@ NSString* const kBTC2WalletNoticeIndicateUUID       = @"0000D9B3-AAA7-4E52-BB94-
 NSString* const kBTC2IDServiceUUID                  = @"00008300-AAA7-4E52-BB94-03EF9B262830";
 // Central initiates
 NSString* const kBTC2IDPseudonymReadUUID            = @"000083C1-AAA7-4E52-BB94-03EF9B262830";
-NSString* const kBTC2IDAvatarReadUUID               = @"000083C2-AAA7-4E52-BB94-03EF9B262830";
-NSString* const kBTC2IDAvatarURLReadUUID            = @"000083C3-AAA7-4E52-BB94-03EF9B262830";
-//const NSString*  BTC2IDImageReadUUID                 = @"000083C4-AAA7-4E52-BB94-03EF9B262830" // Wait with this one
+NSString* const kBTC2IDAvatarServiceReadUUID        = @"000083C2-AAA7-4E52-BB94-03EF9B262830";
+NSString* const kBTC2IDAvatarIDReadUUID             = @"000083C3-AAA7-4E52-BB94-03EF9B262830";
+NSString* const kBTC2IDAvatarURLReadUUID            = @"000083C4-AAA7-4E52-BB94-03EF9B262830";
+//const NSString*  BTC2IDImageReadUUID                 = @"000083C5-AAA7-4E52-BB94-03EF9B262830" // Wait with this one
 // Peripheral initiates
 NSString* const kBTC2IDPseudonymWriteUUID           = @"000083D1-AAA7-4E52-BB94-03EF9B262830";
-NSString* const kBTC2IDAvatarWriteUUID              = @"000083D2-AAA7-4E52-BB94-03EF9B262830";
-NSString* const kBTC2IDAvatarURLWriteUUID           = @"000083D3-AAA7-4E52-BB94-03EF9B262830";
-//const NSString* kBTC2IDImageWriteUUID                = @"000083D4-AAA7-4E52-BB94-03EF9B262830" // Wait with this one, tricky to write large chunks from central to peripheral
+NSString* const kBTC2IDAvatarServiceWriteUUID       = @"000083D2-AAA7-4E52-BB94-03EF9B262830";
+NSString* const kBTC2IDAvatarIDWriteUUID            = @"000083D3-AAA7-4E52-BB94-03EF9B262830";
+NSString* const kBTC2IDAvatarURLWriteUUID           = @"000083D4-AAA7-4E52-BB94-03EF9B262830";
+//const NSString* kBTC2IDImageWriteUUID                = @"000083D5-AAA7-4E52-BB94-03EF9B262830" // Wait with this one, tricky to write large chunks from central to peripheral
 
 //
 // Service provider service

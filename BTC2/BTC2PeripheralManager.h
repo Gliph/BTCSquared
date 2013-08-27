@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
+#import "BTC2WalletModel.h"
 #import "BTC2IdentificationModel.h"
 #import "BTC2ServiceProviderModel.h"
 
@@ -20,8 +21,7 @@
 //
 
 // Wallet service
-@property (nonatomic, strong) NSString* walletAddress;
-@property (nonatomic, strong) NSString* notice;
+@property (nonatomic, strong) BTC2WalletModel* wallet;
 
 // ID Service
 @property (nonatomic, strong) BTC2IdentificationModel* avatar;

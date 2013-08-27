@@ -39,7 +39,6 @@
 
 -(id)init{
     if ((self = [super init])) {
-        self.walletAddress  = @"1DdeszrHwfCFA9yNdoTAotSEgNpaVmv2DP"; // Donations welcome. ;)
         
         self.peripheralQueue   = dispatch_queue_create("ph.gli.btc2.peripheralqueue", DISPATCH_QUEUE_SERIAL);
         self.peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:self.peripheralQueue];
@@ -106,7 +105,7 @@
     CBMutableCharacteristic* characteristic = nil;
     NSMutableArray* characteristics = nil;
     
-    NSAssert(self.walletAddress.length, @"Can't start wallet service without a wallet address.");
+    NSAssert(self.wallet.walletAddress.length, @"Can't start wallet service without a wallet address.");
     
     BOOL encryptionEnabled = self.useEncryption;
     
@@ -119,7 +118,7 @@
         //
         characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2WalletAddressReadUUID]
                                                             properties:CBCharacteristicPropertyRead
-                                                                 value:[self.walletAddress dataUsingEncoding:NSUTF8StringEncoding]  // TBD: This could be a dynamic value
+                                                                 value:[self.wallet walletAddresJSON]
                                                            permissions:CBAttributePermissionsReadable | (encryptionEnabled?CBAttributePermissionsReadEncryptionRequired:0)];
         
         [characteristics addObject:characteristic];
@@ -189,34 +188,45 @@
         //
         // Central side
         //
-        if (self.avatar.pseudonym) {
+        if (self.avatar.pseudonym.length) {
             characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2IDPseudonymReadUUID]
                                                                 properties:CBCharacteristicPropertyRead
-                                                                     value:[self.avatar.pseudonym dataUsingEncoding:NSUTF8StringEncoding]
+                                                                     value:[self.avatar pseudonymJSON]
                                                                permissions:CBAttributePermissionsReadable | (encryptionEnabled?CBAttributePermissionsReadEncryptionRequired:0)];
             
             [characteristics addObject:characteristic];
         }
         
         if (self.avatar.avatarURL) {
-            characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2IDAvatarReadUUID]
+            characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2IDAvatarURLReadUUID]
                                                                 properties:CBCharacteristicPropertyRead
-                                                                     value:[self.avatar.avatarURL.absoluteString dataUsingEncoding:NSUTF8StringEncoding]
+                                                                     value:[self.avatar avatarURLJSON]
                                                                permissions:CBAttributePermissionsReadable | (encryptionEnabled?CBAttributePermissionsReadEncryptionRequired:0)];
             
             [characteristics addObject:characteristic];
             
         }
         
-        if ([self.avatar data]) {
-            characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2IDAvatarURLReadUUID]
+        if (self.avatar.avatarServiceName.length && self.avatar.avatarID.length) {
+            characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2IDAvatarServiceReadUUID]
                                                                 properties:CBCharacteristicPropertyRead
-                                                                     value:[self.avatar data]
+                                                                     value:[self.avatar avatarServiceNameJSON]
                                                                permissions:CBAttributePermissionsReadable | (encryptionEnabled?CBAttributePermissionsReadEncryptionRequired:0)];
             
             [characteristics addObject:characteristic];
             
         }
+
+        if (self.avatar.avatarServiceName.length && self.avatar.avatarID.length) {
+            characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2IDAvatarIDReadUUID]
+                                                                properties:CBCharacteristicPropertyRead
+                                                                     value:[self.avatar avatarIDJSON]
+                                                               permissions:CBAttributePermissionsReadable | (encryptionEnabled?CBAttributePermissionsReadEncryptionRequired:0)];
+            
+            [characteristics addObject:characteristic];
+            
+        }
+        
         //
         // Peripheral side
         //
@@ -227,7 +237,14 @@
         
         [characteristics addObject:characteristic];
         
-        characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2IDAvatarWriteUUID]
+        characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2IDAvatarServiceWriteUUID]
+                                                            properties:CBCharacteristicPropertyWrite
+                                                                 value:nil
+                                                           permissions:CBAttributePermissionsWriteable | (encryptionEnabled?CBAttributePermissionsWriteEncryptionRequired:0)];
+        
+        [characteristics addObject:characteristic];
+        
+        characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2IDAvatarIDWriteUUID]
                                                             properties:CBCharacteristicPropertyWrite
                                                                  value:nil
                                                            permissions:CBAttributePermissionsWriteable | (encryptionEnabled?CBAttributePermissionsWriteEncryptionRequired:0)];
@@ -268,20 +285,20 @@
         //
         // Central side
         //
-        if (self.serviceProvider.serviceName) {
+        if (self.serviceProvider.serviceName.length) {
             characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2ServiceProviderNameReadUUID]
                                                                 properties:CBCharacteristicPropertyRead
-                                                                     value:[self.serviceProvider.serviceName dataUsingEncoding:NSUTF8StringEncoding]
+                                                                     value:[self.serviceProvider serviceNameJSON]
                                                                permissions:CBAttributePermissionsReadable | (encryptionEnabled?CBAttributePermissionsReadEncryptionRequired:0)];
             
             [characteristics addObject:characteristic];
             
         }
         
-        if (self.serviceProvider.serviceUserID) {
+        if (self.serviceProvider.serviceUserID.length) {
             characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2ServiceProviderUserIDReadUUID]
                                                                 properties:CBCharacteristicPropertyRead
-                                                                     value:[self.serviceProvider.serviceUserID dataUsingEncoding:NSUTF8StringEncoding]
+                                                                     value:[self.serviceProvider serviceUserIDJSON]
                                                                permissions:CBAttributePermissionsReadable | (encryptionEnabled?CBAttributePermissionsReadEncryptionRequired:0)];
             
             [characteristics addObject:characteristic];
@@ -331,8 +348,8 @@
         default:
             break;
     }
-
 }
+
 - (void)peripheralManagerDidStartAdvertising:(CBPeripheralManager *)peripheral error:(NSError *)error{
     DLog(@"peripheralManagerDidStartAdvertising w/ error: %@", error);
     // TODO: Let app know if this failed
@@ -362,7 +379,14 @@
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray *)requests{
     DLog(@"didReceiveWriteRequests");
     // Keep a close eye on this one. Will be crucial for when the central offload data to the peripheral.
-    // Use a object to keep track of pieces of information written per characteristic. 
+    // Use a object to keep track of pieces of information written per characteristic.
+    
+    for (CBATTRequest* req in requests) {
+        NSString* value = [[NSString alloc] initWithData:req.value encoding:NSUTF8StringEncoding];
+        DLog(@"Received Data: %@, offset: %d", value, req.offset);
+    }
+    
+    [peripheral respondToRequest:[requests objectAtIndex:0] withResult:CBATTErrorSuccess];
 }
 
 - (void)peripheralManagerIsReadyToUpdateSubscribers:(CBPeripheralManager *)peripheral{

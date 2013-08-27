@@ -13,5 +13,9 @@
 @property (nonatomic, strong) NSURL* avatarURL;
 @property (nonatomic, strong) NSString* avatarServiceName;
 @property (nonatomic, strong) NSString* avatarID;
--(NSData*)data; // Compact JSON formatted avatarService + avatarID
+
+-(NSData*)pseudonymJSON;
+-(NSData*)avatarURLJSON;
+-(NSData*)avatarServiceNameJSON;
+-(NSData*)avatarIDJSON;
 @end

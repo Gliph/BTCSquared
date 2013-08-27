@@ -58,6 +58,14 @@
             [peripheral discoverCharacteristics:service.characteristics
                                      forService:service];
         }
+        if ([service.UUID isEqual:[CBUUID UUIDWithString:kBTC2IDServiceUUID]]) {
+            [peripheral discoverCharacteristics:service.characteristics
+                                     forService:service];
+        }
+        if ([service.UUID isEqual:[CBUUID UUIDWithString:kBTC2ServiceProviderServiceUUID]]) {
+            [peripheral discoverCharacteristics:service.characteristics
+                                     forService:service];
+        }
     }
 }
 
@@ -67,12 +75,44 @@
 //}
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error{
-    DLog(@"didDiscoverCharacteristicsForService. Err: %@", error);
+    DLog(@"%@ Err: %@", service, error);
     
     // If found wallet address characteristic, read it
     for (CBCharacteristic* characteristic in service.characteristics){
+        DLog(@"%@", characteristic.UUID);
         // TODO: Don't read everything. Just what we want.
         // [peripheral readValueForCharacteristic:characteristic];
+//        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2IDAvatarWriteUUID]]) {
+//            [peripheral writeValue:[@"http://www.robohash.org/haxxorrobot.png?size=100x100" dataUsingEncoding:NSUTF8StringEncoding] forCharacteristic:characteristic type:CBCharacteristicWriteWithResponse];
+//        }
+
+        // Wallet service
+        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2WalletAddressReadUUID]]) {
+            [peripheral readValueForCharacteristic:characteristic];
+        }
+
+        // Identification service
+        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2IDPseudonymReadUUID]]) {
+            [peripheral readValueForCharacteristic:characteristic];
+        }
+        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2IDAvatarServiceReadUUID]]) {
+            [peripheral readValueForCharacteristic:characteristic];
+        }
+        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2IDAvatarIDReadUUID]]) {
+            [peripheral readValueForCharacteristic:characteristic];
+        }
+        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2IDAvatarURLReadUUID]]) {
+            [peripheral readValueForCharacteristic:characteristic];
+        }
+        
+        // Service Provider Service
+        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2ServiceProviderNameReadUUID]]) {
+            [peripheral readValueForCharacteristic:characteristic];
+        }
+        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2ServiceProviderUserIDReadUUID]]) {
+            [peripheral readValueForCharacteristic:characteristic];
+        }
+        
     }
 }
 

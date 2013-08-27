@@ -47,6 +47,10 @@
 		83792FF01748CC8F0077A2FF /* NSString+BTC2Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 83792FEF1748CC8F0077A2FF /* NSString+BTC2Extensions.m */; };
 		8381D1C41769675C009E2BA4 /* BTC2IdentificationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8381D1C31769675C009E2BA4 /* BTC2IdentificationModel.m */; };
 		8381D1C717696771009E2BA4 /* BTC2ServiceProviderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8381D1C617696771009E2BA4 /* BTC2ServiceProviderModel.m */; };
+		83A4DCDC17CC4F7E001264BE /* NSDictionary+BTC2Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A4DCDB17CC4F7E001264BE /* NSDictionary+BTC2Extensions.m */; };
+		83A4DCDF17CC505A001264BE /* BTC2Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A4DCDE17CC505A001264BE /* BTC2Constants.m */; };
+		83A4DCE217CC53DB001264BE /* BTC2PaymentRequestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A4DCE117CC53DB001264BE /* BTC2PaymentRequestModel.m */; };
+		83AC296817CABDD500B4B026 /* BTC2WalletModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 83AC296717CABDD500B4B026 /* BTC2WalletModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -120,6 +124,14 @@
 		8381D1C31769675C009E2BA4 /* BTC2IdentificationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2IdentificationModel.m; sourceTree = "<group>"; };
 		8381D1C517696771009E2BA4 /* BTC2ServiceProviderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2ServiceProviderModel.h; sourceTree = "<group>"; };
 		8381D1C617696771009E2BA4 /* BTC2ServiceProviderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2ServiceProviderModel.m; sourceTree = "<group>"; };
+		83A4DCDA17CC4F7E001264BE /* NSDictionary+BTC2Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+BTC2Extensions.h"; sourceTree = "<group>"; };
+		83A4DCDB17CC4F7E001264BE /* NSDictionary+BTC2Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+BTC2Extensions.m"; sourceTree = "<group>"; };
+		83A4DCDD17CC505A001264BE /* BTC2Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2Constants.h; sourceTree = "<group>"; };
+		83A4DCDE17CC505A001264BE /* BTC2Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2Constants.m; sourceTree = "<group>"; };
+		83A4DCE017CC53DB001264BE /* BTC2PaymentRequestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2PaymentRequestModel.h; sourceTree = "<group>"; };
+		83A4DCE117CC53DB001264BE /* BTC2PaymentRequestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2PaymentRequestModel.m; sourceTree = "<group>"; };
+		83AC296617CABDD500B4B026 /* BTC2WalletModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2WalletModel.h; sourceTree = "<group>"; };
+		83AC296717CABDD500B4B026 /* BTC2WalletModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2WalletModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +186,8 @@
 				8373910D17C973A200CFFD99 /* BTC2Events.m */,
 				8373911217C9783900CFFD99 /* BTC2UUIDs.h */,
 				8373911317C9783900CFFD99 /* BTC2UUIDs.m */,
+				83A4DCDD17CC505A001264BE /* BTC2Constants.h */,
+				83A4DCDE17CC505A001264BE /* BTC2Constants.m */,
 				8376DB1017488A1200B95961 /* Delegates */,
 				8381D1C117696738009E2BA4 /* Models */,
 				8376DB0F174889FE00B95961 /* Requests */,
@@ -189,6 +203,8 @@
 				8331DF0B174887B200733BC3 /* Supporting Files */,
 				8376DB1B1748B49700B95961 /* UIColor+BTC2Extensions.h */,
 				8376DB1C1748B49700B95961 /* UIColor+BTC2Extensions.m */,
+				83A4DCDA17CC4F7E001264BE /* NSDictionary+BTC2Extensions.h */,
+				83A4DCDB17CC4F7E001264BE /* NSDictionary+BTC2Extensions.m */,
 				83792FEE1748CC8F0077A2FF /* NSString+BTC2Extensions.h */,
 				83792FEF1748CC8F0077A2FF /* NSString+BTC2Extensions.m */,
 			);
@@ -278,6 +294,10 @@
 				8373911017C9742400CFFD99 /* BTC2DeviceSession.m */,
 				8373911517C9AE0400CFFD99 /* BTC2CentralSession.h */,
 				8373911617C9AE0400CFFD99 /* BTC2CentralSession.m */,
+				83AC296617CABDD500B4B026 /* BTC2WalletModel.h */,
+				83AC296717CABDD500B4B026 /* BTC2WalletModel.m */,
+				83A4DCE017CC53DB001264BE /* BTC2PaymentRequestModel.h */,
+				83A4DCE117CC53DB001264BE /* BTC2PaymentRequestModel.m */,
 				8381D1C21769675C009E2BA4 /* BTC2IdentificationModel.h */,
 				8381D1C31769675C009E2BA4 /* BTC2IdentificationModel.m */,
 				8381D1C517696771009E2BA4 /* BTC2ServiceProviderModel.h */,
@@ -383,6 +403,10 @@
 				8373911417C9783900CFFD99 /* BTC2UUIDs.m in Sources */,
 				8373911717C9AE0400CFFD99 /* BTC2CentralSession.m in Sources */,
 				8373911A17C9AE5C00CFFD99 /* BTC2BaseSession.m in Sources */,
+				83AC296817CABDD500B4B026 /* BTC2WalletModel.m in Sources */,
+				83A4DCDC17CC4F7E001264BE /* NSDictionary+BTC2Extensions.m in Sources */,
+				83A4DCDF17CC505A001264BE /* BTC2Constants.m in Sources */,
+				83A4DCE217CC53DB001264BE /* BTC2PaymentRequestModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

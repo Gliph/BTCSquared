@@ -11,4 +11,6 @@
 @interface BTC2ServiceProviderModel : NSObject
 @property (nonatomic, strong) NSString* serviceName;
 @property (nonatomic, strong) NSString* serviceUserID;
+-(NSData*)serviceNameJSON;
+-(NSData*)serviceUserIDJSON;
 @end

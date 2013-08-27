@@ -36,16 +36,26 @@ typedef enum BTC2ManagerState {
         self.central = [[BTC2CentralManager alloc] init];
         self.peripheral = [[BTC2PeripheralManager alloc] init];
      
-        BTC2ServiceProviderModel* provider = [[BTC2ServiceProviderModel alloc] init];
-        provider.serviceName = @"someservice";
-        provider.serviceUserID = @"imauser";
+        BTC2WalletModel* walletModel = [[BTC2WalletModel alloc] init];
+        walletModel.walletAddress = @"1DdeszrHwfCFA9yNdoTAotSEgNpaVmv2DP"; // Donations!
+        walletModel.paymentRequest = [BTC2PaymentRequestModel requestAmount:@(1000)  withCurrency:@"BTC"];
         
-        self.peripheral.serviceProvider = provider;
+        self.peripheral.wallet = walletModel;
         
-        BTC2IdentificationModel* identity = [[BTC2IdentificationModel alloc] init];
-        identity.pseudonym = @"HaxxorBot";
-        identity.avatarID = @"stork";
-        identity.avatarServiceName = @"robohash";
+        BTC2IdentificationModel* idModel = [[BTC2IdentificationModel alloc] init];
+        
+        idModel.pseudonym = @"HaxxorBot";
+        idModel.avatarURL = [NSURL URLWithString:@"http://robohash.org/haxxorbot.png"];
+        idModel.avatarServiceName = @"robohash";
+        idModel.avatarID = @"haxxxorbot";
+        
+        self.peripheral.avatar = idModel;
+        
+        BTC2ServiceProviderModel* providerModel = [[BTC2ServiceProviderModel alloc] init];
+        providerModel.serviceName = @"gliph";
+        providerModel.serviceUserID = @"di.di.di";
+        
+        self.peripheral.serviceProvider = providerModel;
     }
     
     return self;
