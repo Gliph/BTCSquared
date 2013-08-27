@@ -73,8 +73,10 @@ This service defines a way to present users to each other. It consists of 3 (6) 
 
 - Pseudonym Read characteristic. Central READs the peripherals pseudonym. This should be used in the UI. 
 - Pseudonym Write characteristic. Central WRITEs it's pseudonym to the peripheral. 
-- Avatar READ characteristic. Central READs an avatar service ID and avatar ID from the peripheral.
-- Avatar Write characteristic. Central WRITEs it's avatar service ID and avatar ID to the peripheral. 
+- Avatar Service READ characteristic. Central READs an avatar service name from the peripheral.
+- Avatar Service Write characteristic. Central WRITEs it's avatar service name to the peripheral. 
+- Avatar ID READ characteristic. Central READs an avatar ID from the peripheral.
+- Avatar ID Write characteristic. Central WRITEs it's avatar ID to the peripheral. 
 - Avatar URL Read characteristic. Central READs the peripherals avatar image URL. 
 - Avatar URL Write characteristic. Central WRITEs it's avatar image URL to the peripheral.  
 
@@ -86,8 +88,17 @@ We want BTC<sup>2</sup> to be an open cross platform/service protocol but an imp
 - Service provider name Read characteristic. Central READs the service name from the peripheral. 
 - Service provider name Write characteristic. Central WRITEs it's service name to the peripheral. 
 - User ID Read characteristic. Central READs the User ID from the peripheral. 
-- User ID Write characteristic. Central READs write it's User ID to peripheral. 
+- User ID Write characteristic. Central WRITEs it's User ID to peripheral. 
 
 That's the gist of it. The data formats for the different characteristics are defined in the code. 
+
+The characteristic data format is a simple JSON object. 
+
+```
+{size:xxx, key: value}
+```
+
+The size key has to be first to be transmitted in the first 20 bytes in case the characteristic data is chopped up into pieces. This allows for a simple data re-packaging on the receiver side. 
+
 
 
