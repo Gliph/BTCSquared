@@ -9,8 +9,39 @@
 #import "BTC2DeviceSession.h"
 #import "BTC2UUIDs.h"
 #import "BTC2CentralManager.h"
+#import "BTC2Constants.h"
+#import "BTC2PaymentRequestModel.h"
+
+@interface BTC2DeviceSession()
+@property (nonatomic, strong) NSMutableDictionary* characteristics;
+@property (nonatomic, strong) NSArray* uuidReadWhitelist;
+-(void)handleJSON:(NSData*)jsonData forUUID:(CBUUID*)uuid;
+@end
 
 @implementation BTC2DeviceSession
+
+#pragma mark - Public methods
+
+-(id)init{
+
+    if ((self = [super init])) {
+        NSMutableArray* whitelist = [NSMutableArray arrayWithCapacity:7];
+        
+        // Static data, mostly
+        [whitelist addObject:[CBUUID UUIDWithString:kBTC2WalletAddressReadUUID]];
+
+        [whitelist addObject:[CBUUID UUIDWithString:kBTC2IDPseudonymReadUUID]];
+        [whitelist addObject:[CBUUID UUIDWithString:kBTC2IDAvatarServiceReadUUID]];
+        [whitelist addObject:[CBUUID UUIDWithString:kBTC2IDAvatarIDReadUUID]];
+        [whitelist addObject:[CBUUID UUIDWithString:kBTC2IDAvatarURLReadUUID]];
+
+        [whitelist addObject:[CBUUID UUIDWithString:kBTC2ServiceProviderNameReadUUID]];
+        [whitelist addObject:[CBUUID UUIDWithString:kBTC2ServiceProviderUserIDReadUUID]];
+        
+        self.uuidReadWhitelist = [NSArray arrayWithArray:whitelist];
+    }
+    return self;
+}
 
 -(void)connect{
     if (self.peripheral) {
@@ -26,6 +57,68 @@
 
 -(void)writeNotice:(NSString *)notice{
     // TODO:
+}
+-(void)writePaymentRequest:(BTC2PaymentRequestModel *)paymentRequest{
+    // TODO:
+}
+-(void)writeWalletModel:(BTC2WalletModel*)wallet{
+}
+-(void)writeIdentityModel:(BTC2IdentityModel*)identity{
+}
+-(void)writeServiceProvider:(BTC2ServiceProviderModel*)provider{
+}
+
+#pragma mark - Convenience
+
+-(void)handleJSON:(NSData*)jsonData forUUID:(CBUUID*)uuid{
+
+    NSError* error = nil;
+    NSDictionary* jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
+    
+    if (!error) {
+        if ([jsonDict isKindOfClass:[NSDictionary class]]) {
+            
+            if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2WalletAddressReadUUID]]) {
+                self.wallet.walletAddress = [jsonDict objectForKey:kBTC2WalletAddressKey];
+            }
+            // TODO: Verify this one. 
+            if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2WalletNoticeIndicateUUID]]) {
+                self.wallet.paymentRequest = [BTC2PaymentRequestModel requestAmount:[jsonDict objectForKey:kBTC2WalletPaymentReqAmountKey]
+                                                                       withCurrency:[jsonDict objectForKey:kBTC2WalletPaymentCurrencyKey]];
+            }
+            if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2WalletNoticeIndicateUUID]]) {
+                self.wallet.notice = [jsonDict objectForKey:kBTC2WalletNoticeKey];
+            }
+            if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2IDPseudonymReadUUID]]) {
+                self.identity.pseudonym = [jsonDict objectForKey:kBTC2IdentificationPseudonymKey];
+            }
+            if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2IDAvatarServiceReadUUID]]) {
+                self.identity.avatarServiceName = [jsonDict objectForKey:kBTC2IdentificationAvatarServiceKey];
+            }
+            if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2IDAvatarIDReadUUID]]) {
+                self.identity.avatarID = [jsonDict objectForKey:kBTC2IdentificationAvatarIDKey];
+            }
+            if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2IDAvatarURLReadUUID]]) {
+                self.identity.avatarURL = [NSURL URLWithString:[jsonDict objectForKey:kBTC2IdentificationAvatarURLKey]];
+            }
+            if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2ServiceProviderNameReadUUID]]) {
+                self.serviceProvider.serviceName = [jsonDict objectForKey:kBTC2ServiceProviderNameKey];
+            }
+            if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2ServiceProviderUserIDReadUUID]]) {
+                self.serviceProvider.serviceUserID = [jsonDict objectForKey:kBTC2ServiceProviderUserIDKey];
+            }
+
+            
+        }else{
+            DLog(@"No dictionary? %@ of class %@", jsonDict, [jsonDict class]);
+        }
+    }else{
+        DLog(@"Error: %@", error);
+    }
+
+//    DLog(@"%@", self.wallet);
+//    DLog(@"%@", self.identity);
+//    DLog(@"%@", self.serviceProvider);
 }
 
 #pragma mark - CBPeripheralDelegate
@@ -76,53 +169,27 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error{
     DLog(@"%@ Err: %@", service, error);
+
+    self.characteristics = [NSMutableDictionary dictionaryWithCapacity:service.characteristics.count];
     
     // If found wallet address characteristic, read it
     for (CBCharacteristic* characteristic in service.characteristics){
         DLog(@"%@", characteristic.UUID);
-        // TODO: Don't read everything. Just what we want.
-        // [peripheral readValueForCharacteristic:characteristic];
-//        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2IDAvatarWriteUUID]]) {
-//            [peripheral writeValue:[@"http://www.robohash.org/haxxorrobot.png?size=100x100" dataUsingEncoding:NSUTF8StringEncoding] forCharacteristic:characteristic type:CBCharacteristicWriteWithResponse];
-//        }
 
-        // Wallet service
-        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2WalletAddressReadUUID]]) {
-            [peripheral readValueForCharacteristic:characteristic];
-        }
+        // Store every characteristic we find.
+        [self.characteristics setObject:characteristic forKey:characteristic.UUID];
 
-        // Identification service
-        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2IDPseudonymReadUUID]]) {
+        // Read only characteristics in the uuidReadWhitelist
+        if ([self.uuidReadWhitelist containsObject:characteristic.UUID]){
             [peripheral readValueForCharacteristic:characteristic];
         }
-        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2IDAvatarServiceReadUUID]]) {
-            [peripheral readValueForCharacteristic:characteristic];
-        }
-        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2IDAvatarIDReadUUID]]) {
-            [peripheral readValueForCharacteristic:characteristic];
-        }
-        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2IDAvatarURLReadUUID]]) {
-            [peripheral readValueForCharacteristic:characteristic];
-        }
-        
-        // Service Provider Service
-        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2ServiceProviderNameReadUUID]]) {
-            [peripheral readValueForCharacteristic:characteristic];
-        }
-        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2ServiceProviderUserIDReadUUID]]) {
-            [peripheral readValueForCharacteristic:characteristic];
-        }
-        
     }
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
     DLog(@"didUpdateValueForCharacteristic. Err: %@", error);
-    
-    // Could be partial value, stitch together 
-    NSString* stringValue = [[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding];
-    DLog(@" Characteristic [%@] : %@", characteristic.UUID, stringValue);
-    
+
+    [self handleJSON:characteristic.value forUUID:characteristic.UUID];
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{

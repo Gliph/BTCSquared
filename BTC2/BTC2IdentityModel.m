@@ -1,16 +1,16 @@
 //
-//  BTC2IdentificationModel.m
+//  BTC2IdentityModel.m
 //  BTC2
 //
 //  Created by Joakim Fernstad on 6/12/13.
 //  Copyright (c) 2013 Joakim Fernstad. All rights reserved.
 //
 
-#import "BTC2IdentificationModel.h"
+#import "BTC2IdentityModel.h"
 #import "BTC2Constants.h"
 #import "NSDictionary+BTC2Extensions.h"
 
-@implementation BTC2IdentificationModel
+@implementation BTC2IdentityModel
 
 -(NSData*)pseudonymJSON{
     NSData* encodedData = nil;
@@ -54,5 +54,8 @@
     return encodedData;
 }
 
+-(NSString*)description{
+    return [NSString stringWithFormat:@"%@. AvatarURL: %@. AvatarService: %@. AvatarID: %@", self.pseudonym, self.avatarURL, self.avatarServiceName, self.avatarID];
+}
 
 @end

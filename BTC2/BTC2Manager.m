@@ -7,7 +7,7 @@
 //
 
 #import "BTC2Manager.h"
-#import "BTC2IdentificationModel.h"
+#import "BTC2IdentityModel.h"
 #import "BTC2ServiceProviderModel.h"
 
 typedef enum BTC2ManagerState {
@@ -42,7 +42,7 @@ typedef enum BTC2ManagerState {
         
         self.peripheral.wallet = walletModel;
         
-        BTC2IdentificationModel* idModel = [[BTC2IdentificationModel alloc] init];
+        BTC2IdentityModel* idModel = [[BTC2IdentityModel alloc] init];
         
         idModel.pseudonym = @"HaxxorBot";
         idModel.avatarURL = [NSURL URLWithString:@"http://robohash.org/haxxorbot.png"];

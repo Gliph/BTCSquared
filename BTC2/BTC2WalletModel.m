@@ -36,4 +36,8 @@
     return [self.paymentRequest paymentRequestJSON];
 }
 
+-(NSString*)description{
+    return [NSString stringWithFormat:@"Wallet: %@. Notice: %@. Payment Req: %@.", self.walletAddress, self.notice, self.paymentRequest];
+}
+
 @end

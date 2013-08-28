@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "BTC2WalletModel.h"
-#import "BTC2IdentificationModel.h"
+#import "BTC2IdentityModel.h"
 #import "BTC2ServiceProviderModel.h"
 
 @interface BTC2PeripheralManager : NSObject<CBPeripheralManagerDelegate>
@@ -24,7 +24,7 @@
 @property (nonatomic, strong) BTC2WalletModel* wallet;
 
 // ID Service
-@property (nonatomic, strong) BTC2IdentificationModel* avatar;
+@property (nonatomic, strong) BTC2IdentityModel* avatar;
 
 // Service provider service
 @property (nonatomic, strong) BTC2ServiceProviderModel* serviceProvider;

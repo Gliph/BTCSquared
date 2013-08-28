@@ -29,4 +29,8 @@
     return encodedData;
 }
 
+-(NSString*)description{
+    return [NSString stringWithFormat:@"Amount: %@. Currency: %@. ", self.amount, self.currency];
+}
+
 @end

@@ -1,5 +1,5 @@
 //
-//  BTC2IdentificationModel.h
+//  BTC2IdentityModel.h
 //  BTC2
 //
 //  Created by Joakim Fernstad on 6/12/13.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface BTC2IdentificationModel : NSObject
+@interface BTC2IdentityModel : NSObject
 @property (nonatomic, strong) NSString* pseudonym;
 @property (nonatomic, strong) NSURL* avatarURL;
 @property (nonatomic, strong) NSString* avatarServiceName;

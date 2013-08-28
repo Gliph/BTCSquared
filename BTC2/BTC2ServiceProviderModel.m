@@ -32,6 +32,8 @@
     return encodedData;
 }
 
-
+-(NSString*)description{
+    return [NSString stringWithFormat:@"Service: %@. UserID: %@", self.serviceName, self.serviceUserID];
+}
 
 @end
