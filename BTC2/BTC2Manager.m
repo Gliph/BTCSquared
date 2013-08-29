@@ -18,11 +18,7 @@ typedef enum BTC2ManagerState {
 
 @interface BTC2Manager ()
 @property (nonatomic, strong) NSSet* closePeripherals;
-@property (nonatomic, strong) NSTimer* stateTimer;
 @property (nonatomic, assign) BTC2ManagerState managerState;
--(void)changeState:(NSTimer*)timer;
--(void)startCycleTimer;
--(void)stopCycleTimer;
 @end
 
 @implementation BTC2Manager
@@ -31,7 +27,6 @@ typedef enum BTC2ManagerState {
 @synthesize managerState;
 
 -(id)init{
-
     if ((self = [super init])){
         self.central = [[BTC2CentralManager alloc] init];
         self.peripheral = [[BTC2PeripheralManager alloc] init];
@@ -57,30 +52,7 @@ typedef enum BTC2ManagerState {
         
         self.peripheral.serviceProvider = providerModel;
     }
-    
     return self;
-}
-
-
--(void)startCycleTimer{
-    self.stateTimer = [NSTimer timerWithTimeInterval:10
-                                              target:self
-                                            selector:@selector(changeState:)
-                                            userInfo:nil
-                                             repeats:YES];
-    
-    [[NSRunLoop mainRunLoop] addTimer:self.stateTimer forMode:NSDefaultRunLoopMode];
-}
-
--(void)stopCycleTimer{
-    if (self.stateTimer.isValid) {
-        [self.stateTimer invalidate];
-    }
-}
-
--(void)startCycle{
-    [self enterCentralMode];
-    [self startCycleTimer];
 }
 
 -(void)changeState:(NSTimer*)timer{
@@ -102,13 +74,11 @@ typedef enum BTC2ManagerState {
     
 }
 
-
 -(void)enterCentralMode{
     DLog(@"enterCentralMode");
     [[NSNotificationCenter defaultCenter] postNotificationName:kCentralModeStarted object:nil];
     
     self.managerState = BTC2ManagerStateCentral;
-//    [self.peripheral cleanup];
     [self.central startScan];
 }
 
@@ -117,7 +87,6 @@ typedef enum BTC2ManagerState {
     [[NSNotificationCenter defaultCenter] postNotificationName:kPeripheralModeStarted object:nil];
 
     self.managerState = BTC2ManagerStatePeripheral;
-//    [self.central cleanup];
     [self.peripheral startAdvertising];
 }
 
@@ -125,10 +94,51 @@ typedef enum BTC2ManagerState {
     DLog(@"enterNeutralMode");
     [[NSNotificationCenter defaultCenter] postNotificationName:kNeutralModeStarted object:nil];
 
-    [self stopCycleTimer];
     self.managerState = BTC2ManagerStateNeutral;
     [self.central cleanup];
     [self.peripheral cleanup];
 }
 
+#pragma mark - BTC2DataUpdatedDelegate
+
+-(void)btc2DidUpdateWalletProperty:(BTC2WalletPropertyEnum)property forSession:(BTC2BaseSession *)session{
+    DLog(@"Updated property %d ", property);
+
+    switch (property) {
+        case BTC2WalletPropertyWalletAddress:
+            break;
+        case BTC2WalletPropertyNotice:
+            break;
+        case BTC2WalletPropertyPaymentRequest:
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)btc2DidUpdateIdentityProperty:(BTC2IdentityPropertyEnum)property forSession:(BTC2BaseSession *)session{
+    switch (property) {
+        case BTC2IdentityPropertyPseudonym:
+            break;
+        case BTC2IdentityPropertyAvatarServiceName:
+            break;
+        case BTC2IdentityPropertyAvatarID:
+            break;
+        case BTC2IdentityPropertyAvatarURL:
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)btc2DidUpdateServiceProvider:(BTC2ServiceProviderPropertyEnum)property forSession:(BTC2BaseSession *)session{
+    switch (property) {
+        case BTC2ServiceProviderPropertyServiceName:
+            break;
+        case BTC2ServiceProviderPropertyServiceUserID:
+            break;
+        default:
+            break;
+    }
+}
 @end

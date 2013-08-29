@@ -9,6 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "BTC2PaymentRequestModel.h"
 
+typedef enum BTC2WalletPropertyEnum {
+    BTC2WalletPropertyWalletAddress = 0,
+    BTC2WalletPropertyNotice,
+    BTC2WalletPropertyPaymentRequest,
+}BTC2WalletPropertyEnum;
+
 @interface BTC2WalletModel : NSObject
 @property (nonatomic, retain) NSString* walletAddress;
 @property (nonatomic, retain) NSString* notice;

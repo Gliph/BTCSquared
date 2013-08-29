@@ -14,17 +14,17 @@
 @class BTC2BaseSession;
 
 // Delegates called on the main thread
-@protocol BTC2ReceiveDataDelegate <NSObject>
--(void)didReceiveWalletAddress:(NSString*)wallet fromSession:(BTC2BaseSession*)session;
--(void)didReceiveNotice:(NSString*)notice fromSession:(BTC2BaseSession*)session;
--(void)didReceivePaymentRequest:(BTC2PaymentRequestModel*)payment fromSession:(BTC2BaseSession*)session;
+@protocol BTC2DataUpdatedDelegate <NSObject>
+-(void)btc2DidUpdateWalletProperty:(BTC2WalletPropertyEnum)property forSession:(BTC2BaseSession*)session;
+-(void)btc2DidUpdateIdentityProperty:(BTC2IdentityPropertyEnum)property forSession:(BTC2BaseSession*)session;
+-(void)btc2DidUpdateServiceProvider:(BTC2ServiceProviderPropertyEnum)property forSession:(BTC2BaseSession*)session;
 @end
 
 @interface BTC2BaseSession : NSObject
 @property (nonatomic, strong) BTC2WalletModel* wallet;
 @property (nonatomic, strong) BTC2IdentityModel* identity;
 @property (nonatomic, strong) BTC2ServiceProviderModel* serviceProvider;
-@property (nonatomic, strong) id<BTC2ReceiveDataDelegate> delegate;
+@property (nonatomic, strong) id<BTC2DataUpdatedDelegate> delegate;
 -(void)writeNotice:(NSString *)notice;
 -(void)writePaymentRequest:(BTC2PaymentRequestModel*)paymentRequest;
 @end

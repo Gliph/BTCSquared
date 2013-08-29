@@ -10,12 +10,17 @@
 #import "BTC2UUIDs.h"
 #import "BTC2CentralManager.h"
 #import "BTC2Constants.h"
+
+// Services
+#import "BTC2WalletModel.h"
+#import "BTC2IdentityModel.h"
 #import "BTC2PaymentRequestModel.h"
 
 @interface BTC2DeviceSession()
 @property (nonatomic, strong) NSMutableDictionary* characteristics;
 @property (nonatomic, strong) NSArray* uuidReadWhitelist;
 -(void)handleJSON:(NSData*)jsonData forUUID:(CBUUID*)uuid;
+-(void)executeOnMainThread:(void (^)())block;
 @end
 
 @implementation BTC2DeviceSession
@@ -41,6 +46,24 @@
         self.uuidReadWhitelist = [NSArray arrayWithArray:whitelist];
     }
     return self;
+}
+
+-(void)executeOnMainThread:(void (^)())block{
+    __block UIBackgroundTaskIdentifier task = UIBackgroundTaskInvalid;
+    
+    task = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+        // Kill the offending task!
+        [[UIApplication sharedApplication] endBackgroundTask:task];
+        task = UIBackgroundTaskInvalid;
+    }];
+    
+    void (^executionBlock)() = ^(){
+        block();
+        [[UIApplication sharedApplication] endBackgroundTask:task];
+        task = UIBackgroundTaskInvalid;
+    };
+    
+    dispatch_async(dispatch_get_main_queue(), executionBlock);
 }
 
 -(void)connect{
@@ -78,47 +101,93 @@
     if (!error) {
         if ([jsonDict isKindOfClass:[NSDictionary class]]) {
             
+            // Wallet service
             if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2WalletAddressReadUUID]]) {
                 self.wallet.walletAddress = [jsonDict objectForKey:kBTC2WalletAddressKey];
+
+                if ([self.delegate respondsToSelector:@selector(btc2DidUpdateWalletProperty:forSession:)]) {
+                    [self executeOnMainThread:^{
+                        [self.delegate btc2DidUpdateWalletProperty:BTC2WalletPropertyWalletAddress forSession:self];
+                    }];
+                }
             }
             // TODO: Verify this one. 
             if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2WalletNoticeIndicateUUID]]) {
                 self.wallet.paymentRequest = [BTC2PaymentRequestModel requestAmount:[jsonDict objectForKey:kBTC2WalletPaymentReqAmountKey]
                                                                        withCurrency:[jsonDict objectForKey:kBTC2WalletPaymentCurrencyKey]];
+                if ([self.delegate respondsToSelector:@selector(btc2DidUpdateWalletProperty:forSession:)]) {
+                    [self executeOnMainThread:^{
+                        [self.delegate btc2DidUpdateWalletProperty:BTC2WalletPropertyPaymentRequest forSession:self];
+                    }];
+                }
             }
             if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2WalletNoticeIndicateUUID]]) {
                 self.wallet.notice = [jsonDict objectForKey:kBTC2WalletNoticeKey];
+                if ([self.delegate respondsToSelector:@selector(btc2DidUpdateWalletProperty:forSession:)]) {
+                    [self executeOnMainThread:^{
+                        [self.delegate btc2DidUpdateWalletProperty:BTC2WalletPropertyNotice forSession:self];
+                    }];
+                }
             }
+            
+            // Identity service
             if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2IDPseudonymReadUUID]]) {
                 self.identity.pseudonym = [jsonDict objectForKey:kBTC2IdentificationPseudonymKey];
+                if ([self.delegate respondsToSelector:@selector(btc2DidUpdateIdentityProperty:forSession:)]) {
+                    [self executeOnMainThread:^{
+                        [self.delegate btc2DidUpdateIdentityProperty:BTC2IdentityPropertyPseudonym forSession:self];
+                    }];
+                }
             }
             if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2IDAvatarServiceReadUUID]]) {
                 self.identity.avatarServiceName = [jsonDict objectForKey:kBTC2IdentificationAvatarServiceKey];
+                if ([self.delegate respondsToSelector:@selector(btc2DidUpdateIdentityProperty:forSession:)]) {
+                    [self executeOnMainThread:^{
+                        [self.delegate btc2DidUpdateIdentityProperty:BTC2IdentityPropertyAvatarServiceName forSession:self];
+                    }];
+                }
             }
             if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2IDAvatarIDReadUUID]]) {
                 self.identity.avatarID = [jsonDict objectForKey:kBTC2IdentificationAvatarIDKey];
+                if ([self.delegate respondsToSelector:@selector(btc2DidUpdateIdentityProperty:forSession:)]) {
+                    [self executeOnMainThread:^{
+                        [self.delegate btc2DidUpdateIdentityProperty:BTC2IdentityPropertyAvatarID forSession:self];
+                    }];
+                }
             }
+            
             if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2IDAvatarURLReadUUID]]) {
                 self.identity.avatarURL = [NSURL URLWithString:[jsonDict objectForKey:kBTC2IdentificationAvatarURLKey]];
+                if ([self.delegate respondsToSelector:@selector(btc2DidUpdateIdentityProperty:forSession:)]) {
+                    [self executeOnMainThread:^{
+                        [self.delegate btc2DidUpdateIdentityProperty:BTC2IdentityPropertyAvatarURL forSession:self];
+                    }];
+                }
             }
+
+            // Service provider service
             if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2ServiceProviderNameReadUUID]]) {
                 self.serviceProvider.serviceName = [jsonDict objectForKey:kBTC2ServiceProviderNameKey];
+                if ([self.delegate respondsToSelector:@selector(btc2DidUpdateServiceProvider:forSession:)]) {
+                    [self executeOnMainThread:^{
+                        [self.delegate btc2DidUpdateServiceProvider:BTC2ServiceProviderPropertyServiceName forSession:self];
+                    }];
+                }
             }
             if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2ServiceProviderUserIDReadUUID]]) {
                 self.serviceProvider.serviceUserID = [jsonDict objectForKey:kBTC2ServiceProviderUserIDKey];
+                if ([self.delegate respondsToSelector:@selector(btc2DidUpdateServiceProvider:forSession:)]) {
+                    [self executeOnMainThread:^{
+                        [self.delegate btc2DidUpdateServiceProvider:BTC2ServiceProviderPropertyServiceUserID forSession:self];
+                    }];
+                }
             }
-
-            
         }else{
             DLog(@"No dictionary? %@ of class %@", jsonDict, [jsonDict class]);
         }
     }else{
         DLog(@"Error: %@", error);
     }
-
-//    DLog(@"%@", self.wallet);
-//    DLog(@"%@", self.identity);
-//    DLog(@"%@", self.serviceProvider);
 }
 
 #pragma mark - CBPeripheralDelegate

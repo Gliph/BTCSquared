@@ -51,7 +51,6 @@
     [self.BTC2Manager enterPeripheralMode];
 }
 - (IBAction)start:(id)sender {
-    [self.BTC2Manager startCycle];
 }
 - (IBAction)stop:(id)sender {
     DLog(@" STOP (Neutral mode)!");

@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum BTC2IdentityPropertyEnum {
+    BTC2IdentityPropertyPseudonym = 0,
+    BTC2IdentityPropertyAvatarURL,
+    BTC2IdentityPropertyAvatarServiceName,
+    BTC2IdentityPropertyAvatarID
+}BTC2IdentityPropertyEnum;
+
 @interface BTC2IdentityModel : NSObject
 @property (nonatomic, strong) NSString* pseudonym;
 @property (nonatomic, strong) NSURL* avatarURL;

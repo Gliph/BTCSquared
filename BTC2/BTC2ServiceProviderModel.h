@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum BTC2ServiceProviderPropertyEnum {
+    BTC2ServiceProviderPropertyServiceName = 0,
+    BTC2ServiceProviderPropertyServiceUserID,
+}BTC2ServiceProviderPropertyEnum;
+
 @interface BTC2ServiceProviderModel : NSObject
 @property (nonatomic, strong) NSString* serviceName;
 @property (nonatomic, strong) NSString* serviceUserID;
