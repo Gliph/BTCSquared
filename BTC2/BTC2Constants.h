@@ -6,6 +6,9 @@
 //  Copyright (c) 2013 Joakim Fernstad. All rights reserved.
 //
 
+#ifndef BTC2_CONSTANTS_h
+#define BTC2_CONSTANTS_h
+
 // ---------------
 // String contants
 // ---------------
@@ -33,3 +36,6 @@ extern NSString* const kBTC2ServiceProviderUserIDKey;
 // Notification strings
 // --------------------
 
+extern NSString* const kBTC2DeviceSessionKey;
+
+#endif //BTC2_CONSTANTS_h

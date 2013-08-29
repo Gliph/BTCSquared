@@ -10,6 +10,7 @@
 #import "BTC2UUIDs.h"
 #import "BTC2CentralManager.h"
 #import "BTC2Constants.h"
+#import "BTC2Events.h"
 
 // Services
 #import "BTC2WalletModel.h"
@@ -20,7 +21,11 @@
 @property (nonatomic, strong) NSMutableDictionary* characteristics;
 @property (nonatomic, strong) NSArray* uuidReadWhitelist;
 -(void)handleJSON:(NSData*)jsonData forUUID:(CBUUID*)uuid;
+
+// Convenience
 -(void)executeOnMainThread:(void (^)())block;
+-(void)writeData:(NSData*)data forCharacteristic:(CBCharacteristic*)characteristic;
+-(void)postNotification:(NSString*)notificationName withDict:(NSDictionary*)dict;
 @end
 
 @implementation BTC2DeviceSession
@@ -66,6 +71,22 @@
     dispatch_async(dispatch_get_main_queue(), executionBlock);
 }
 
+-(void)postNotification:(NSString*)notificationName withDict:(NSDictionary*)dict{
+    [self executeOnMainThread:^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:dict];
+    }];
+}
+
+-(void)writeData:(NSData*)data forCharacteristic:(CBCharacteristic*)characteristic{
+    if (characteristic && data.length && self.peripheral) {
+        [self.peripheral writeValue:data
+                  forCharacteristic:characteristic
+                               type:CBCharacteristicWriteWithResponse];
+    }
+}
+
+#pragma mark - Actions
+
 -(void)connect{
     if (self.peripheral) {
         self.peripheral.delegate = self;
@@ -79,14 +100,58 @@
 }
 
 -(void)writeNotice:(NSString *)notice{
-    // TODO:
+    BTC2WalletModel* tmpModel = [[BTC2WalletModel alloc] init];
+    CBCharacteristic* characteristic = nil;
+    
+    if (notice.length) {
+        tmpModel.notice = notice;
+        characteristic = [self.characteristics objectForKey:[CBUUID UUIDWithString:kBTC2WalletNoticeWriteUUID]];
+
+        [self writeData:[tmpModel noticeJSON] forCharacteristic:characteristic];
+    }
 }
+
 -(void)writePaymentRequest:(BTC2PaymentRequestModel *)paymentRequest{
-    // TODO:
+    CBCharacteristic* characteristic = nil;
+    NSData* jsonData = [paymentRequest paymentRequestJSON];
+    
+    if (jsonData.length) {
+        characteristic = [self.characteristics objectForKey:[CBUUID UUIDWithString:kBTC2WalletPaymentWriteUUID]];
+
+        [self writeData:jsonData forCharacteristic:characteristic];
+    }
 }
+
 -(void)writeWalletModel:(BTC2WalletModel*)wallet{
+    CBCharacteristic* characteristic = nil;
+
+    if (wallet.walletAddress.length) {
+        characteristic = [self.characteristics objectForKey:[CBUUID UUIDWithString:kBTC2WalletAddressWriteUUID]];
+        [self writeData:[wallet walletAddresJSON] forCharacteristic:characteristic];
+    }
+    
+    [self writeNotice:wallet.notice];
+    [self writePaymentRequest:wallet.paymentRequest];
 }
+
 -(void)writeIdentityModel:(BTC2IdentityModel*)identity{
+    CBCharacteristic* characteristic = nil;
+    
+    if (identity.pseudonym.length) {
+        characteristic = [self.characteristics objectForKey:[CBUUID UUIDWithString:kBTC2IDPseudonymWriteUUID]];
+        [self writeData:[identity pseudonymJSON] forCharacteristic:characteristic];
+    }
+    if (identity.avatarServiceName.length && identity.avatarID.length) {
+        characteristic = [self.characteristics objectForKey:[CBUUID UUIDWithString:kBTC2IDAvatarServiceWriteUUID]];
+        [self writeData:[identity avatarServiceNameJSON] forCharacteristic:characteristic];
+
+        characteristic = [self.characteristics objectForKey:[CBUUID UUIDWithString:kBTC2IDAvatarIDWriteUUID]];
+        [self writeData:[identity avatarIDJSON] forCharacteristic:characteristic];
+    }
+    if (identity.avatarURL.absoluteString.length) {
+        characteristic = [self.characteristics objectForKey:[CBUUID UUIDWithString:kBTC2IDAvatarURLWriteUUID]];
+        [self writeData:[identity avatarURLJSON] forCharacteristic:characteristic];
+    }
 }
 -(void)writeServiceProvider:(BTC2ServiceProviderModel*)provider{
 }
@@ -213,8 +278,6 @@
     
     // Discover characteristics
     for (CBService* service in peripheral.services) {
-        DLog(@" = Service UUID: %@", service.UUID);
-        
         // Only read our custom service. Apple gets cranky if we read the GAP service characteristics
         if ([service.UUID isEqual:[CBUUID UUIDWithString:kBTC2WalletServiceUUID]]) {
             [peripheral discoverCharacteristics:service.characteristics
@@ -253,6 +316,8 @@
             [peripheral readValueForCharacteristic:characteristic];
         }
     }
+    
+    [self postNotification:kBTC2DidFinalizeConnectionNotification withDict:@{kBTC2DeviceSessionKey: self}];
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
@@ -262,13 +327,12 @@
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
-    DLog(@"didWriteValueForCharacteristic. Err: %@", error);
+    DLog(@"didWriteValueForCharacteristic. %@ Err: %@", characteristic.UUID, error);
     // Catch this to know when to send the next chunk
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
     DLog(@"didUpdateNotificationStateForCharacteristic. Err: %@", error);
-    // Central decides to start or stop listening on me
 }
 
 //- (void)peripheral:(CBPeripheral *)peripheral didDiscoverDescriptorsForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{

@@ -16,24 +16,15 @@
 @property (nonatomic, readonly) CBPeripheralManager* peripheralManager;
 @property (nonatomic, assign) BOOL useEncryption;
 
-//
-// Information we provide
-//
-
 // Wallet service
 @property (nonatomic, strong) BTC2WalletModel* wallet;
 
 // ID Service
-@property (nonatomic, strong) BTC2IdentityModel* avatar;
+@property (nonatomic, strong) BTC2IdentityModel* identity;
 
 // Service provider service
 @property (nonatomic, strong) BTC2ServiceProviderModel* serviceProvider;
 
-//
-// Information the central provide
-//
-
-// TODO:
 + (BTC2PeripheralManager*)manager;
 -(void)startAdvertising;
 -(void)stopAdvertising;

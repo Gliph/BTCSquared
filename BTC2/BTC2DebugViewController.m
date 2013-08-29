@@ -11,7 +11,7 @@
 #import "BTC2Events.h"
 
 @interface BTC2DebugViewController ()
-@property (nonatomic, strong) BTC2Manager* BTC2Manager;
+@property (nonatomic, strong) BTC2Manager* btc2Manager;
 @property (weak, nonatomic) IBOutlet UILabel *deviceName;
 @property (weak, nonatomic) IBOutlet UIButton *connectButton;
 -(void)modeNotification:(NSNotification*)not;
@@ -29,8 +29,27 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(modeNotification:) name:kCentralModeStarted object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(modeNotification:) name:kPeripheralModeStarted object:nil];
     
-    self.BTC2Manager = [[BTC2Manager alloc] init];
-
+    self.btc2Manager = [[BTC2Manager alloc] init];
+    
+    // Peripheral side
+    BTC2WalletModel* walletModel            = [[BTC2WalletModel alloc] init];
+    BTC2IdentityModel* idModel              = [[BTC2IdentityModel alloc] init];
+    BTC2ServiceProviderModel* providerModel = [[BTC2ServiceProviderModel alloc] init];
+    
+    walletModel.walletAddress       = @"1DdeszrHwfCFA9yNdoTAotSEgNpaVmv2DP"; // Donations!
+    walletModel.paymentRequest      = [BTC2PaymentRequestModel requestAmount:@(1000)  withCurrency:@"BTC"];
+    
+    idModel.pseudonym               = @"HaxxorBot";
+    idModel.avatarID                = @"haxxorbot";
+    idModel.avatarServiceName       = @"robohash";
+    idModel.avatarURL               = [NSURL URLWithString:@"http://robohash.org/haxxorbot.png"];
+    
+    providerModel.serviceName       = @"gliph";
+    providerModel.serviceUserID     = @"di.di.di";
+    
+    self.btc2Manager.wallet          = walletModel;
+    self.btc2Manager.identity        = idModel;
+    self.btc2Manager.serviceProvider = providerModel;
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
@@ -45,20 +64,20 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)startCentral:(id)sender {
-    [self.BTC2Manager enterCentralMode];
+    [self.btc2Manager enterCentralMode];
 }
 - (IBAction)startPeripheralMode:(id)sender {
-    [self.BTC2Manager enterPeripheralMode];
+    [self.btc2Manager enterPeripheralMode];
 }
 - (IBAction)start:(id)sender {
 }
 - (IBAction)stop:(id)sender {
     DLog(@" STOP (Neutral mode)!");
-    [self.BTC2Manager enterNeutralMode];
+    [self.btc2Manager enterNeutralMode];
 }
 - (IBAction)connectPeripheral:(id)sender {
-    if (self.BTC2Manager.central.foundPeripheral) {
-        [self.BTC2Manager.central.centralManager connectPeripheral:self.BTC2Manager.central.foundPeripheral options:nil];
+    if (self.btc2Manager.central.foundPeripheral) {
+        [self.btc2Manager.central.centralManager connectPeripheral:self.btc2Manager.central.foundPeripheral options:nil];
     }
 }
 

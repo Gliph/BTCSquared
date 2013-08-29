@@ -8,9 +8,10 @@
 
 // BTC2 Events
 
-#ifndef BTC2_Events_h
-#define BTC2_Events_h
+#ifndef BTC2_EVENTS_h
+#define BTC2_EVENTS_h
 
 extern NSString* const kBTC2DidDiscoverPeripheralNotification;  // Payload: BTC2DeviceSession
+extern NSString* const kBTC2DidFinalizeConnectionNotification;  // Payload: BTC2DeviceSession
 
-#endif // BTC2_Events_h
+#endif // BTC2_EVENTS_h

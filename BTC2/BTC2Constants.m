@@ -8,6 +8,10 @@
 
 #import "BTC2Constants.h"
 
+// ---------------
+// String contants
+// ---------------
+
 NSString* const kBTC2ServiceSizeKey = @"size";
 
 NSString* const kBTC2WalletAddressKey               = @"walletAddress";
@@ -23,3 +27,10 @@ NSString* const kBTC2IdentificationAvatarIDKey      = @"avatarID";
 
 NSString* const kBTC2ServiceProviderNameKey         = @"service";
 NSString* const kBTC2ServiceProviderUserIDKey       = @"userID";
+
+
+// --------------------
+// Notification strings
+// --------------------
+
+NSString* const kBTC2DeviceSessionKey               = @"kBTC2DeviceSessionKey";

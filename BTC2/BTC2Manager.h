@@ -10,10 +10,19 @@
 #import "BTC2CentralManager.h"
 #import "BTC2PeripheralManager.h"
 #import "BTC2BaseSession.h"
+#import "BTC2WalletModel.h"
+#import "BTC2IdentityModel.h"
+#import "BTC2ServiceProviderModel.h"
 
 @interface BTC2Manager : NSObject<BTC2DataUpdatedDelegate>
 @property (nonatomic, strong) BTC2CentralManager* central;
 @property (nonatomic, strong) BTC2PeripheralManager* peripheral;
+
+// Service information
+@property (nonatomic, strong) BTC2WalletModel* wallet;
+@property (nonatomic, strong) BTC2IdentityModel* identity;
+@property (nonatomic, strong) BTC2ServiceProviderModel* serviceProvider;
+
 -(void)enterCentralMode;
 -(void)enterPeripheralMode;
 -(void)enterNeutralMode;

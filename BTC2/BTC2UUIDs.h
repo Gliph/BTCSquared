@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Joakim Fernstad. All rights reserved.
 //
 
-#ifndef BTC2_BTC2UUIDs_h
-#define BTC2_BTC2UUIDs_h
+#ifndef BTC2_BTC2UUIDS_h
+#define BTC2_BTC2UUIDS_h
 
 // Base UUID
 extern NSString* const kBTC2BaseUUID;
@@ -54,4 +54,4 @@ extern NSString* const kBTC2ServiceProviderNameWriteUUID;
 extern NSString* const kBTC2ServiceProviderUserIDWriteUUID;
 
 
-#endif // BTC2_BTC2UUIDs_h
+#endif // BTC2_BTC2UUIDS_h

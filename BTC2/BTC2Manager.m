@@ -7,8 +7,9 @@
 //
 
 #import "BTC2Manager.h"
-#import "BTC2IdentityModel.h"
-#import "BTC2ServiceProviderModel.h"
+#import "BTC2Events.h"
+#import "BTC2Constants.h"
+#import "BTC2DeviceSession.h"
 
 typedef enum BTC2ManagerState {
     BTC2ManagerStateNeutral = 0,
@@ -28,31 +29,35 @@ typedef enum BTC2ManagerState {
 
 -(id)init{
     if ((self = [super init])){
-        self.central = [[BTC2CentralManager alloc] init];
+        self.central    = [[BTC2CentralManager alloc] init];
         self.peripheral = [[BTC2PeripheralManager alloc] init];
-     
-        BTC2WalletModel* walletModel = [[BTC2WalletModel alloc] init];
-        walletModel.walletAddress = @"1DdeszrHwfCFA9yNdoTAotSEgNpaVmv2DP"; // Donations!
-        walletModel.paymentRequest = [BTC2PaymentRequestModel requestAmount:@(1000)  withCurrency:@"BTC"];
-        
-        self.peripheral.wallet = walletModel;
-        
-        BTC2IdentityModel* idModel = [[BTC2IdentityModel alloc] init];
-        
-        idModel.pseudonym = @"HaxxorBot";
-        idModel.avatarURL = [NSURL URLWithString:@"http://robohash.org/haxxorbot.png"];
-        idModel.avatarServiceName = @"robohash";
-        idModel.avatarID = @"haxxxorbot";
-        
-        self.peripheral.avatar = idModel;
-        
-        BTC2ServiceProviderModel* providerModel = [[BTC2ServiceProviderModel alloc] init];
-        providerModel.serviceName = @"gliph";
-        providerModel.serviceUserID = @"di.di.di";
-        
-        self.peripheral.serviceProvider = providerModel;
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didFindPeripheral:)
+                                                     name:kBTC2DidDiscoverPeripheralNotification
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didFinalizeConnectionToPeripheral:)
+                                                     name:kBTC2DidFinalizeConnectionNotification
+                                                   object:nil];
     }
     return self;
+}
+
+-(void)didFindPeripheral:(NSNotification*)notification{
+}
+-(void)didFinalizeConnectionToPeripheral:(NSNotification*)notification{
+    // Device connected, time to write our info to it.
+    BTC2DeviceSession* session = [[notification object] objectForKey:kBTC2DeviceSessionKey];
+    
+    if (session) {
+        // Make sure the peripheral has our info
+        [session writeWalletModel:self.wallet];
+        [session writeIdentityModel:self.identity];
+        [session writeServiceProvider:self.serviceProvider];
+    }
+    
 }
 
 -(void)changeState:(NSTimer*)timer{
@@ -67,11 +72,9 @@ typedef enum BTC2ManagerState {
         case BTC2ManagerStatePeripheral:
             [self enterCentralMode];
             break;
-            
         default:
             break;
     }
-    
 }
 
 -(void)enterCentralMode{
@@ -87,6 +90,12 @@ typedef enum BTC2ManagerState {
     [[NSNotificationCenter defaultCenter] postNotificationName:kPeripheralModeStarted object:nil];
 
     self.managerState = BTC2ManagerStatePeripheral;
+    
+    // Give peripheral service information
+    self.peripheral.wallet          = self.wallet;
+    self.peripheral.identity        = self.identity;
+    self.peripheral.serviceProvider = self.serviceProvider;
+    
     [self.peripheral startAdvertising];
 }
 

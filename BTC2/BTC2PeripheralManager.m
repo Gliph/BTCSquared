@@ -78,8 +78,8 @@
             [self.peripheralManager addService:self.providerService];
         }
 
-        if (self.avatar) {
-            localName = self.avatar.pseudonym;
+        if (self.identity) {
+            localName = self.identity.pseudonym;
         }else{
             localName = [NSString stringWithFormat:@"HaxxorRobot %d", rand() % 99];
         }
@@ -123,17 +123,17 @@
         
         [characteristics addObject:characteristic];
         
-        characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2WalletPaymentWriteUUID]
-                                                            properties:CBCharacteristicPropertyWrite
+        characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2WalletPaymentIndicateUUID]
+                                                            properties:encryptionEnabled?CBCharacteristicPropertyIndicateEncryptionRequired:CBCharacteristicPropertyIndicate
                                                                  value:nil
-                                                           permissions:CBAttributePermissionsWriteable | (encryptionEnabled?CBAttributePermissionsWriteEncryptionRequired:0)];
+                                                           permissions:CBAttributePermissionsReadable | (encryptionEnabled?CBAttributePermissionsReadEncryptionRequired:0)];
         
         [characteristics addObject:characteristic];
         
-        characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2WalletNoticeWriteUUID]
-                                                            properties:CBCharacteristicPropertyWrite
+        characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2WalletNoticeIndicateUUID]
+                                                            properties:encryptionEnabled?CBCharacteristicPropertyIndicateEncryptionRequired:CBCharacteristicPropertyIndicate
                                                                  value:nil
-                                                           permissions:CBAttributePermissionsWriteable | (encryptionEnabled?CBAttributePermissionsWriteEncryptionRequired:0)];
+                                                           permissions:CBAttributePermissionsReadable | (encryptionEnabled?CBAttributePermissionsReadEncryptionRequired:0)];
         
         [characteristics addObject:characteristic];
         
@@ -147,17 +147,17 @@
         
         [characteristics addObject:characteristic];
         
-        characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2WalletPaymentIndicateUUID]
-                                                            properties:encryptionEnabled?CBCharacteristicPropertyIndicateEncryptionRequired:CBCharacteristicPropertyIndicate
+        characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2WalletPaymentWriteUUID]
+                                                            properties:CBCharacteristicPropertyWrite
                                                                  value:nil
-                                                           permissions:CBAttributePermissionsReadable | (encryptionEnabled?CBAttributePermissionsReadEncryptionRequired:0)];
+                                                           permissions:CBAttributePermissionsWriteable | (encryptionEnabled?CBAttributePermissionsWriteEncryptionRequired:0)];
         
         [characteristics addObject:characteristic];
         
-        characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2WalletNoticeIndicateUUID]
-                                                            properties:encryptionEnabled?CBCharacteristicPropertyIndicateEncryptionRequired:CBCharacteristicPropertyIndicate
+        characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2WalletNoticeWriteUUID]
+                                                            properties:CBCharacteristicPropertyWrite
                                                                  value:nil
-                                                           permissions:CBAttributePermissionsReadable | (encryptionEnabled?CBAttributePermissionsReadEncryptionRequired:0)];
+                                                           permissions:CBAttributePermissionsWriteable | (encryptionEnabled?CBAttributePermissionsWriteEncryptionRequired:0)];
         
         [characteristics addObject:characteristic];
         
@@ -188,39 +188,39 @@
         //
         // Central side
         //
-        if (self.avatar.pseudonym.length) {
+        if (self.identity.pseudonym.length) {
             characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2IDPseudonymReadUUID]
                                                                 properties:CBCharacteristicPropertyRead
-                                                                     value:[self.avatar pseudonymJSON]
+                                                                     value:[self.identity pseudonymJSON]
                                                                permissions:CBAttributePermissionsReadable | (encryptionEnabled?CBAttributePermissionsReadEncryptionRequired:0)];
             
             [characteristics addObject:characteristic];
         }
         
-        if (self.avatar.avatarURL) {
+        if (self.identity.avatarURL) {
             characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2IDAvatarURLReadUUID]
                                                                 properties:CBCharacteristicPropertyRead
-                                                                     value:[self.avatar avatarURLJSON]
+                                                                     value:[self.identity avatarURLJSON]
                                                                permissions:CBAttributePermissionsReadable | (encryptionEnabled?CBAttributePermissionsReadEncryptionRequired:0)];
             
             [characteristics addObject:characteristic];
             
         }
         
-        if (self.avatar.avatarServiceName.length && self.avatar.avatarID.length) {
+        if (self.identity.avatarServiceName.length && self.identity.avatarID.length) {
             characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2IDAvatarServiceReadUUID]
                                                                 properties:CBCharacteristicPropertyRead
-                                                                     value:[self.avatar avatarServiceNameJSON]
+                                                                     value:[self.identity avatarServiceNameJSON]
                                                                permissions:CBAttributePermissionsReadable | (encryptionEnabled?CBAttributePermissionsReadEncryptionRequired:0)];
             
             [characteristics addObject:characteristic];
             
         }
 
-        if (self.avatar.avatarServiceName.length && self.avatar.avatarID.length) {
+        if (self.identity.avatarServiceName.length && self.identity.avatarID.length) {
             characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2IDAvatarIDReadUUID]
                                                                 properties:CBCharacteristicPropertyRead
-                                                                     value:[self.avatar avatarIDJSON]
+                                                                     value:[self.identity avatarIDJSON]
                                                                permissions:CBAttributePermissionsReadable | (encryptionEnabled?CBAttributePermissionsReadEncryptionRequired:0)];
             
             [characteristics addObject:characteristic];

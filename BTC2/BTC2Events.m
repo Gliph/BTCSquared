@@ -9,3 +9,4 @@
 #import "BTC2Events.h"
 
 NSString* const kBTC2DidDiscoverPeripheralNotification = @"kBTC2DidDiscoverPeripheralNotification";
+NSString* const kBTC2DidFinalizeConnectionNotification = @"kBTC2DidFinalizeConnectionNotification";
