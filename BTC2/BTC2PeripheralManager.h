@@ -8,13 +8,22 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
-#import "BTC2WalletModel.h"
-#import "BTC2IdentityModel.h"
-#import "BTC2ServiceProviderModel.h"
+
+@class BTC2CentralSession;
+@class BTC2PeripheralManager;
+@class BTC2WriteQueue;
+@class BTC2WalletModel;
+@class BTC2IdentityModel;
+@class BTC2ServiceProviderModel;
 
 @interface BTC2PeripheralManager : NSObject<CBPeripheralManagerDelegate>
 @property (nonatomic, readonly) CBPeripheralManager* peripheralManager;
+@property (nonatomic, strong) BTC2CentralSession* connectedSession; // Can only have one
 @property (nonatomic, assign) BOOL useEncryption;
+@property (nonatomic, readonly) CBMutableService* walletService;
+@property (nonatomic, readonly) CBMutableService* idService;
+@property (nonatomic, readonly) CBMutableService* providerService;
+@property (nonatomic, readonly) BTC2WriteQueue* writeQueue;
 
 // Wallet service
 @property (nonatomic, strong) BTC2WalletModel* wallet;

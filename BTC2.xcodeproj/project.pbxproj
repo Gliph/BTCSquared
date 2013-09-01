@@ -23,6 +23,7 @@
 		8331DF17174887B200733BC3 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 8331DF16174887B200733BC3 /* Default.png */; };
 		8331DF19174887B200733BC3 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8331DF18174887B200733BC3 /* Default@2x.png */; };
 		8331DF1B174887B200733BC3 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8331DF1A174887B200733BC3 /* Default-568h@2x.png */; };
+		835013A217D2C9F20006FB9D /* BTC2WriteQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 835013A117D2C9F20006FB9D /* BTC2WriteQueue.m */; };
 		8373910E17C973A200CFFD99 /* BTC2Events.m in Sources */ = {isa = PBXBuildFile; fileRef = 8373910D17C973A200CFFD99 /* BTC2Events.m */; };
 		8373911117C9742400CFFD99 /* BTC2DeviceSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 8373911017C9742400CFFD99 /* BTC2DeviceSession.m */; };
 		8373911417C9783900CFFD99 /* BTC2UUIDs.m in Sources */ = {isa = PBXBuildFile; fileRef = 8373911317C9783900CFFD99 /* BTC2UUIDs.m */; };
@@ -79,6 +80,8 @@
 		8331DF16174887B200733BC3 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		8331DF18174887B200733BC3 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		8331DF1A174887B200733BC3 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		835013A017D2C9F20006FB9D /* BTC2WriteQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2WriteQueue.h; sourceTree = "<group>"; };
+		835013A117D2C9F20006FB9D /* BTC2WriteQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2WriteQueue.m; sourceTree = "<group>"; };
 		8373910C17C973A200CFFD99 /* BTC2Events.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2Events.h; sourceTree = "<group>"; };
 		8373910D17C973A200CFFD99 /* BTC2Events.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2Events.m; sourceTree = "<group>"; };
 		8373910F17C9742400CFFD99 /* BTC2DeviceSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2DeviceSession.h; sourceTree = "<group>"; };
@@ -207,6 +210,8 @@
 				83A4DCDB17CC4F7E001264BE /* NSDictionary+BTC2Extensions.m */,
 				83792FEE1748CC8F0077A2FF /* NSString+BTC2Extensions.h */,
 				83792FEF1748CC8F0077A2FF /* NSString+BTC2Extensions.m */,
+				835013A017D2C9F20006FB9D /* BTC2WriteQueue.h */,
+				835013A117D2C9F20006FB9D /* BTC2WriteQueue.m */,
 			);
 			path = BTC2;
 			sourceTree = "<group>";
@@ -407,6 +412,7 @@
 				83A4DCDC17CC4F7E001264BE /* NSDictionary+BTC2Extensions.m in Sources */,
 				83A4DCDF17CC505A001264BE /* BTC2Constants.m in Sources */,
 				83A4DCE217CC53DB001264BE /* BTC2PaymentRequestModel.m in Sources */,
+				835013A217D2C9F20006FB9D /* BTC2WriteQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

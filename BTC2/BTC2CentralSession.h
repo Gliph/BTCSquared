@@ -10,6 +10,8 @@
 #import "BTC2BaseSession.h"
 #import <CoreBluetooth/CoreBluetooth.h>
 
+@class BTC2PeripheralManager;
+
 @interface BTC2CentralSession : BTC2BaseSession
-@property (nonatomic, strong) CBPeripheralManager* peripheral;
+@property (nonatomic, strong) BTC2PeripheralManager* peripheral;
 @end

@@ -16,9 +16,9 @@ typedef enum BTC2WalletPropertyEnum {
 }BTC2WalletPropertyEnum;
 
 @interface BTC2WalletModel : NSObject
-@property (nonatomic, retain) NSString* walletAddress;
-@property (nonatomic, retain) NSString* notice;
-@property (nonatomic, retain) BTC2PaymentRequestModel* paymentRequest;
+@property (nonatomic, strong) NSString* walletAddress;
+@property (nonatomic, strong) NSString* notice;
+@property (nonatomic, strong) BTC2PaymentRequestModel* paymentRequest;
 
 -(NSData*)walletAddresJSON;
 -(NSData*)noticeJSON;

@@ -17,6 +17,7 @@
 @interface BTC2Manager : NSObject<BTC2DataUpdatedDelegate>
 @property (nonatomic, strong) BTC2CentralManager* central;
 @property (nonatomic, strong) BTC2PeripheralManager* peripheral;
+@property (nonatomic, strong) BTC2BaseSession* connectedSession; // TODO: Multiple sessions can be active. Rewrite
 
 // Service information
 @property (nonatomic, strong) BTC2WalletModel* wallet;

@@ -69,8 +69,19 @@
 - (IBAction)startPeripheralMode:(id)sender {
     [self.btc2Manager enterPeripheralMode];
 }
-- (IBAction)start:(id)sender {
+
+- (IBAction)requestBtc:(id)sender {
+    if (self.btc2Manager.connectedSession) {
+        [self.btc2Manager.connectedSession writePaymentRequest:[BTC2PaymentRequestModel requestAmount:@(3.14) withCurrency:@"btc"]];
+    }
 }
+
+- (IBAction)sendNotice:(id)sender {
+    if (self.btc2Manager.connectedSession) {
+        [self.btc2Manager.connectedSession writeNotice:@"Thanks dude. "];
+    }
+}
+
 - (IBAction)stop:(id)sender {
     DLog(@" STOP (Neutral mode)!");
     [self.btc2Manager enterNeutralMode];

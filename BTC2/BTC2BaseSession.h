@@ -7,9 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BTC2Constants.h"
+#import "BTC2UUIDs.h"
 #import "BTC2WalletModel.h"
 #import "BTC2IdentityModel.h"
 #import "BTC2ServiceProviderModel.h"
+#import <CoreBluetooth/CoreBluetooth.h>
 
 @class BTC2BaseSession;
 
@@ -27,4 +30,11 @@
 @property (nonatomic, strong) id<BTC2DataUpdatedDelegate> delegate;
 -(void)writeNotice:(NSString *)notice;
 -(void)writePaymentRequest:(BTC2PaymentRequestModel*)paymentRequest;
+
+-(void)addData:(NSData*)value forCharacteristic:(CBCharacteristic*)characteristic;
+
+-(void)executeOnMainThread:(void (^)())block; // TODO: Move this to a more general place
+-(void)postNotification:(NSString*)notificationName withDict:(NSDictionary*)dict;
+-(void)handleJSON:(NSData*)jsonData forUUID:(CBUUID*)uuid;
+
 @end

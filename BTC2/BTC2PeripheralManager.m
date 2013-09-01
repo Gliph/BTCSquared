@@ -8,14 +8,18 @@
 
 #import "BTC2PeripheralManager.h"
 #import "BTC2UUIDs.h"
+#import "BTC2Events.h"
+#import "BTC2WriteQueue.h"
+#import "BTC2WalletModel.h"
+#import "BTC2IdentityModel.h"
+#import "BTC2ServiceProviderModel.h"
+#import "BTC2CentralSession.h"
 
 @interface BTC2PeripheralManager ()
 @property (nonatomic, readwrite, strong) CBPeripheralManager* peripheralManager;
-@property (nonatomic, strong) CBMutableService* walletService;
-@property (nonatomic, strong) CBMutableService* idService;
-@property (nonatomic, strong) CBMutableService* providerService;
 @property (nonatomic, assign) BOOL shouldAdvertise;
 @property (nonatomic, strong) dispatch_queue_t peripheralQueue;
+@property (nonatomic, strong) BTC2WriteQueue* writeQueue;
 @end
 
 @implementation BTC2PeripheralManager
@@ -52,6 +56,7 @@
     if (self.peripheralManager.isAdvertising) {
         [self.peripheralManager stopAdvertising];
         self.shouldAdvertise = NO;
+        self.connectedSession = nil;
     }
     [self.peripheralManager removeAllServices];
 }
@@ -362,7 +367,18 @@
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic{
     DLog(@"didSubscribeToCharacteristic");
-    // TODO: Central connected! Create a BTC2CentralSession and pass to app
+
+    if (!self.connectedSession) {
+        self.connectedSession = [[BTC2CentralSession alloc] init];
+        self.connectedSession.peripheral = self;
+        
+        self.writeQueue = [[BTC2WriteQueue alloc] init];
+        self.writeQueue.peripheralManager = peripheral;
+        self.writeQueue.central = central;
+        
+        // Uhmkay this is a bit messy, post notification should live somewhere else, in a more generic place.
+        [self.connectedSession postNotification:kBTC2DidFinalizeConnectionNotification withDict:@{kBTC2DeviceSessionKey: self.connectedSession}];
+    }
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic{
@@ -378,12 +394,29 @@
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray *)requests{
     DLog(@"didReceiveWriteRequests");
+    
     // Keep a close eye on this one. Will be crucial for when the central offload data to the peripheral.
     // Use a object to keep track of pieces of information written per characteristic.
+
+    // Code duplication.. ugh
+    if (!self.connectedSession) {
+        self.connectedSession = [[BTC2CentralSession alloc] init];
+        self.connectedSession.peripheral = self;
+
+        self.writeQueue = [[BTC2WriteQueue alloc] init];
+        self.writeQueue.peripheralManager = peripheral;
+
+        // Uhmkay this is a bit messy, post notification should live somewhere else, in a more generic place.
+        [self.connectedSession postNotification:kBTC2DidFinalizeConnectionNotification withDict:@{kBTC2DeviceSessionKey: self.connectedSession}];
+    }
     
     for (CBATTRequest* req in requests) {
-        NSString* value = [[NSString alloc] initWithData:req.value encoding:NSUTF8StringEncoding];
-        DLog(@"Received Data: %@, offset: %d", value, req.offset);
+        // Add value to the proper characteristic buffer
+        if (!self.writeQueue.central) {
+            self.writeQueue.central = req.central;
+        }
+        
+        [self.connectedSession addData:req.value forCharacteristic:req.characteristic];
     }
     
     [peripheral respondToRequest:[requests objectAtIndex:0] withResult:CBATTErrorSuccess];
@@ -393,6 +426,12 @@
     DLog(@"peripheralManagerIsReadyToUpdateSubscribers");
     // Continue to send data to central, this is mostly for characteristics with indication/notification enabled.
     // Use a object that can divide a message properly and send it in chunks.
+    
+    if (self.writeQueue) {
+        while ([self.writeQueue writeNextChunk]) {
+            DLog(@"Wrote chunk.");
+        }
+    }
 }
 
 @end

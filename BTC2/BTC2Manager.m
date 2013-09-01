@@ -49,15 +49,20 @@ typedef enum BTC2ManagerState {
 }
 -(void)didFinalizeConnectionToPeripheral:(NSNotification*)notification{
     // Device connected, time to write our info to it.
-    BTC2DeviceSession* session = [[notification object] objectForKey:kBTC2DeviceSessionKey];
+    BTC2BaseSession* session = [[notification object] objectForKey:kBTC2DeviceSessionKey];
     
     if (session) {
-        // Make sure the peripheral has our info
-        [session writeWalletModel:self.wallet];
-        [session writeIdentityModel:self.identity];
-        [session writeServiceProvider:self.serviceProvider];
+        // A bit messy
+        if ([session respondsToSelector:@selector(writeWalletModel:)]) {
+            // Make sure the peripheral has our info
+            BTC2DeviceSession* deviceSession = (BTC2DeviceSession*)session;
+            [deviceSession writeWalletModel:self.wallet];
+            [deviceSession writeIdentityModel:self.identity];
+            [deviceSession writeServiceProvider:self.serviceProvider];
+        }
+        
+        self.connectedSession = session;
     }
-    
 }
 
 -(void)changeState:(NSTimer*)timer{
@@ -104,6 +109,7 @@ typedef enum BTC2ManagerState {
     [[NSNotificationCenter defaultCenter] postNotificationName:kNeutralModeStarted object:nil];
 
     self.managerState = BTC2ManagerStateNeutral;
+    self.connectedSession = nil;
     [self.central cleanup];
     [self.peripheral cleanup];
 }

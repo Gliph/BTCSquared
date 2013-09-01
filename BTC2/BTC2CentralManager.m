@@ -56,8 +56,9 @@
     DLog(@" Cleanup: STOPPING SCAN");
 
     self.shouldScan = NO;
+    self.deviceSessions = nil;
     
-    [self disconnectPeripheral];
+    [self disconnectPeripheral]; // <-- Disconnect all peripherals not just one. 
     [self.centralManager stopScan];
 }
 
@@ -139,6 +140,7 @@
 
 
 -(void)disconnectPeripheral{
+    // TODO: Rewrite
     if (self.connectedPeripheral) {
         DLog(@"Disconnecting peripheral: %@", self.connectedPeripheral.name);
         [self.centralManager cancelPeripheralConnection:self.connectedPeripheral];
