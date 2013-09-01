@@ -185,33 +185,18 @@
 		8331DF0A174887B200733BC3 /* BTC2 */ = {
 			isa = PBXGroup;
 			children = (
-				8373910C17C973A200CFFD99 /* BTC2Events.h */,
-				8373910D17C973A200CFFD99 /* BTC2Events.m */,
-				8373911217C9783900CFFD99 /* BTC2UUIDs.h */,
-				8373911317C9783900CFFD99 /* BTC2UUIDs.m */,
-				83A4DCDD17CC505A001264BE /* BTC2Constants.h */,
-				83A4DCDE17CC505A001264BE /* BTC2Constants.m */,
+				8364FEC717D3D017005CAF2E /* Controllers */,
+				8364FEC617D3CF69005CAF2E /* Constants */,
 				8376DB1017488A1200B95961 /* Delegates */,
 				8381D1C117696738009E2BA4 /* Models */,
 				8376DB0F174889FE00B95961 /* Requests */,
 				8376DB0E174889F900B95961 /* Views */,
 				8376DB0D174889F200B95961 /* ViewControllers */,
-				8376DB0B1748899300B95961 /* Storyboard.storyboard */,
-				682416B8174897A600FB0441 /* coinbase-logo.png */,
-				682416B9174897A600FB0441 /* coinbase-logo@2x.png */,
-				8376DAED1748888C00B95961 /* BTC2Manager.h */,
-				8376DAEE1748888C00B95961 /* BTC2Manager.m */,
+				8364FEC517D3CF3E005CAF2E /* Extensions */,
 				8376DB14174893FF00B95961 /* BTC2CircleLayout.h */,
 				8376DB15174893FF00B95961 /* BTC2CircleLayout.m */,
+				8364FEC817D3D0EC005CAF2E /* Resources */,
 				8331DF0B174887B200733BC3 /* Supporting Files */,
-				8376DB1B1748B49700B95961 /* UIColor+BTC2Extensions.h */,
-				8376DB1C1748B49700B95961 /* UIColor+BTC2Extensions.m */,
-				83A4DCDA17CC4F7E001264BE /* NSDictionary+BTC2Extensions.h */,
-				83A4DCDB17CC4F7E001264BE /* NSDictionary+BTC2Extensions.m */,
-				83792FEE1748CC8F0077A2FF /* NSString+BTC2Extensions.h */,
-				83792FEF1748CC8F0077A2FF /* NSString+BTC2Extensions.m */,
-				835013A017D2C9F20006FB9D /* BTC2WriteQueue.h */,
-				835013A117D2C9F20006FB9D /* BTC2WriteQueue.m */,
 			);
 			path = BTC2;
 			sourceTree = "<group>";
@@ -228,6 +213,59 @@
 				8331DF1A174887B200733BC3 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8364FEC517D3CF3E005CAF2E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8376DB1B1748B49700B95961 /* UIColor+BTC2Extensions.h */,
+				8376DB1C1748B49700B95961 /* UIColor+BTC2Extensions.m */,
+				83A4DCDA17CC4F7E001264BE /* NSDictionary+BTC2Extensions.h */,
+				83A4DCDB17CC4F7E001264BE /* NSDictionary+BTC2Extensions.m */,
+				83792FEE1748CC8F0077A2FF /* NSString+BTC2Extensions.h */,
+				83792FEF1748CC8F0077A2FF /* NSString+BTC2Extensions.m */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		8364FEC617D3CF69005CAF2E /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				8373910C17C973A200CFFD99 /* BTC2Events.h */,
+				8373910D17C973A200CFFD99 /* BTC2Events.m */,
+				8373911217C9783900CFFD99 /* BTC2UUIDs.h */,
+				8373911317C9783900CFFD99 /* BTC2UUIDs.m */,
+				83A4DCDD17CC505A001264BE /* BTC2Constants.h */,
+				83A4DCDE17CC505A001264BE /* BTC2Constants.m */,
+			);
+			name = Constants;
+			sourceTree = "<group>";
+		};
+		8364FEC717D3D017005CAF2E /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8376DAED1748888C00B95961 /* BTC2Manager.h */,
+				8376DAEE1748888C00B95961 /* BTC2Manager.m */,
+				8373911817C9AE5C00CFFD99 /* BTC2BaseSession.h */,
+				8373911917C9AE5C00CFFD99 /* BTC2BaseSession.m */,
+				8373910F17C9742400CFFD99 /* BTC2DeviceSession.h */,
+				8373911017C9742400CFFD99 /* BTC2DeviceSession.m */,
+				8373911517C9AE0400CFFD99 /* BTC2CentralSession.h */,
+				8373911617C9AE0400CFFD99 /* BTC2CentralSession.m */,
+				835013A017D2C9F20006FB9D /* BTC2WriteQueue.h */,
+				835013A117D2C9F20006FB9D /* BTC2WriteQueue.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		8364FEC817D3D0EC005CAF2E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8376DB0B1748899300B95961 /* Storyboard.storyboard */,
+				682416B8174897A600FB0441 /* coinbase-logo.png */,
+				682416B9174897A600FB0441 /* coinbase-logo@2x.png */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		8376DB0D174889F200B95961 /* ViewControllers */ = {
@@ -293,12 +331,6 @@
 		8381D1C117696738009E2BA4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				8373911817C9AE5C00CFFD99 /* BTC2BaseSession.h */,
-				8373911917C9AE5C00CFFD99 /* BTC2BaseSession.m */,
-				8373910F17C9742400CFFD99 /* BTC2DeviceSession.h */,
-				8373911017C9742400CFFD99 /* BTC2DeviceSession.m */,
-				8373911517C9AE0400CFFD99 /* BTC2CentralSession.h */,
-				8373911617C9AE0400CFFD99 /* BTC2CentralSession.m */,
 				83AC296617CABDD500B4B026 /* BTC2WalletModel.h */,
 				83AC296717CABDD500B4B026 /* BTC2WalletModel.m */,
 				83A4DCE017CC53DB001264BE /* BTC2PaymentRequestModel.h */,
