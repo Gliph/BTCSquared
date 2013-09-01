@@ -62,9 +62,9 @@ To make coin transfer easy for the peripheral side, we need to duplicate the cha
 - Wallet address Read characteristic. Central READs the wallet address from the peripheral. 
 - Wallet address Write characteristic. Central WRITEs it's wallet address to the peripheral. 
 - Payment request Write characteristic. Central WRITEs a payment request to the peripheral. 
-- Payment request Indicate characteristic. Peripheral INDICATEs that a payment request is initiated.
-- Notice Write characteristic. Central WRITEs that it has transferred bitcoins.  
-- Notice Indicate characteristic. Peripheral INDICATEs that it has transferred bitcoins.  
+- Payment request Notification characteristic. Peripheral NOTIFY that a payment request is initiated.
+- Notice Write characteristic. Central WRITEs that it has transferred bitcoins (or other info).  
+- Notice Notification characteristic. Peripheral NOTIFY that it has transferred bitcoins (or other info).  
 
 A bit complex but luckily the user doesn't have to know. 
 
