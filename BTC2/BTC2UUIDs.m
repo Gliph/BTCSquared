@@ -20,8 +20,8 @@ NSString* const kBTC2WalletPaymentWriteUUID         = @"0000D9A2-AAA7-4E52-BB94-
 NSString* const kBTC2WalletNoticeWriteUUID          = @"0000D9A3-AAA7-4E52-BB94-03EF9B262830";
 // Peripheral initiates
 NSString* const kBTC2WalletAddressWriteUUID         = @"0000D9B1-AAA7-4E52-BB94-03EF9B262830";
-NSString* const kBTC2WalletPaymentIndicateUUID      = @"0000D9B2-AAA7-4E52-BB94-03EF9B262830";
-NSString* const kBTC2WalletNoticeIndicateUUID       = @"0000D9B3-AAA7-4E52-BB94-03EF9B262830";
+NSString* const kBTC2WalletPaymentNotificationUUID  = @"0000D9B2-AAA7-4E52-BB94-03EF9B262830";
+NSString* const kBTC2WalletNoticeNotificationUUID   = @"0000D9B3-AAA7-4E52-BB94-03EF9B262830";
 
 //
 // Identification service

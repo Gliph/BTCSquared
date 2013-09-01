@@ -62,46 +62,36 @@ typedef enum BTC2ManagerState {
         }
         
         self.connectedSession = session;
-    }
-}
-
--(void)changeState:(NSTimer*)timer{
-    DLog(@"changeState");
-
-    switch (self.managerState) {
-        case BTC2ManagerStateNeutral:
-            break;
-        case BTC2ManagerStateCentral:
-            [self enterPeripheralMode];
-            break;
-        case BTC2ManagerStatePeripheral:
-            [self enterCentralMode];
-            break;
-        default:
-            break;
+        self.connectedSession.delegate = self;
     }
 }
 
 -(void)enterCentralMode{
     DLog(@"enterCentralMode");
-    [[NSNotificationCenter defaultCenter] postNotificationName:kCentralModeStarted object:nil];
     
-    self.managerState = BTC2ManagerStateCentral;
-    [self.central startScan];
+    if (self.managerState != BTC2ManagerStateCentral ) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kCentralModeStarted object:nil];
+        
+        self.managerState = BTC2ManagerStateCentral;
+        [self.central startScan];
+    }
 }
 
 -(void)enterPeripheralMode{
     DLog(@"enterPeripheralMode");
-    [[NSNotificationCenter defaultCenter] postNotificationName:kPeripheralModeStarted object:nil];
 
-    self.managerState = BTC2ManagerStatePeripheral;
-    
-    // Give peripheral service information
-    self.peripheral.wallet          = self.wallet;
-    self.peripheral.identity        = self.identity;
-    self.peripheral.serviceProvider = self.serviceProvider;
-    
-    [self.peripheral startAdvertising];
+    if (self.managerState != BTC2ManagerStateCentral ) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kPeripheralModeStarted object:nil];
+
+        self.managerState = BTC2ManagerStatePeripheral;
+        
+        // Give peripheral service information
+        self.peripheral.wallet          = self.wallet;
+        self.peripheral.identity        = self.identity;
+        self.peripheral.serviceProvider = self.serviceProvider;
+        
+        [self.peripheral startAdvertising];
+    }
 }
 
 -(void)enterNeutralMode{
@@ -114,17 +104,20 @@ typedef enum BTC2ManagerState {
     [self.peripheral cleanup];
 }
 
-#pragma mark - BTC2DataUpdatedDelegate
+#pragma mark - BTC2DataUpdatedDelegate - Debug only, the manager shouldn't really be a delegate
 
 -(void)btc2DidUpdateWalletProperty:(BTC2WalletPropertyEnum)property forSession:(BTC2BaseSession *)session{
     DLog(@"Updated property %d ", property);
 
     switch (property) {
         case BTC2WalletPropertyWalletAddress:
+            DLog(@"%@", session.wallet.walletAddress);
             break;
         case BTC2WalletPropertyNotice:
+            DLog(@"%@", session.wallet.notice);
             break;
         case BTC2WalletPropertyPaymentRequest:
+            DLog(@"%@", [session.wallet.paymentRequest description]);
             break;
         default:
             break;
@@ -132,14 +125,20 @@ typedef enum BTC2ManagerState {
 }
 
 -(void)btc2DidUpdateIdentityProperty:(BTC2IdentityPropertyEnum)property forSession:(BTC2BaseSession *)session{
+    DLog(@"Updated property %d ", property);
+
     switch (property) {
         case BTC2IdentityPropertyPseudonym:
+            DLog(@"%@", session.identity.pseudonym);
             break;
         case BTC2IdentityPropertyAvatarServiceName:
+            DLog(@"%@", session.identity.avatarServiceName);
             break;
         case BTC2IdentityPropertyAvatarID:
+            DLog(@"%@", session.identity.avatarID);
             break;
         case BTC2IdentityPropertyAvatarURL:
+            DLog(@"%@", session.identity.avatarURL);
             break;
         default:
             break;
@@ -147,10 +146,14 @@ typedef enum BTC2ManagerState {
 }
 
 -(void)btc2DidUpdateServiceProvider:(BTC2ServiceProviderPropertyEnum)property forSession:(BTC2BaseSession *)session{
+    DLog(@"Updated property %d ", property);
+
     switch (property) {
         case BTC2ServiceProviderPropertyServiceName:
+            DLog(@"%@", session.serviceProvider.serviceName);
             break;
         case BTC2ServiceProviderPropertyServiceUserID:
+            DLog(@"%@", session.serviceProvider.serviceUserID);
             break;
         default:
             break;

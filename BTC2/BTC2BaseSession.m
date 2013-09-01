@@ -129,8 +129,8 @@
                     }];
                 }
             }
-            // TODO: Verify this one.
-            if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2WalletPaymentIndicateUUID]] ||
+
+            if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2WalletPaymentNotificationUUID]] ||
                 [uuid isEqual:[CBUUID UUIDWithString:kBTC2WalletPaymentWriteUUID]]) {
                 self.wallet.paymentRequest = [BTC2PaymentRequestModel requestAmount:[jsonDict objectForKey:kBTC2WalletPaymentReqAmountKey]
                                                                        withCurrency:[jsonDict objectForKey:kBTC2WalletPaymentCurrencyKey]];
@@ -140,7 +140,7 @@
                     }];
                 }
             }
-            if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2WalletNoticeIndicateUUID]] ||
+            if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2WalletNoticeNotificationUUID]] ||
                 [uuid isEqual:[CBUUID UUIDWithString:kBTC2WalletNoticeWriteUUID]]) {
                 self.wallet.notice = [jsonDict objectForKey:kBTC2WalletNoticeKey];
                 if ([self.delegate respondsToSelector:@selector(btc2DidUpdateWalletProperty:forSession:)]) {
@@ -152,7 +152,7 @@
             
             // Identity service
             if ([uuid isEqual:[CBUUID UUIDWithString:kBTC2IDPseudonymReadUUID]] ||
-                [uuid isEqual:[CBUUID UUIDWithString:kBTC2WalletNoticeIndicateUUID]]) {
+                [uuid isEqual:[CBUUID UUIDWithString:kBTC2IDPseudonymWriteUUID]]) {
                 self.identity.pseudonym = [jsonDict objectForKey:kBTC2IdentificationPseudonymKey];
                 if ([self.delegate respondsToSelector:@selector(btc2DidUpdateIdentityProperty:forSession:)]) {
                     [self executeOnMainThread:^{

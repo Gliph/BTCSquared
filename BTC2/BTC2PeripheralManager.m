@@ -103,6 +103,13 @@
     }
 }
 
+-(void)enqueueData:(NSData*)data forCharacteristic:(CBMutableCharacteristic*)characteristic{
+    if (data.length && characteristic) {
+        [self.writeQueue enqueueData:data forCharacteristic:characteristic];
+        [self.writeQueue writeNextChunk];
+    }
+}
+
 // Wallet service
 -(CBMutableService*)walletService{
     
@@ -128,15 +135,15 @@
         
         [characteristics addObject:characteristic];
         
-        characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2WalletPaymentIndicateUUID]
-                                                            properties:encryptionEnabled?CBCharacteristicPropertyIndicateEncryptionRequired:CBCharacteristicPropertyIndicate
+        characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2WalletPaymentNotificationUUID]
+                                                            properties:encryptionEnabled?CBCharacteristicPropertyNotifyEncryptionRequired:CBCharacteristicPropertyNotify
                                                                  value:nil
                                                            permissions:CBAttributePermissionsReadable | (encryptionEnabled?CBAttributePermissionsReadEncryptionRequired:0)];
         
         [characteristics addObject:characteristic];
         
-        characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2WalletNoticeIndicateUUID]
-                                                            properties:encryptionEnabled?CBCharacteristicPropertyIndicateEncryptionRequired:CBCharacteristicPropertyIndicate
+        characteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:kBTC2WalletNoticeNotificationUUID]
+                                                            properties:encryptionEnabled?CBCharacteristicPropertyNotifyEncryptionRequired:CBCharacteristicPropertyNotify
                                                                  value:nil
                                                            permissions:CBAttributePermissionsReadable | (encryptionEnabled?CBAttributePermissionsReadEncryptionRequired:0)];
         
@@ -428,9 +435,7 @@
     // Use a object that can divide a message properly and send it in chunks.
     
     if (self.writeQueue) {
-        while ([self.writeQueue writeNextChunk]) {
-            DLog(@"Wrote chunk.");
-        }
+        [self.writeQueue writeNextChunk];
     }
 }
 

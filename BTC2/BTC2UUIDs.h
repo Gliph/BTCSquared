@@ -22,8 +22,8 @@ extern NSString* const kBTC2WalletPaymentWriteUUID;
 extern NSString* const kBTC2WalletNoticeWriteUUID;
 // Peripheral initiates
 extern NSString* const kBTC2WalletAddressWriteUUID;
-extern NSString* const kBTC2WalletPaymentIndicateUUID;
-extern NSString* const kBTC2WalletNoticeIndicateUUID;
+extern NSString* const kBTC2WalletPaymentNotificationUUID;
+extern NSString* const kBTC2WalletNoticeNotificationUUID;
 
 //
 // Identification service

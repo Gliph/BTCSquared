@@ -35,6 +35,7 @@
 @property (nonatomic, strong) BTC2ServiceProviderModel* serviceProvider;
 
 + (BTC2PeripheralManager*)manager;
+-(void)enqueueData:(NSData*)data forCharacteristic:(CBMutableCharacteristic*)characteristic;
 -(void)startAdvertising;
 -(void)stopAdvertising;
 -(void)cleanup;

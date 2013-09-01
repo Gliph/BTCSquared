@@ -193,8 +193,8 @@
         }
 
         // Enable indications
-        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2WalletNoticeIndicateUUID]] ||
-            [characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2WalletPaymentIndicateUUID]]){
+        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2WalletNoticeNotificationUUID]] ||
+            [characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2WalletPaymentNotificationUUID]]){
             [peripheral setNotifyValue:YES forCharacteristic:characteristic];
         }
     }

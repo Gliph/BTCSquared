@@ -59,6 +59,8 @@
         
         if (!chunkLength) {
             DLog(@"Something is clearly off. Chunk should be bigger than 0.");
+            canContinue = NO;
+            continue;
         }
         
         chunk = [NSData dataWithBytes:[current.data bytes] + current.offset length:chunkLength];
