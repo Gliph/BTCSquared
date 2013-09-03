@@ -30,7 +30,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BTC2IdentityModel.h"
 
 @interface BTC2NameViewController : UIViewController
-
+@property (nonatomic, strong) BTC2IdentityModel* identity;
 @end

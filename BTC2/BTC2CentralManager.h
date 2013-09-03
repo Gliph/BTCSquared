@@ -32,12 +32,14 @@
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 
+@class BTC2DeviceSession;
+
 @interface BTC2CentralManager : NSObject<CBCentralManagerDelegate>
 @property (nonatomic, readonly) CBCentralManager* centralManager;
-@property (nonatomic, strong) NSArray* sessions;
 @property (nonatomic, readonly) NSArray* activeSessions;
-@property (nonatomic, strong) CBPeripheral* foundPeripheral; // Obsolete
 + (BTC2CentralManager*)manager;
+-(void)connectSession:(BTC2DeviceSession*)session;
+-(void)disconnectPeripherals;
 -(void)startScan;
 -(void)cleanup;
 @end

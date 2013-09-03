@@ -22,7 +22,7 @@
  **/
 
 //
-//  BTC2ViewController.m
+//  BTC2DebugViewController.m
 //  BTC2
 //
 //  Created by Joakim Fernstad on 5/17/13.
@@ -94,15 +94,15 @@
 }
 
 - (IBAction)requestBtc:(id)sender {
-    if (self.btc2Manager.connectedSession) {
-        [self.btc2Manager.connectedSession writePaymentRequest:[BTC2PaymentRequestModel requestAmount:@(3.14) withCurrency:@"btc"]];
-    }
+//    if (self.btc2Manager.connectedSession) {
+//        [self.btc2Manager.connectedSession writePaymentRequest:[BTC2PaymentRequestModel requestAmount:@(3.14) withCurrency:@"btc"]];
+//    }
 }
 
 - (IBAction)sendNotice:(id)sender {
-    if (self.btc2Manager.connectedSession) {
-        [self.btc2Manager.connectedSession writeNotice:@"Thanks dude. "];
-    }
+//    if (self.btc2Manager.connectedSession) {
+//        [self.btc2Manager.connectedSession writeNotice:@"Thanks dude. "];
+//    }
 }
 
 - (IBAction)stop:(id)sender {
@@ -110,9 +110,9 @@
     [self.btc2Manager enterNeutralMode];
 }
 - (IBAction)connectPeripheral:(id)sender {
-    if (self.btc2Manager.central.foundPeripheral) {
-        [self.btc2Manager.central.centralManager connectPeripheral:self.btc2Manager.central.foundPeripheral options:nil];
-    }
+//    if (self.btc2Manager.central.foundPeripheral) {
+//        [self.btc2Manager.central.centralManager connectPeripheral:self.btc2Manager.central.foundPeripheral options:nil];
+//    }
 }
 
 -(void)modeNotification:(NSNotification*)not{

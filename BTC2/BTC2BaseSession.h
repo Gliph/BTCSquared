@@ -55,9 +55,6 @@
 -(void)writePaymentRequest:(BTC2PaymentRequestModel*)paymentRequest;
 
 -(void)addData:(NSData*)value forCharacteristic:(CBCharacteristic*)characteristic;
-
--(void)executeOnMainThread:(void (^)())block; // TODO: Move this to a more general place
--(void)postNotification:(NSString*)notificationName withDict:(NSDictionary*)dict;
 -(void)handleJSON:(NSData*)jsonData forUUID:(CBUUID*)uuid;
 
 @end

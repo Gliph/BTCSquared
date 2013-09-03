@@ -30,7 +30,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BTC2BaseSession.h"
 
-@interface BTC2WorldViewController : UICollectionViewController
+@interface BTC2WorldViewController : UICollectionViewController<BTC2DataUpdatedDelegate>
 @property (nonatomic, strong) NSMutableArray* peripherals;
 @end

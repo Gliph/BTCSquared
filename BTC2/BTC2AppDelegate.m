@@ -38,11 +38,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
-    UIStoryboard* story = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
-    BTC2DebugViewController* vc = [story instantiateInitialViewController];
-
 //    UIStoryboard* story = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
-//    BTC2WorldViewController* vc = [story instantiateInitialViewController];
+//    BTC2DebugViewController* vc = [story instantiateInitialViewController];
+
+    UIStoryboard* story = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
+    BTC2WorldViewController* vc = [story instantiateInitialViewController];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.

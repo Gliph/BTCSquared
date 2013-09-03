@@ -30,6 +30,7 @@
 //
 
 #import "BTC2BaseSession.h"
+#import "NSObject+BTC2Extensions.h"
 
 @interface BTC2BaseSession ()
 @property (nonatomic, strong) NSMutableDictionary* buffers;
@@ -147,7 +148,7 @@
                 self.wallet.walletAddress = [jsonDict objectForKey:kBTC2WalletAddressKey];
                 
                 if ([self.delegate respondsToSelector:@selector(btc2DidUpdateWalletProperty:forSession:)]) {
-                    [self executeOnMainThread:^{
+                    [NSObject btc2ExecuteOnMainThread:^{
                         [self.delegate btc2DidUpdateWalletProperty:BTC2WalletPropertyWalletAddress forSession:self];
                     }];
                 }
@@ -158,7 +159,7 @@
                 self.wallet.paymentRequest = [BTC2PaymentRequestModel requestAmount:[jsonDict objectForKey:kBTC2WalletPaymentReqAmountKey]
                                                                        withCurrency:[jsonDict objectForKey:kBTC2WalletPaymentCurrencyKey]];
                 if ([self.delegate respondsToSelector:@selector(btc2DidUpdateWalletProperty:forSession:)]) {
-                    [self executeOnMainThread:^{
+                    [NSObject btc2ExecuteOnMainThread:^{
                         [self.delegate btc2DidUpdateWalletProperty:BTC2WalletPropertyPaymentRequest forSession:self];
                     }];
                 }
@@ -167,7 +168,7 @@
                 [uuid isEqual:[CBUUID UUIDWithString:kBTC2WalletNoticeWriteUUID]]) {
                 self.wallet.notice = [jsonDict objectForKey:kBTC2WalletNoticeKey];
                 if ([self.delegate respondsToSelector:@selector(btc2DidUpdateWalletProperty:forSession:)]) {
-                    [self executeOnMainThread:^{
+                    [NSObject btc2ExecuteOnMainThread:^{
                         [self.delegate btc2DidUpdateWalletProperty:BTC2WalletPropertyNotice forSession:self];
                     }];
                 }
@@ -178,7 +179,7 @@
                 [uuid isEqual:[CBUUID UUIDWithString:kBTC2IDPseudonymWriteUUID]]) {
                 self.identity.pseudonym = [jsonDict objectForKey:kBTC2IdentificationPseudonymKey];
                 if ([self.delegate respondsToSelector:@selector(btc2DidUpdateIdentityProperty:forSession:)]) {
-                    [self executeOnMainThread:^{
+                    [NSObject btc2ExecuteOnMainThread:^{
                         [self.delegate btc2DidUpdateIdentityProperty:BTC2IdentityPropertyPseudonym forSession:self];
                     }];
                 }
@@ -187,7 +188,7 @@
                 [uuid isEqual:[CBUUID UUIDWithString:kBTC2IDAvatarServiceWriteUUID]]) {
                 self.identity.avatarServiceName = [jsonDict objectForKey:kBTC2IdentificationAvatarServiceKey];
                 if ([self.delegate respondsToSelector:@selector(btc2DidUpdateIdentityProperty:forSession:)]) {
-                    [self executeOnMainThread:^{
+                    [NSObject btc2ExecuteOnMainThread:^{
                         [self.delegate btc2DidUpdateIdentityProperty:BTC2IdentityPropertyAvatarServiceName forSession:self];
                     }];
                 }
@@ -196,7 +197,7 @@
                 [uuid isEqual:[CBUUID UUIDWithString:kBTC2IDAvatarIDWriteUUID]]) {
                 self.identity.avatarID = [jsonDict objectForKey:kBTC2IdentificationAvatarIDKey];
                 if ([self.delegate respondsToSelector:@selector(btc2DidUpdateIdentityProperty:forSession:)]) {
-                    [self executeOnMainThread:^{
+                    [NSObject btc2ExecuteOnMainThread:^{
                         [self.delegate btc2DidUpdateIdentityProperty:BTC2IdentityPropertyAvatarID forSession:self];
                     }];
                 }
@@ -206,7 +207,7 @@
                 [uuid isEqual:[CBUUID UUIDWithString:kBTC2IDAvatarURLWriteUUID]]) {
                 self.identity.avatarURL = [NSURL URLWithString:[jsonDict objectForKey:kBTC2IdentificationAvatarURLKey]];
                 if ([self.delegate respondsToSelector:@selector(btc2DidUpdateIdentityProperty:forSession:)]) {
-                    [self executeOnMainThread:^{
+                    [NSObject btc2ExecuteOnMainThread:^{
                         [self.delegate btc2DidUpdateIdentityProperty:BTC2IdentityPropertyAvatarURL forSession:self];
                     }];
                 }
@@ -217,7 +218,7 @@
                 [uuid isEqual:[CBUUID UUIDWithString:kBTC2ServiceProviderNameWriteUUID]]) {
                 self.serviceProvider.serviceName = [jsonDict objectForKey:kBTC2ServiceProviderNameKey];
                 if ([self.delegate respondsToSelector:@selector(btc2DidUpdateServiceProvider:forSession:)]) {
-                    [self executeOnMainThread:^{
+                    [NSObject btc2ExecuteOnMainThread:^{
                         [self.delegate btc2DidUpdateServiceProvider:BTC2ServiceProviderPropertyServiceName forSession:self];
                     }];
                 }
@@ -226,7 +227,7 @@
                 [uuid isEqual:[CBUUID UUIDWithString:kBTC2ServiceProviderUserIDWriteUUID]]) {
                 self.serviceProvider.serviceUserID = [jsonDict objectForKey:kBTC2ServiceProviderUserIDKey];
                 if ([self.delegate respondsToSelector:@selector(btc2DidUpdateServiceProvider:forSession:)]) {
-                    [self executeOnMainThread:^{
+                    [NSObject btc2ExecuteOnMainThread:^{
                         [self.delegate btc2DidUpdateServiceProvider:BTC2ServiceProviderPropertyServiceUserID forSession:self];
                     }];
                 }
@@ -238,30 +239,5 @@
         DLog(@"Error: %@", error);
     }
 }
-
--(void)executeOnMainThread:(void (^)())block{
-    __block UIBackgroundTaskIdentifier task = UIBackgroundTaskInvalid;
-    
-    task = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-        // Kill the offending task!
-        [[UIApplication sharedApplication] endBackgroundTask:task];
-        task = UIBackgroundTaskInvalid;
-    }];
-    
-    void (^executionBlock)() = ^(){
-        block();
-        [[UIApplication sharedApplication] endBackgroundTask:task];
-        task = UIBackgroundTaskInvalid;
-    };
-    
-    dispatch_async(dispatch_get_main_queue(), executionBlock);
-}
-
--(void)postNotification:(NSString*)notificationName withDict:(NSDictionary*)dict{
-    [self executeOnMainThread:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:dict];
-    }];
-}
-
 
 @end

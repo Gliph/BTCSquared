@@ -22,7 +22,7 @@
  **/
 
 //
-//  BTC2ViewController.h
+//  BTC2DebugViewController.h
 //  BTC2
 //
 //  Created by Joakim Fernstad on 5/17/13.

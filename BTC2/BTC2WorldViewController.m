@@ -31,7 +31,15 @@
 
 #import "BTC2WorldViewController.h"
 #import "BTC2CircleLayout.h"
-#import "BTC2RobotViewCell.h"
+#import "BTC2AvatarViewCell.h"
+
+#import "BTC2Manager.h"
+#import "BTC2WalletModel.h"
+#import "BTC2IdentityModel.h"
+#import "BTC2ServiceProviderModel.h"
+#import "BTC2Constants.h"
+#import "BTC2Events.h"
+#import "BTC2DeviceSession.h"
 
 #import "BTC2NameViewController.h"
 #import "BTC2NewTransactionViewController.h"
@@ -42,8 +50,12 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface BTC2WorldViewController ()
+@property (nonatomic, assign, getter = isBtc2Enabled) BOOL btc2Enabled;
+@property (nonatomic, strong) BTC2Manager* btc2Manager;
+@property (nonatomic, strong) BTC2BaseSession* localSession;
+@property (nonatomic, weak) BTC2DeviceSession* tappedSession;
+
 -(void)peripheralAdded:(NSNotification*)not;
--(void)setupContextMenu;
 
 -(void)didAttachWallet:(NSNotification*)not;
 
@@ -53,19 +65,12 @@
 -(void)changeName:(id)sender;
 -(void)sendBTC:(id)sender;
 -(void)requestBTC:(id)sender;
--(void)showFriends:(id)sender;
+-(void)enableBTC2:(id)sender;
+-(void)connectSession:(id)sender;
+-(void)disconnectSession:(id)sender;
 @end
 
 @implementation BTC2WorldViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -82,7 +87,7 @@
  
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(peripheralAdded:)
-                                                 name:kPeripheralAddedNotification
+                                                 name:kBTC2DidDiscoverPeripheralNotification
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -90,21 +95,31 @@
                                                  name:kWalletAddedNotification
                                                object:nil];
     
-    int64_t delta = (int64_t)(1.0e9 * 5);
-//	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delta), dispatch_get_main_queue(), ^{
-//        [self.peripherals addObject:@"Bito"];
-//        [self.peripherals addObject:@"Coino"];
-//        [self.peripherals addObject:@"Satoshio"];
-//        [self.collectionView reloadData];
-//        
-//        [[NSUserDefaults standardUserDefaults] setObject:@"FakeWallet" forKey:kUserWalletKey];
-//        [self setupContextMenu];
-//        
-//        // Debug
-//        //[[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserWalletKey];
-//    });
-
+    self.btc2Enabled = NO;
     
+    self.btc2Manager  = [[BTC2Manager alloc] init];
+    self.localSession = [[BTC2BaseSession alloc] init];
+    
+    BTC2WalletModel* walletModel            = [[BTC2WalletModel alloc] init];
+    BTC2IdentityModel* idModel              = [[BTC2IdentityModel alloc] init];
+    BTC2ServiceProviderModel* providerModel = [[BTC2ServiceProviderModel alloc] init];
+    
+    walletModel.walletAddress       = @"1DdeszrHwfCFA9yNdoTAotSEgNpaVmv2DP"; // Donations!
+    
+    idModel.pseudonym               = @"FloBot";
+    idModel.avatarID                = @"flo";
+    idModel.avatarServiceName       = @"robohash";
+    idModel.avatarURL               = [NSURL URLWithString:@"http://robohash.org/flobot.png"];
+    
+    providerModel.serviceName       = @"gliph";
+    providerModel.serviceUserID     = @"di.di.di";
+    
+    self.localSession.wallet             = walletModel;
+    self.localSession.identity           = idModel;
+    self.localSession.serviceProvider    = providerModel;
+    
+    self.peripherals = [[NSMutableArray alloc] initWithCapacity:1];
+    [self.peripherals addObject:self.localSession];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -116,41 +131,49 @@
     layout.cellSize = CGSizeMake(100, 120);
     layout.radius   = 130;
 
+    [self.collectionView reloadData];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    
-    [self setupContextMenu];
 }
 
--(void)setupContextMenu{
-    UIMenuController* controller = [UIMenuController sharedMenuController];
+-(void)setupContextMenuForFriends:(BOOL)yesForFriends andConnectionState:(BOOL)connected{
+    UIMenuController* menuController = [UIMenuController sharedMenuController];
+    
     NSMutableArray* menuOptions = [NSMutableArray arrayWithCapacity:3];
     UIMenuItem* anItem = nil;
-    
-    // Wallet attached
-//    if ([[NSUserDefaults standardUserDefaults] objectForKey:kUserWalletKey]) {
-//        anItem = [[UIMenuItem alloc] initWithTitle:@"Transactions" action:@selector(transactions:)];
-//        [menuOptions addObject:anItem];
-        anItem = [[UIMenuItem alloc] initWithTitle:@"Change name" action:@selector(changeName:)];
-        [menuOptions addObject:anItem];
-        anItem = [[UIMenuItem alloc] initWithTitle:@"Attach wallet" action:@selector(attachWallet:)];
-        [menuOptions addObject:anItem];
 
+    if (yesForFriends) {
+        if (!connected) {
+            anItem = [[UIMenuItem alloc] initWithTitle:@"Connect" action:@selector(connectSession:)];
+            [menuOptions addObject:anItem];
+        }else{
+            anItem = [[UIMenuItem alloc] initWithTitle:@"Disconnect" action:@selector(disconnectSession:)];
+            [menuOptions addObject:anItem];
+        }
         anItem = [[UIMenuItem alloc] initWithTitle:@"Send BTC" action:@selector(sendBTC:)];
         [menuOptions addObject:anItem];
         anItem = [[UIMenuItem alloc] initWithTitle:@"Request BTC" action:@selector(requestBTC:)];
         [menuOptions addObject:anItem];
-    
-//    }else{ // No wallet attached
-        anItem = [[UIMenuItem alloc] initWithTitle:@"BTC2 Users" action:@selector(showFriends:)];
+    }else{
+        
+        if (!self.isBtc2Enabled) {
+            anItem = [[UIMenuItem alloc] initWithTitle:@"Enable BTC2" action:@selector(enableBTC2:)];
+        }else{
+            anItem = [[UIMenuItem alloc] initWithTitle:@"Disable BTC2" action:@selector(disableBTC2:)];
+        }
         [menuOptions addObject:anItem];
-//        anItem = [[UIMenuItem alloc] initWithTitle:@"Change name" action:@selector(changeName:)];
-//        [menuOptions addObject:anItem];
-//    }
+        anItem = [[UIMenuItem alloc] initWithTitle:@"Attach wallet" action:@selector(attachWallet:)];
+        [menuOptions addObject:anItem];
+        anItem = [[UIMenuItem alloc] initWithTitle:@"Pseudonym" action:@selector(changeName:)];
+        [menuOptions addObject:anItem];
+        anItem = [[UIMenuItem alloc] initWithTitle:@"Transactions" action:@selector(transactions:)];
+        [menuOptions addObject:anItem];
+    }
     
-    controller.menuItems = menuOptions;
+    menuController.menuItems = menuOptions;
 }
 
 - (BOOL)canBecomeFirstResponder {
@@ -168,13 +191,14 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    BTC2RobotViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"RoboCell" forIndexPath:indexPath];
+    BTC2AvatarViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"RoboCell" forIndexPath:indexPath];
     
-    cell.roboView.roboName = [self.peripherals objectAtIndex:indexPath.row];
-    cell.roboView.roboSize = CGSizeMake(100, 100);
+    BTC2BaseSession* session = [self.peripherals objectAtIndex:indexPath.row];;
     
-    if (!cell.roboView.hasRobot) {
-        [cell.roboView retrieveRobot];
+    cell.avatarView.identity = session.identity;
+    
+    if (!cell.avatarView.hasAvatar) {
+        [cell.avatarView retrieveAvatar];
     }
     
     return cell;
@@ -182,62 +206,23 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
 
-//    BTC2RobotViewCell* cell = (BTC2RobotViewCell*)[self collectionView:collectionView cellForItemAtIndexPath:indexPath];
-
-}
-
-- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender{
-    BOOL canPerformAction = NO;
-    BOOL hasWallet = ([[NSUserDefaults standardUserDefaults] objectForKey:kUserWalletKey] != nil);
+    BTC2AvatarViewCell* cell = (BTC2AvatarViewCell*)[self collectionView:collectionView cellForItemAtIndexPath:indexPath];
     
-    if (action == @selector(attachWallet:) && indexPath.row == 0 && !hasWallet) {
-        canPerformAction = YES;
-    }
-    if (action == @selector(transactions:) && indexPath.row == 0) {
-        canPerformAction = YES;
-    }
-    if (action == @selector(changeName:) && indexPath.row == 0) {
-        canPerformAction = YES;
-    }
-    if (action == @selector(sendBTC:) && indexPath.row > 0 && hasWallet) {
-        canPerformAction = YES;
-    }
-    if (action == @selector(requestBTC:) && indexPath.row > 0 && hasWallet) {
-        canPerformAction = YES;
-    }
-    if (action == @selector(showFriends:) && indexPath.row > 0 && hasWallet) {
-        canPerformAction = YES;
-    }
-
-    // Debug
-    if (canPerformAction) {
-        DLog(@"collectionView:canPerformAction:forItemAtIndexPath %s | %@", sel_getName(action), indexPath);
+    self.tappedSession = [self.peripherals objectAtIndex:indexPath.row];
+    
+    // Tapped me
+    if (indexPath.row == 0) {
+        [self setupContextMenuForFriends:NO andConnectionState:NO];
     }else{
-        DLog(@" REJECTED %s | %@", sel_getName(action), indexPath);
+        [self setupContextMenuForFriends:YES andConnectionState:self.tappedSession.peripheral.isConnected];
     }
     
-    return NO;
+    [[UIMenuController sharedMenuController] setTargetRect:cell.frame inView:collectionView];
+    [[UIMenuController sharedMenuController] setMenuVisible:YES animated:YES];
+
 }
 
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
-    BOOL shouldShowMenu = NO;
-
-    BOOL hasWallet = ([[NSUserDefaults standardUserDefaults] objectForKey:kUserWalletKey] != nil);
-
-    shouldShowMenu = (hasWallet && indexPath.row > 0) || !indexPath.row;
-
-    DLog(@"shouldShowMenuForItemAtIndexPath: %@ %@", shouldShowMenu?@"Yes":@"No", indexPath);
-
-    return shouldShowMenu;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender{
-    DLog(@"performAction: %s", sel_getName(action));
-    
-    
-}
-
-#pragma mark - 
+#pragma mark -
 
 -(void)didAttachWallet:(NSNotification*)not{
 
@@ -246,18 +231,13 @@
 
 -(void)peripheralAdded:(NSNotification*)not{
     DLog(@"peripheralAdded");
-    if (!self.peripherals.count) {
-        self.peripherals = [[NSMutableArray alloc] initWithCapacity:1];
-    }
     
-    [self.peripherals addObject:not.object];
-    //    self.peripherals = [NSArray arrayWithArray:newArray];
+    BTC2BaseSession* session = [not.object objectForKey:kBTC2DeviceSessionKey];
     
-    //    DLog(@"%@", self.peripherals);
+    session.delegate = self;
     
+    [self.peripherals addObject:session];
     [self.collectionView reloadData];
-    //    NSIndexPath* newPath = [NSIndexPath indexPathForRow:self.peripherals.count inSection:0];
-    //    [self.collectionView insertItemsAtIndexPaths:@[newPath]];
 }
 
 
@@ -301,17 +281,98 @@
     DLog(@"-> requestBTC");
 }
 
--(void)showFriends:(id)sender{
+-(void)enableBTC2:(id)sender{
+    if (!self.isBtc2Enabled) {
+        
+        // Peripheral side
+        self.btc2Manager.wallet          = self.localSession.wallet;
+        self.btc2Manager.identity        = self.localSession.identity;
+        self.btc2Manager.serviceProvider = self.localSession.serviceProvider;
 
-    if (self.peripherals.count < 2) {
-        [self.peripherals addObject:@"Bito"];
-        [self.peripherals addObject:@"Coino"];
-        [self.peripherals addObject:@"Satoshio"];
-        [self.collectionView reloadData];
-
-        [[NSUserDefaults standardUserDefaults] setObject:@"FakeWallet" forKey:kUserWalletKey];
-        [self setupContextMenu];
+        [self.btc2Manager enterCentralMode];
+        [self.btc2Manager enterPeripheralMode];
+        
+        self.btc2Enabled = YES;
     }
-
 }
+-(void)disableBTC2:(id)sender{
+    [self.btc2Manager enterNeutralMode];
+    self.btc2Enabled = NO;
+    
+    self.peripherals = [NSMutableArray arrayWithCapacity:1];
+    [self.peripherals addObject:self.localSession];
+    [self.collectionView reloadData];
+}
+
+-(void)connectSession:(id)sender{
+    if (self.tappedSession) {
+        [self.tappedSession connect];
+    }
+}
+
+-(void)disconnectSession:(id)sender{
+    if (self.tappedSession) {
+        [self.tappedSession disconnect];
+    }
+}
+
+#pragma mark - BTC2DataUpdatedDelegate - Debug only, the manager shouldn't really be a delegate
+
+-(void)btc2DidUpdateWalletProperty:(BTC2WalletPropertyEnum)property forSession:(BTC2BaseSession *)session{
+    DLog(@"Updated property %d ", property);
+    
+    switch (property) {
+        case BTC2WalletPropertyWalletAddress:
+            DLog(@"%@", session.wallet.walletAddress);
+            break;
+        case BTC2WalletPropertyNotice:
+            DLog(@"%@", session.wallet.notice);
+            break;
+        case BTC2WalletPropertyPaymentRequest:
+            DLog(@"%@", [session.wallet.paymentRequest description]);
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)btc2DidUpdateIdentityProperty:(BTC2IdentityPropertyEnum)property forSession:(BTC2BaseSession *)session{
+    DLog(@"Updated property %d ", property);
+    
+    switch (property) {
+        case BTC2IdentityPropertyPseudonym:
+            DLog(@"%@", session.identity.pseudonym);
+            [self.collectionView reloadData];
+            break;
+        case BTC2IdentityPropertyAvatarServiceName:
+            DLog(@"%@", session.identity.avatarServiceName);
+            [self.collectionView reloadData];
+            break;
+        case BTC2IdentityPropertyAvatarID:
+            DLog(@"%@", session.identity.avatarID);
+            [self.collectionView reloadData];
+            break;
+        case BTC2IdentityPropertyAvatarURL:
+            DLog(@"%@", session.identity.avatarURL);
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)btc2DidUpdateServiceProvider:(BTC2ServiceProviderPropertyEnum)property forSession:(BTC2BaseSession *)session{
+    DLog(@"Updated property %d ", property);
+    
+    switch (property) {
+        case BTC2ServiceProviderPropertyServiceName:
+            DLog(@"%@", session.serviceProvider.serviceName);
+            break;
+        case BTC2ServiceProviderPropertyServiceUserID:
+            DLog(@"%@", session.serviceProvider.serviceUserID);
+            break;
+        default:
+            break;
+    }
+}
+
 @end

@@ -37,6 +37,7 @@
 #import "BTC2IdentityModel.h"
 #import "BTC2ServiceProviderModel.h"
 #import "BTC2CentralSession.h"
+#import "NSObject+BTC2Extensions.h"
 
 @interface BTC2PeripheralManager ()
 @property (nonatomic, readwrite, strong) CBPeripheralManager* peripheralManager;
@@ -406,8 +407,7 @@
         self.writeQueue.peripheralManager = peripheral;
         self.writeQueue.central = central;
         
-        // Uhmkay this is a bit messy, post notification should live somewhere else, in a more generic place.
-        [self.connectedSession postNotification:kBTC2DidFinalizeConnectionNotification withDict:@{kBTC2DeviceSessionKey: self.connectedSession}];
+        [NSObject btc2postNotification:kBTC2DidFinalizeConnectionNotification withDict:@{kBTC2DeviceSessionKey: self.connectedSession}];
     }
 }
 
@@ -437,7 +437,7 @@
         self.writeQueue.peripheralManager = peripheral;
 
         // Uhmkay this is a bit messy, post notification should live somewhere else, in a more generic place.
-        [self.connectedSession postNotification:kBTC2DidFinalizeConnectionNotification withDict:@{kBTC2DeviceSessionKey: self.connectedSession}];
+        [NSObject btc2postNotification:kBTC2DidFinalizeConnectionNotification withDict:@{kBTC2DeviceSessionKey: self.connectedSession}];
     }
     
     for (CBATTRequest* req in requests) {

@@ -31,24 +31,15 @@
 
 #import "BTC2NameViewController.h"
 #import "UIColor+BTC2Extensions.h"
-#import "BTC2RobotView.h"
+#import "BTC2AvatarView.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface BTC2NameViewController ()
 @property (nonatomic, strong) IBOutlet UITextField *nameField;
-@property (weak, nonatomic) IBOutlet BTC2RobotView *roboView;
+@property (weak, nonatomic) IBOutlet BTC2AvatarView *roboView;
 @end
 
 @implementation BTC2NameViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -61,18 +52,14 @@
                         (id)[UIColor btc2RandomColor].CGColor];
     [self.view.layer insertSublayer:gradient atIndex:0];
     
-    self.roboView.roboName = @"HaxxorRobot";
-    self.roboView.roboSize = self.roboView.bounds.size;
-    [self.roboView retrieveRobot];
+    self.roboView.identity = self.identity;
+    [self.roboView retrieveAvatar];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 - (IBAction)updateName:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
+
+    // TODO: Change name of service, force service update
 }
 
 @end

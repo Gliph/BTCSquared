@@ -52,8 +52,8 @@ typedef enum BTC2ManagerState {
 
 -(id)init{
     if ((self = [super init])){
-        self.central    = [[BTC2CentralManager alloc] init];
-        self.peripheral = [[BTC2PeripheralManager alloc] init];
+        self.central    = [BTC2CentralManager manager];
+        self.peripheral = [BTC2PeripheralManager manager];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(didFindPeripheral:)
@@ -83,9 +83,6 @@ typedef enum BTC2ManagerState {
             [deviceSession writeIdentityModel:self.identity];
             [deviceSession writeServiceProvider:self.serviceProvider];
         }
-        
-        self.connectedSession = session;
-        self.connectedSession.delegate = self;
     }
 }
 
@@ -122,64 +119,8 @@ typedef enum BTC2ManagerState {
     [[NSNotificationCenter defaultCenter] postNotificationName:kNeutralModeStarted object:nil];
 
     self.managerState = BTC2ManagerStateNeutral;
-    self.connectedSession = nil;
     [self.central cleanup];
     [self.peripheral cleanup];
 }
 
-#pragma mark - BTC2DataUpdatedDelegate - Debug only, the manager shouldn't really be a delegate
-
--(void)btc2DidUpdateWalletProperty:(BTC2WalletPropertyEnum)property forSession:(BTC2BaseSession *)session{
-    DLog(@"Updated property %d ", property);
-
-    switch (property) {
-        case BTC2WalletPropertyWalletAddress:
-            DLog(@"%@", session.wallet.walletAddress);
-            break;
-        case BTC2WalletPropertyNotice:
-            DLog(@"%@", session.wallet.notice);
-            break;
-        case BTC2WalletPropertyPaymentRequest:
-            DLog(@"%@", [session.wallet.paymentRequest description]);
-            break;
-        default:
-            break;
-    }
-}
-
--(void)btc2DidUpdateIdentityProperty:(BTC2IdentityPropertyEnum)property forSession:(BTC2BaseSession *)session{
-    DLog(@"Updated property %d ", property);
-
-    switch (property) {
-        case BTC2IdentityPropertyPseudonym:
-            DLog(@"%@", session.identity.pseudonym);
-            break;
-        case BTC2IdentityPropertyAvatarServiceName:
-            DLog(@"%@", session.identity.avatarServiceName);
-            break;
-        case BTC2IdentityPropertyAvatarID:
-            DLog(@"%@", session.identity.avatarID);
-            break;
-        case BTC2IdentityPropertyAvatarURL:
-            DLog(@"%@", session.identity.avatarURL);
-            break;
-        default:
-            break;
-    }
-}
-
--(void)btc2DidUpdateServiceProvider:(BTC2ServiceProviderPropertyEnum)property forSession:(BTC2BaseSession *)session{
-    DLog(@"Updated property %d ", property);
-
-    switch (property) {
-        case BTC2ServiceProviderPropertyServiceName:
-            DLog(@"%@", session.serviceProvider.serviceName);
-            break;
-        case BTC2ServiceProviderPropertyServiceUserID:
-            DLog(@"%@", session.serviceProvider.serviceUserID);
-            break;
-        default:
-            break;
-    }
-}
 @end

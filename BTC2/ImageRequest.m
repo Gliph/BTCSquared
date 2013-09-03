@@ -50,16 +50,16 @@
     [imageFetcher execute];
 }
 
-+(void)fetchRetinaImageWithURL:(NSURL*)url withFinishBlock:(RequestFinished)successBlock{
++(void)fetchRetinaImageWithURL:(NSURL*)url andFinishBlock:(RequestFinished)successBlock{
     [ImageRequest imageWithURL:url withRetina:YES withSuccess:successBlock andFail:nil];
 };
-+(void)fetchRetinaImageWithURL:(NSURL*)url withFinishBlock:(RequestFinished)successBlock andFailBlock:(RequestFailed)failBlock{
++(void)fetchRetinaImageWithURL:(NSURL*)url finishBlock:(RequestFinished)successBlock andFailBlock:(RequestFailed)failBlock{
     [ImageRequest imageWithURL:url withRetina:YES withSuccess:successBlock andFail:failBlock];
 };
-+(void)fetchImageWithURL:(NSURL*)url withFinishBlock:(RequestFinished)successBlock{
++(void)fetchImageWithURL:(NSURL*)url andFinishBlock:(RequestFinished)successBlock{
     [ImageRequest imageWithURL:url withRetina:NO withSuccess:successBlock andFail:nil];
 }
-+(void)fetchImageWithURL:(NSURL*)url withFinishBlock:(RequestFinished)successBlock andFailBlock:(RequestFailed)failBlock{
++(void)fetchImageWithURL:(NSURL*)url finishBlock:(RequestFinished)successBlock andFailBlock:(RequestFailed)failBlock{
     [ImageRequest imageWithURL:url withRetina:NO withSuccess:successBlock andFail:failBlock];
 }
 

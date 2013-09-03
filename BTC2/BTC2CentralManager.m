@@ -33,19 +33,18 @@
 #import "BTC2UUIDs.h"
 #import "BTC2DeviceSession.h"
 #import "BTC2Events.h"
+#import "NSObject+BTC2Extensions.h"
 
 #define CONNECTION_TIMEOUT 10       // TODO: parametrize
 
 @interface BTC2CentralManager ()
 @property (nonatomic, readwrite, strong) CBCentralManager* centralManager;
-@property (nonatomic, strong) CBPeripheral* connectedPeripheral; // Obsolete
 @property (nonatomic, assign) BOOL shouldScan;
 @property (nonatomic, strong) NSTimer* connectionTimeout; // Allow x seconds to connect, then stop
 @property (nonatomic, strong) dispatch_queue_t centralQueue;
 @property (nonatomic, strong) NSMutableArray* deviceSessions;
 -(void)addDevice:(BTC2DeviceSession*)newSession;
 -(void)connectionDidTimeout:(NSTimer*)timer;
--(void)disconnectPeripheral;
 -(void)scanForPeripherals;
 -(void)startConnectionTimer;
 -(void)stopConnectionTimer;
@@ -60,7 +59,7 @@
     static dispatch_once_t once;
     
 	dispatch_once(&once, ^(void){
-        manager = [[super allocWithZone:NULL] init];
+        manager = [[super alloc] init];
     });
     
     return manager;
@@ -71,6 +70,7 @@
         self.centralQueue = dispatch_queue_create("ph.gli.btc2.centralqueue", DISPATCH_QUEUE_SERIAL);
         self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:self.centralQueue];
         self.shouldScan = NO;
+        self.deviceSessions = [[NSMutableArray alloc] initWithCapacity:1];
     }
     return self;
 }
@@ -79,16 +79,14 @@
     DLog(@" Cleanup: STOPPING SCAN");
 
     self.shouldScan = NO;
-    self.deviceSessions = nil;
+    [self.deviceSessions removeAllObjects];
     
-    [self disconnectPeripheral]; // <-- Disconnect all peripherals not just one. 
+    [self disconnectPeripherals]; // <-- Disconnect all peripherals not just one.
     [self.centralManager stopScan];
 }
 
 -(void)addDevice:(BTC2DeviceSession*)newSession{
-    if (!self.deviceSessions) {
-        self.deviceSessions = [NSMutableArray arrayWithCapacity:1];
-    }
+    DLog(@"Adding session w/ peripheral UUID: %@", newSession.peripheral.UUID);
     
     [self.deviceSessions addObject:newSession];
 }
@@ -158,22 +156,24 @@
 -(void)scanForPeripherals{
     DLog(@"Start scanning for peripherals");
     
-    [self.centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:kBTC2WalletServiceUUID]] options:nil];
+    [self.centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:kBTC2WalletServiceUUID]] options:@{CBCentralManagerScanOptionAllowDuplicatesKey: @(NO)}];
 }
 
+-(void)connectSession:(BTC2DeviceSession*)session{
+    if (session && [session isKindOfClass:[BTC2DeviceSession class]]) {
+        [self.centralManager connectPeripheral:session.peripheral options:nil];
+    }
+}
 
--(void)disconnectPeripheral{
-    // TODO: Rewrite
-    if (self.connectedPeripheral) {
-        DLog(@"Disconnecting peripheral: %@", self.connectedPeripheral.name);
-        [self.centralManager cancelPeripheralConnection:self.connectedPeripheral];
-        [self stopConnectionTimer];
+-(void)disconnectPeripherals{
+    DLog(@"Disconnecting peripherals.");
+    for (BTC2DeviceSession* session in self.deviceSessions) {
+        [session disconnect];
     }
 }
 
 -(void)connectionDidTimeout:(NSTimer*)timer{
-    DLog(@" + Connection timed out: %@", self.connectedPeripheral.name);
-    [self disconnectPeripheral];
+    DLog(@" + Connection timed out."); // TODO: Handle time out later
 }
 
 #pragma mark - CBCentralManagerDelegate
@@ -220,27 +220,16 @@
         session.peripheral = peripheral;
         
         [self addDevice:session];
-        
-        // TODO: This is not posted on the main thread, which it needs to be. 
-        [[NSNotificationCenter defaultCenter] postNotificationName:kBTC2DidDiscoverPeripheralNotification object:session];
+        [NSObject btc2postNotification:kBTC2DidDiscoverPeripheralNotification withDict:@{kBTC2DeviceSessionKey: session}];
     }
-    
-    self.connectedPeripheral = peripheral;
-    self.foundPeripheral = peripheral;
-    
-//    [self startConnectionTimer];
-//    [central stopScan];
-//    [central connectPeripheral:peripheral options:nil];
-
 }
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
     DLog(@"didConnectPeripheral: %@", peripheral.name);
 
     BTC2DeviceSession* session = [self sessionForPeripheral:peripheral];
 
-//    [self stopConnectionTimer];
-    self.connectedPeripheral.delegate = session;
-    [self.connectedPeripheral discoverServices:peripheral.services];
+    session.peripheral.delegate = session;
+    [session.peripheral discoverServices:peripheral.services];
 
 }
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
@@ -248,7 +237,6 @@
 }
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
     DLog(@"didDisconnectPeripheral - Reason: %@", error);
-    self.connectedPeripheral = nil;
 }
 
 

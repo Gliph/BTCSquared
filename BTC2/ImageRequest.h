@@ -39,10 +39,10 @@
 -(id)initWithURL:(NSURL*)url;
 
 // Any image
-+(void)fetchImageWithURL:(NSURL*)url withFinishBlock:(RequestFinished)successBlock;
-+(void)fetchImageWithURL:(NSURL*)url withFinishBlock:(RequestFinished)successBlock andFailBlock:(RequestFailed)failBlock;
++(void)fetchImageWithURL:(NSURL*)url andFinishBlock:(RequestFinished)successBlock;
++(void)fetchImageWithURL:(NSURL*)url finishBlock:(RequestFinished)successBlock andFailBlock:(RequestFailed)failBlock;
 
 // Treat as retina image
-+(void)fetchRetinaImageWithURL:(NSURL*)url withFinishBlock:(RequestFinished)successBlock;
-+(void)fetchRetinaImageWithURL:(NSURL*)url withFinishBlock:(RequestFinished)successBlock andFailBlock:(RequestFailed)failBlock;
++(void)fetchRetinaImageWithURL:(NSURL*)url andFinishBlock:(RequestFinished)successBlock;
++(void)fetchRetinaImageWithURL:(NSURL*)url finishBlock:(RequestFinished)successBlock andFailBlock:(RequestFailed)failBlock;
 @end

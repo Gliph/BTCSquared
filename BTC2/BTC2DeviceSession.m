@@ -34,6 +34,7 @@
 #import "BTC2CentralManager.h"
 #import "BTC2Constants.h"
 #import "BTC2Events.h"
+#import "NSObject+BTC2Extensions.h"
 
 // Services
 #import "BTC2WalletModel.h"
@@ -87,7 +88,7 @@
 -(void)connect{
     if (self.peripheral) {
         self.peripheral.delegate = self;
-        [[BTC2CentralManager manager].centralManager connectPeripheral:self.peripheral options:nil];
+        [[BTC2CentralManager manager] connectSession:self];
     }
 }
 -(void)disconnect{
@@ -222,7 +223,7 @@
         }
     }
     
-    [self postNotification:kBTC2DidFinalizeConnectionNotification withDict:@{kBTC2DeviceSessionKey: self}];
+    [NSObject btc2postNotification:kBTC2DidFinalizeConnectionNotification withDict:@{kBTC2DeviceSessionKey: self}];
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
