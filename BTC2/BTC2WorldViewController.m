@@ -40,11 +40,15 @@
 #import "BTC2Constants.h"
 #import "BTC2Events.h"
 #import "BTC2DeviceSession.h"
+#import "BTC2CentralSession.h"
 
 #import "BTC2NameViewController.h"
 #import "BTC2NewTransactionViewController.h"
 #import "BTC2AttachWalletViewController.h"
 #import "BTC2TransactionsViewController.h"
+#import "BTC2AvatarServices.h"
+
+#import "ImageRequest.h"
 
 #import "UIColor+BTC2Extensions.h"
 #import <QuartzCore/QuartzCore.h>
@@ -88,6 +92,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(peripheralAdded:)
                                                  name:kBTC2DidDiscoverPeripheralNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(peripheralAdded:)
+                                                 name:kBTC2DidFinalizeConnectionNotification
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -194,13 +203,27 @@
     BTC2AvatarViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"RoboCell" forIndexPath:indexPath];
     
     BTC2BaseSession* session = [self.peripherals objectAtIndex:indexPath.row];;
+  
+    cell.avatarView.nameLabel.text  = session.identity.pseudonym;
+    cell.avatarView.imageView.image = session.identity.avatarImage;
     
-    cell.avatarView.identity = session.identity;
-    
-    if (!cell.avatarView.hasAvatar) {
-        [cell.avatarView retrieveAvatar];
+    if (!session.identity.avatarImage) {
+        NSURL* avatarImageURL = nil;
+        
+        if (session.identity.avatarURL) {
+            avatarImageURL = session.identity.avatarURL;
+        }else{
+            avatarImageURL = [BTC2AvatarServices avatarImageURLForService:session.identity.avatarServiceName withID:session.identity.avatarID andSize:CGSizeMake(200, 200)];
+        }
+
+        if (avatarImageURL.absoluteString.length) {
+            [ImageRequest fetchImageWithURL:avatarImageURL andFinishBlock:^(UIImage* response) {
+                session.identity.avatarImage = response;
+                cell.avatarView.imageView.image = session.identity.avatarImage;
+                [self.collectionView reloadData];
+            }];
+        }
     }
-    
     return cell;
 }
 
@@ -214,7 +237,7 @@
     if (indexPath.row == 0) {
         [self setupContextMenuForFriends:NO andConnectionState:NO];
     }else{
-        [self setupContextMenuForFriends:YES andConnectionState:self.tappedSession.peripheral.isConnected];
+        [self setupContextMenuForFriends:YES andConnectionState:self.tappedSession.isConnected];
     }
     
     [[UIMenuController sharedMenuController] setTargetRect:cell.frame inView:collectionView];
@@ -235,6 +258,8 @@
     BTC2BaseSession* session = [not.object objectForKey:kBTC2DeviceSessionKey];
     
     session.delegate = self;
+    
+    DLog(@"%@ --  DEVICE UUID: %@", not.name, session.UUID);
     
     [self.peripherals addObject:session];
     [self.collectionView reloadData];
@@ -289,8 +314,8 @@
         self.btc2Manager.identity        = self.localSession.identity;
         self.btc2Manager.serviceProvider = self.localSession.serviceProvider;
 
-        [self.btc2Manager enterCentralMode];
         [self.btc2Manager enterPeripheralMode];
+        [self.btc2Manager enterCentralMode];
         
         self.btc2Enabled = YES;
     }
@@ -311,7 +336,8 @@
 }
 
 -(void)disconnectSession:(id)sender{
-    if (self.tappedSession) {
+    // Can't disconnect a central
+    if ([self.tappedSession isKindOfClass:[BTC2DeviceSession class]]) {
         [self.tappedSession disconnect];
     }
 }
@@ -326,10 +352,10 @@
             DLog(@"%@", session.wallet.walletAddress);
             break;
         case BTC2WalletPropertyNotice:
-            DLog(@"%@", session.wallet.notice);
+            DLog(@"%@", session.wallet.notice); // TODO: Display this in the interface.
             break;
         case BTC2WalletPropertyPaymentRequest:
-            DLog(@"%@", [session.wallet.paymentRequest description]);
+            DLog(@"%@", [session.wallet.paymentRequest description]);  // TODO: Display this in the interface. 
             break;
         default:
             break;

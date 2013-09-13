@@ -61,7 +61,7 @@
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath{
     UICollectionViewLayoutAttributes *att = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
     
-    DLog(@"Laying out %d", indexPath.row);
+//    DLog(@"Laying out %d", indexPath.row);
     
     CGSize contentSize = [self collectionViewContentSize];
     CGPoint newCenter = CGPointMake(contentSize.width/2.0, contentSize.height/2.0);
@@ -70,7 +70,7 @@
     if (indexPath.row > 0) {
         angle = indexPath.row / (CGFloat)(self.count-1) * 2 * M_PI + M_PI/4;
         newCenter = CGPointMake(contentSize.width/2.0 - self.radius * cos(angle), contentSize.height/2.0 - self.radius * sin(angle));
-        DLog(@"Angle %f", angle);
+//        DLog(@"Angle %f", angle);
     }
     
     att.center = newCenter;

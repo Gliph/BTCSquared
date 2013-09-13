@@ -33,7 +33,6 @@
 #import "BTC2IdentityModel.h"
 
 @interface BTC2AvatarView : UIView
-@property (nonatomic, strong) BTC2IdentityModel* identity;
-@property (nonatomic, assign) BOOL hasAvatar;
--(void)retrieveAvatar;
+@property (nonatomic, strong) IBOutlet UILabel* nameLabel;
+@property (nonatomic, strong) IBOutlet UIImageView* imageView;
 @end

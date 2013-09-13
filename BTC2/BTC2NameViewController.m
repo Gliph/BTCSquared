@@ -52,8 +52,6 @@
                         (id)[UIColor btc2RandomColor].CGColor];
     [self.view.layer insertSublayer:gradient atIndex:0];
     
-    self.roboView.identity = self.identity;
-    [self.roboView retrieveAvatar];
 }
 
 - (IBAction)updateName:(id)sender {

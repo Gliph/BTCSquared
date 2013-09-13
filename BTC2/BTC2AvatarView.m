@@ -36,68 +36,26 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface BTC2AvatarView ()
-@property (nonatomic, strong) IBOutlet UILabel* nameLabel;
-@property (nonatomic, strong) IBOutlet UIImageView* imageView;
 @end
 
 @implementation BTC2AvatarView
-@synthesize identity = m_identity;
 
--(void)setIdentity:(BTC2IdentityModel *)identity{
-    if (m_identity != identity) {
-        self.hasAvatar = NO;
-        m_identity = identity;
-    }
-}
-
--(void)retrieveAvatar{ // Hackathon code.. Don't judge me!
+-(void)awakeFromNib{
     CGSize imageSize = CGSizeMake(100, 100);
+    self.imageView.frame = CGRectMake(0, 0, imageSize.width, imageSize.height);
+    self.imageView.layer.cornerRadius = imageSize.width/2.0;
+    self.imageView.layer.borderWidth = 5;
+    self.imageView.layer.borderColor = [UIColor blackColor].CGColor;
+    self.imageView.clipsToBounds = YES;
+    self.imageView.backgroundColor = [UIColor colorWithRed:0.5 green:0.2 blue:0.1 alpha:0.5];
+//    self.imageView.alpha = 0;
     
-    if (!self.hasAvatar) {
-        self.hasAvatar = YES;
-        
-        self.imageView.frame = CGRectMake(0, 0, imageSize.width, imageSize.height);
-        self.imageView.layer.cornerRadius = imageSize.width/2.0;
-        self.imageView.layer.borderWidth = 5;
-        self.imageView.layer.borderColor = [UIColor blackColor].CGColor;
-        self.imageView.clipsToBounds = YES;
-        self.imageView.backgroundColor = [UIColor colorWithRed:0.5 green:0.2 blue:0.1 alpha:0.5];
-        self.imageView.alpha = 0;
-        
-        CGRect nameRect = CGRectMake(0, CGRectGetMaxY(self.imageView.frame), self.imageView.frame.size.width, 22);
-        self.nameLabel.frame = nameRect;
-        self.nameLabel.layer.shadowColor = [UIColor whiteColor].CGColor;
-        self.nameLabel.layer.shadowRadius = 4;
-        self.nameLabel.layer.shadowOpacity = 1;
-        self.nameLabel.layer.shadowOffset = CGSizeZero;
-        self.nameLabel.clipsToBounds = NO;
-        
-        // Get Teh Avatar
-        NSURL* avatarImageURL = [BTC2AvatarServices avatarImageURLForService:self.identity.avatarServiceName withID:self.identity.avatarID andSize:imageSize];
-        ImageRequest* imgReq  = [[ImageRequest alloc] initWithURL:avatarImageURL];
-
-        self.nameLabel.text = self.identity.pseudonym;
-        
-        imgReq.finishBlock = ^(UIImage* img){
-            self.imageView.alpha = 0;
-            self.imageView.image = img;
-            self.hasAvatar = YES;
-            [UIView animateWithDuration:0.3
-                             animations:^{
-                                 self.imageView.alpha = 1;
-                             }];
-        };
-
-        imgReq.failBlock = ^(NSUInteger responseCode){
-            self.hasAvatar = NO;
-            [UIView animateWithDuration:0.3
-                             animations:^{
-                                 self.imageView.alpha = 1;
-                             }];
-        };
-        
-        [imgReq execute];
-    }
-    
+    CGRect nameRect = CGRectMake(0, CGRectGetMaxY(self.imageView.frame), self.imageView.frame.size.width, 22);
+    self.nameLabel.frame = nameRect;
+    self.nameLabel.layer.shadowColor = [UIColor whiteColor].CGColor;
+    self.nameLabel.layer.shadowRadius = 4;
+    self.nameLabel.layer.shadowOpacity = 1;
+    self.nameLabel.layer.shadowOffset = CGSizeZero;
+    self.nameLabel.clipsToBounds = NO;
 }
 @end
