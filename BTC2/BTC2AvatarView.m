@@ -58,4 +58,13 @@
     self.nameLabel.layer.shadowOffset = CGSizeZero;
     self.nameLabel.clipsToBounds = NO;
 }
+
+-(void)setBorderColor:(UIColor *)borderColor{
+    _borderColor = borderColor;
+    
+    if (_borderColor) {
+        self.imageView.layer.borderColor = borderColor.CGColor;
+    }
+}
+
 @end

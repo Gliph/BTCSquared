@@ -38,6 +38,7 @@
 @property (nonatomic, strong) IBOutlet UITextField *btcInputField;
 @property (nonatomic, strong) IBOutlet UILabel *equivalentValueLabel;
 @property (nonatomic, strong) IBOutlet UIButton *createTransactionButton;
+@property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @end
 
 @implementation BTC2NewTransactionViewController
@@ -64,12 +65,26 @@
     
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    NSString* sendText = [NSString stringWithFormat:@"Send to %@", self.toSession.identity.pseudonym];
+    [self.sendButton setTitle:sendText forState:UIControlStateNormal];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)sendBitcoin:(id)sender {
+    
+    if (self.toSession) {
+        CGFloat value = [self.btcInputField.text floatValue];
+        NSString* notice = [NSString stringWithFormat:@"%@ sent you %2.f BTC [%2.f USD].", self.fromSession.identity.pseudonym, value, value * 120.0];
+        [self.toSession writeNotice:notice];
+    }
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

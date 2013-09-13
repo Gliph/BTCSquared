@@ -41,12 +41,13 @@
 #import "BTC2Events.h"
 #import "BTC2DeviceSession.h"
 #import "BTC2CentralSession.h"
+#import "BTC2AvatarServices.h"
 
 #import "BTC2NameViewController.h"
 #import "BTC2NewTransactionViewController.h"
 #import "BTC2AttachWalletViewController.h"
 #import "BTC2TransactionsViewController.h"
-#import "BTC2AvatarServices.h"
+#import "BTC2NoticeView.h"
 
 #import "ImageRequest.h"
 
@@ -58,6 +59,7 @@
 @property (nonatomic, strong) BTC2Manager* btc2Manager;
 @property (nonatomic, strong) BTC2BaseSession* localSession;
 @property (nonatomic, weak) BTC2DeviceSession* tappedSession;
+@property (nonatomic, strong) BTC2NoticeView* noticeView;
 
 -(void)peripheralAdded:(NSNotification*)not;
 
@@ -129,6 +131,7 @@
     
     self.peripherals = [[NSMutableArray alloc] initWithCapacity:1];
     [self.peripherals addObject:self.localSession];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -206,6 +209,14 @@
   
     cell.avatarView.nameLabel.text  = session.identity.pseudonym;
     cell.avatarView.imageView.image = session.identity.avatarImage;
+    
+    if (session == self.localSession) {
+        cell.avatarView.borderColor = [UIColor whiteColor];
+    }else if ([session isKindOfClass:[BTC2DeviceSession class]]) {
+        cell.avatarView.borderColor = [UIColor blueColor];
+    }else if ([session isKindOfClass:[BTC2CentralSession class]]){
+        cell.avatarView.borderColor = [UIColor redColor];
+    }
     
     if (!session.identity.avatarImage) {
         NSURL* avatarImageURL = nil;
@@ -298,6 +309,8 @@
 -(void)sendBTC:(id)sender{
     DLog(@"-> sendBTC");
     BTC2NewTransactionViewController* transactionViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"BTC2NewTransactionViewController"];
+    transactionViewController.toSession   = self.tappedSession;
+    transactionViewController.fromSession = self.localSession;
     
     [self presentViewController:transactionViewController animated:YES completion:nil];
     
@@ -340,6 +353,8 @@
     if ([self.tappedSession isKindOfClass:[BTC2DeviceSession class]]) {
         [self.tappedSession disconnect];
     }
+    [self.noticeView removeFromSuperview];
+    self.noticeView = nil;
 }
 
 #pragma mark - BTC2DataUpdatedDelegate - Debug only, the manager shouldn't really be a delegate
@@ -351,9 +366,44 @@
         case BTC2WalletPropertyWalletAddress:
             DLog(@"%@", session.wallet.walletAddress);
             break;
-        case BTC2WalletPropertyNotice:
+        case BTC2WalletPropertyNotice:{
+
+            if (self.noticeView) {
+                [self.noticeView removeFromSuperview];
+            }
+            
+            // Dirty dirty code.. 
+            
+            CGRect noticeRect = CGRectZero;
+            self.noticeView = [[BTC2NoticeView alloc] initWithFrame:noticeRect];
+            self.noticeView.notice = session.wallet.notice;
+            noticeRect.size = [self.noticeView sizeThatFits:CGSizeMake(100,500)];
+
+            NSIndexPath* cellPath = nil;
+            
+            NSUInteger idx = [self.peripherals indexOfObjectPassingTest:^BOOL(BTC2BaseSession* matchSession, NSUInteger idx, BOOL *stop) {
+                if (matchSession == session) {
+                    *stop = YES;
+                    return YES;
+                }
+                return NO;
+            }];
+            
+            if (idx != NSNotFound) {
+                cellPath = [NSIndexPath indexPathForRow:idx inSection:0];
+                BTC2AvatarViewCell* cell = (BTC2AvatarViewCell*)[self collectionView:self.collectionView cellForItemAtIndexPath:cellPath];
+                CGRect cellRect = cell.frame;
+                
+                // TODO: Tweak
+                noticeRect.origin.y = cellRect.origin.y - noticeRect.size.height;
+                noticeRect.origin.x = cellRect.origin.x + (cellRect.size.width - noticeRect.size.width)/2.0;
+                
+                self.noticeView.frame = noticeRect;
+                [self.view addSubview:self.noticeView];
+            }
+            
             DLog(@"%@", session.wallet.notice); // TODO: Display this in the interface.
-            break;
+        }break;
         case BTC2WalletPropertyPaymentRequest:
             DLog(@"%@", [session.wallet.paymentRequest description]);  // TODO: Display this in the interface. 
             break;

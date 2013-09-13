@@ -35,4 +35,5 @@
 @interface BTC2AvatarView : UIView
 @property (nonatomic, strong) IBOutlet UILabel* nameLabel;
 @property (nonatomic, strong) IBOutlet UIImageView* imageView;
+@property (nonatomic, assign) UIColor* borderColor;
 @end

@@ -30,7 +30,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BTC2BaseSession.h"
 
 @interface BTC2NewTransactionViewController : UIViewController<UITextViewDelegate>
-
+@property (nonatomic, strong) BTC2BaseSession* toSession;
+@property (nonatomic, strong) BTC2BaseSession* fromSession; // Should always be me
 @end
