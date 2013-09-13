@@ -44,7 +44,7 @@
 @interface BTC2DeviceSession()
 @property (nonatomic, strong) NSMutableDictionary* characteristics;
 @property (nonatomic, strong) NSArray* uuidReadWhitelist;
-
+@property (nonatomic, strong) NSMutableArray* servicesToDiscover; // Used to know when all services have been discovered. 
 // Convenience
 -(void)writeData:(NSData*)data forCharacteristic:(CBCharacteristic*)characteristic;
 @end
@@ -82,6 +82,13 @@
     }
 }
 
+-(CFUUIDRef)UUID{
+    return self.peripheral.UUID;
+}
+
+-(BOOL)isConnected{
+    return self.peripheral.isConnected;
+}
 
 #pragma mark - Actions
 
@@ -92,7 +99,7 @@
     }
 }
 -(void)disconnect{
-    if (self.peripheral && self.peripheral.isConnected) {
+    if (self.peripheral && self.isConnected) {
         [[BTC2CentralManager manager].centralManager cancelPeripheralConnection:self.peripheral];
     }
 }
@@ -174,20 +181,25 @@
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error{
     DLog(@"didDiscoverServices - Err: %@", error);
     
+    self.servicesToDiscover = [NSMutableArray arrayWithCapacity:1];
+    
     // Discover characteristics
     for (CBService* service in peripheral.services) {
         // Only read our custom service. Apple gets cranky if we read the GAP service characteristics
         if ([service.UUID isEqual:[CBUUID UUIDWithString:kBTC2WalletServiceUUID]]) {
             [peripheral discoverCharacteristics:service.characteristics
                                      forService:service];
+            [self.servicesToDiscover addObject:service];
         }
         if ([service.UUID isEqual:[CBUUID UUIDWithString:kBTC2IDServiceUUID]]) {
             [peripheral discoverCharacteristics:service.characteristics
                                      forService:service];
+            [self.servicesToDiscover addObject:service];
         }
         if ([service.UUID isEqual:[CBUUID UUIDWithString:kBTC2ServiceProviderServiceUUID]]) {
             [peripheral discoverCharacteristics:service.characteristics
                                      forService:service];
+            [self.servicesToDiscover addObject:service];
         }
     }
 }
@@ -222,8 +234,15 @@
             [peripheral setNotifyValue:YES forCharacteristic:characteristic];
         }
     }
-    
-    [NSObject btc2postNotification:kBTC2DidFinalizeConnectionNotification withDict:@{kBTC2DeviceSessionKey: self}];
+
+    if ([self.servicesToDiscover containsObject:service]) {
+        [self.servicesToDiscover removeObject:service];
+    }
+
+    // We've found all of them, let the session know
+    if (self.servicesToDiscover.count == 0) {
+        [NSObject btc2postNotification:kBTC2DidFinalizeConnectionNotification withDict:@{kBTC2DeviceSessionKey: self}];
+    }
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{

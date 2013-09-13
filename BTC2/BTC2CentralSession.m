@@ -43,7 +43,7 @@
         BTC2WalletModel* tmpModel = [[BTC2WalletModel alloc] init];
         tmpModel.notice = notice;
         
-        NSUInteger idx = [[self.peripheral walletService].characteristics indexOfObjectPassingTest:^BOOL(CBCharacteristic* c, NSUInteger idx, BOOL *stop) {
+        NSUInteger idx = [[self.btc2PeripheralManager walletService].characteristics indexOfObjectPassingTest:^BOOL(CBCharacteristic* c, NSUInteger idx, BOOL *stop) {
                             if ([c.UUID isEqual:[CBUUID UUIDWithString:kBTC2WalletNoticeNotificationUUID]]) {
                                 return YES;
                                 *stop = YES;
@@ -52,9 +52,9 @@
                         }];
         
         if (idx != NSNotFound) {
-            noticeCharacteristic = [[self.peripheral walletService].characteristics objectAtIndex:idx];
+            noticeCharacteristic = [[self.btc2PeripheralManager walletService].characteristics objectAtIndex:idx];
 
-            [self.peripheral enqueueData:[tmpModel noticeJSON]
+            [self.btc2PeripheralManager enqueueData:[tmpModel noticeJSON]
                        forCharacteristic:noticeCharacteristic];
         }
     }
@@ -64,7 +64,7 @@
     CBMutableCharacteristic* noticeCharacteristic = nil;
     NSData* paymentJsonData = [paymentRequest paymentRequestJSON];
     if (paymentJsonData.length) {
-        NSUInteger idx = [[self.peripheral walletService].characteristics indexOfObjectPassingTest:^BOOL(CBCharacteristic* c, NSUInteger idx, BOOL *stop) {
+        NSUInteger idx = [[self.btc2PeripheralManager walletService].characteristics indexOfObjectPassingTest:^BOOL(CBCharacteristic* c, NSUInteger idx, BOOL *stop) {
             if ([c.UUID isEqual:[CBUUID UUIDWithString:kBTC2WalletPaymentNotificationUUID]]) {
                 return YES;
                 *stop = YES;
@@ -73,12 +73,20 @@
         }];
         
         if (idx != NSNotFound) {
-            noticeCharacteristic = [[self.peripheral walletService].characteristics objectAtIndex:idx];
+            noticeCharacteristic = [[self.btc2PeripheralManager walletService].characteristics objectAtIndex:idx];
             
-            [self.peripheral enqueueData:paymentJsonData
+            [self.btc2PeripheralManager enqueueData:paymentJsonData
                        forCharacteristic:noticeCharacteristic];
         }
     }
+}
+
+-(CFUUIDRef)UUID{
+    return self.btc2PeripheralManager.connectedCentral.UUID;
+}
+
+-(BOOL)isConnected{
+    return self.btc2PeripheralManager.connectedCentral?YES:NO;
 }
 
 @end

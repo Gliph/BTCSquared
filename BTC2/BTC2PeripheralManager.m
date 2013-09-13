@@ -41,6 +41,7 @@
 
 @interface BTC2PeripheralManager ()
 @property (nonatomic, readwrite, strong) CBPeripheralManager* peripheralManager;
+@property (nonatomic, readwrite, strong) CBCentral* connectedCentral;
 @property (nonatomic, assign) BOOL shouldAdvertise;
 @property (nonatomic, strong) dispatch_queue_t peripheralQueue;
 @property (nonatomic, strong) BTC2WriteQueue* writeQueue;
@@ -82,6 +83,7 @@
         self.shouldAdvertise = NO;
         self.connectedSession = nil;
     }
+    self.connectedCentral = nil;
     [self.peripheralManager removeAllServices];
 }
 
@@ -401,11 +403,12 @@
 
     if (!self.connectedSession) {
         self.connectedSession = [[BTC2CentralSession alloc] init];
-        self.connectedSession.peripheral = self;
+        self.connectedSession.btc2PeripheralManager = self;
         
         self.writeQueue = [[BTC2WriteQueue alloc] init];
         self.writeQueue.peripheralManager = peripheral;
         self.writeQueue.central = central;
+        self.connectedCentral = central;
         
         [NSObject btc2postNotification:kBTC2DidFinalizeConnectionNotification withDict:@{kBTC2DeviceSessionKey: self.connectedSession}];
     }
@@ -431,12 +434,11 @@
     // Code duplication.. ugh
     if (!self.connectedSession) {
         self.connectedSession = [[BTC2CentralSession alloc] init];
-        self.connectedSession.peripheral = self;
+        self.connectedSession.btc2PeripheralManager = self;
 
         self.writeQueue = [[BTC2WriteQueue alloc] init];
         self.writeQueue.peripheralManager = peripheral;
 
-        // Uhmkay this is a bit messy, post notification should live somewhere else, in a more generic place.
         [NSObject btc2postNotification:kBTC2DidFinalizeConnectionNotification withDict:@{kBTC2DeviceSessionKey: self.connectedSession}];
     }
     
@@ -444,6 +446,7 @@
         // Add value to the proper characteristic buffer
         if (!self.writeQueue.central) {
             self.writeQueue.central = req.central;
+            self.connectedCentral = req.central;
         }
         
         [self.connectedSession addData:req.value forCharacteristic:req.characteristic];

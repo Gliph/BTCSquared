@@ -43,6 +43,7 @@ typedef enum BTC2IdentityPropertyEnum {
 @property (nonatomic, strong) NSURL* avatarURL;
 @property (nonatomic, strong) NSString* avatarServiceName;
 @property (nonatomic, strong) NSString* avatarID;
+@property (nonatomic, strong) UIImage* avatarImage;
 
 -(NSData*)pseudonymJSON;
 -(NSData*)avatarURLJSON;

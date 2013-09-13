@@ -47,6 +47,7 @@
 @property (nonatomic, readonly) CBMutableService* idService;
 @property (nonatomic, readonly) CBMutableService* providerService;
 @property (nonatomic, readonly) BTC2WriteQueue* writeQueue;
+@property (nonatomic, readonly) CBCentral* connectedCentral;
 
 // Wallet service
 @property (nonatomic, strong) BTC2WalletModel* wallet;

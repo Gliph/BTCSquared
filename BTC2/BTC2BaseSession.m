@@ -51,6 +51,14 @@
     DLog(@"Not implemented.");
 }
 
+-(CFUUIDRef)UUID{
+    return NULL;
+}
+
+-(BOOL)isConnected{
+    return NO;
+}
+
 #pragma mark - Lazy Getters
 
 -(BTC2WalletModel*)wallet{

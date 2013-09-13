@@ -36,5 +36,5 @@
 @class BTC2PeripheralManager;
 
 @interface BTC2CentralSession : BTC2BaseSession
-@property (nonatomic, strong) BTC2PeripheralManager* peripheral;
+@property (nonatomic, strong) BTC2PeripheralManager* btc2PeripheralManager;
 @end

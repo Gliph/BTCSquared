@@ -56,21 +56,6 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
-    int64_t delta = (int64_t)(1.0e9 * 0.5); // 2 seconds
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delta), dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:kPeripheralAddedNotification object:@"HaxxorRobot"]; // [[NSUserDefaults standardUserDefaults] objectForKey:kUserDeviceNameKey]
-    });
-
-//    delta = (int64_t)(1.0e9 * 1.5);
-//	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delta), dispatch_get_main_queue(), ^{
-//        [[NSNotificationCenter defaultCenter] postNotificationName:kPeripheralAddedNotification object:@"MrRobot"]; // [[NSUserDefaults standardUserDefaults] objectForKey:kUserDeviceNameKey]
-//    });
-//    
-//    delta = (int64_t)(1.0e9 * 2);
-//	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delta), dispatch_get_main_queue(), ^{
-//        [[NSNotificationCenter defaultCenter] postNotificationName:kPeripheralAddedNotification object:@"Robota"]; // [[NSUserDefaults standardUserDefaults] objectForKey:kUserDeviceNameKey]
-//    });
-    
     srand((int)([NSDate timeIntervalSinceReferenceDate])); // Randomize the random numbers
     
     return YES;

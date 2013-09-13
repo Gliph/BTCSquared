@@ -179,7 +179,7 @@
 
 - (void)startOperation{
     if (!self.isCancelled) {
-        if (self.request) {
+        if (self.request && self.request.URL) {
             
             DLog(@"Executing %@", [self description]);
             [NetworkController increaseActivity];

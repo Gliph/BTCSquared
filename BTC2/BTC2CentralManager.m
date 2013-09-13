@@ -115,7 +115,7 @@
     NSArray* active = nil;
     
     idxs = [self.deviceSessions indexesOfObjectsPassingTest:^BOOL(BTC2DeviceSession* s, NSUInteger idx, BOOL *stop) {
-        if (s.peripheral.isConnected) return YES;
+        if (s.isConnected) return YES;
         return NO;
     }];
     
@@ -219,8 +219,29 @@
         session = [[BTC2DeviceSession alloc] init];
         session.peripheral = peripheral;
         
-        [self addDevice:session];
-        [NSObject btc2postNotification:kBTC2DidDiscoverPeripheralNotification withDict:@{kBTC2DeviceSessionKey: session}];
+        // Check UUID of peripheral object and peripheral instance
+        
+        NSUInteger idx = [self.deviceSessions indexOfObjectPassingTest:^BOOL(BTC2DeviceSession* dev, NSUInteger idx, BOOL *stop) {
+            BOOL sameUUID = NO;
+            
+            if (peripheral.UUID){
+                if (CFEqual(dev.peripheral.UUID, peripheral.UUID)) {
+                    sameUUID = YES;
+                }
+            }
+            
+            if (dev.peripheral == peripheral || sameUUID) {
+                *stop = YES;
+                return YES;
+            }
+            return NO;
+        }];
+
+        // Don't send this out again if we already have it in store. Keep an eye on this..
+        if (idx == NSNotFound) {
+            [self addDevice:session];
+            [NSObject btc2postNotification:kBTC2DidDiscoverPeripheralNotification withDict:@{kBTC2DeviceSessionKey: session}];
+        }
     }
 }
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{

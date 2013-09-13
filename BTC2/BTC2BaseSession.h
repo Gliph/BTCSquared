@@ -51,6 +51,8 @@
 @property (nonatomic, strong) BTC2IdentityModel* identity;
 @property (nonatomic, strong) BTC2ServiceProviderModel* serviceProvider;
 @property (nonatomic, strong) id<BTC2DataUpdatedDelegate> delegate;
+@property (nonatomic, readonly) BOOL isConnected;
+@property (nonatomic, readonly) CFUUIDRef UUID;
 -(void)writeNotice:(NSString *)notice;
 -(void)writePaymentRequest:(BTC2PaymentRequestModel*)paymentRequest;
 
