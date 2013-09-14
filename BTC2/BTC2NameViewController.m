@@ -57,7 +57,7 @@
 - (IBAction)updateName:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 
-    // TODO: Change name of service, force service update
+    self.identity.pseudonym = self.nameField.text;
 }
 
 @end

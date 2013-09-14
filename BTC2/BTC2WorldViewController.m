@@ -299,6 +299,7 @@
     DLog(@"-> changeName");
     
     BTC2NameViewController* nameChangeViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"BTC2NameViewController"];
+    nameChangeViewController.identity = self.localSession.identity;
     
     [self presentViewController:nameChangeViewController animated:YES completion:^{
         DLog(@"Closed modal");
@@ -340,6 +341,9 @@
     self.peripherals = [NSMutableArray arrayWithCapacity:1];
     [self.peripherals addObject:self.localSession];
     [self.collectionView reloadData];
+
+    [self.noticeView removeFromSuperview];
+    self.noticeView = nil;
 }
 
 -(void)connectSession:(id)sender{

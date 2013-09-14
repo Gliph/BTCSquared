@@ -70,6 +70,8 @@
     
     NSString* sendText = [NSString stringWithFormat:@"Send to %@", self.toSession.identity.pseudonym];
     [self.sendButton setTitle:sendText forState:UIControlStateNormal];
+
+    [self.btcInputField becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
