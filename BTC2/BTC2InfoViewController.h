@@ -22,15 +22,16 @@
  **/
 
 //
-//  BTC2NoticeView.h
+//  BTC2InfoViewController.h
 //  BTC2
 //
-//  Created by Joakim on 2013-09-13.
+//  Created by Joakim on 2013-09-14.
 //  Copyright (c) 2013 Joakim Fernstad. Releases under the MIT License.
 //
 
 #import <UIKit/UIKit.h>
+#import "BTC2BaseSession.h"
 
-@interface BTC2NoticeView : UIView
-@property (nonatomic, retain) NSString* notice;
+@interface BTC2InfoViewController : UIViewController
+@property (nonatomic, strong) BTC2BaseSession* session;
 @end

@@ -10,6 +10,7 @@
 		550A64AB17E3CA02009D5E02 /* notice-frame@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 550A64A917E3CA02009D5E02 /* notice-frame@2x.png */; };
 		550A64AC17E3CA02009D5E02 /* notice-frame.png in Resources */ = {isa = PBXBuildFile; fileRef = 550A64AA17E3CA02009D5E02 /* notice-frame.png */; };
 		550A64AF17E3CA42009D5E02 /* BTC2NoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 550A64AE17E3CA42009D5E02 /* BTC2NoticeView.m */; };
+		55A125BD17E4BD5A000A6045 /* BTC2InfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A125BC17E4BD5A000A6045 /* BTC2InfoViewController.m */; };
 		682416BA174897A600FB0441 /* coinbase-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 682416B8174897A600FB0441 /* coinbase-logo.png */; };
 		682416BB174897A600FB0441 /* coinbase-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 682416B9174897A600FB0441 /* coinbase-logo@2x.png */; };
 		682416BE1748A97400FB0441 /* BTC2NameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 682416BD1748A97400FB0441 /* BTC2NameViewController.m */; };
@@ -63,6 +64,8 @@
 		550A64AA17E3CA02009D5E02 /* notice-frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "notice-frame.png"; sourceTree = "<group>"; };
 		550A64AD17E3CA42009D5E02 /* BTC2NoticeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2NoticeView.h; sourceTree = "<group>"; };
 		550A64AE17E3CA42009D5E02 /* BTC2NoticeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2NoticeView.m; sourceTree = "<group>"; };
+		55A125BB17E4BD5A000A6045 /* BTC2InfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2InfoViewController.h; sourceTree = "<group>"; };
+		55A125BC17E4BD5A000A6045 /* BTC2InfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTC2InfoViewController.m; sourceTree = "<group>"; };
 		682416B8174897A600FB0441 /* coinbase-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "coinbase-logo.png"; sourceTree = "<group>"; };
 		682416B9174897A600FB0441 /* coinbase-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "coinbase-logo@2x.png"; sourceTree = "<group>"; };
 		682416BC1748A97400FB0441 /* BTC2NameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTC2NameViewController.h; sourceTree = "<group>"; };
@@ -299,6 +302,8 @@
 				8376DB12174893C700B95961 /* BTC2WorldViewController.m */,
 				830CB39C17496B2300939102 /* BTC2AttachWalletViewController.h */,
 				830CB39D17496B2300939102 /* BTC2AttachWalletViewController.m */,
+				55A125BB17E4BD5A000A6045 /* BTC2InfoViewController.h */,
+				55A125BC17E4BD5A000A6045 /* BTC2InfoViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -465,6 +470,7 @@
 				836B259C17D528EE0042AC7F /* BTC2AvatarServices.m in Sources */,
 				836B25A217D54AC20042AC7F /* NSObject+BTC2Extensions.m in Sources */,
 				550A64AF17E3CA42009D5E02 /* BTC2NoticeView.m in Sources */,
+				55A125BD17E4BD5A000A6045 /* BTC2InfoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

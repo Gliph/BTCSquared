@@ -47,6 +47,7 @@
 #import "BTC2NewTransactionViewController.h"
 #import "BTC2AttachWalletViewController.h"
 #import "BTC2TransactionsViewController.h"
+#import "BTC2InfoViewController.h"
 #import "BTC2NoticeView.h"
 
 #import "ImageRequest.h"
@@ -161,13 +162,15 @@
         if (!connected) {
             anItem = [[UIMenuItem alloc] initWithTitle:@"Connect" action:@selector(connectSession:)];
             [menuOptions addObject:anItem];
-        }else{
+        }else{ // TODO: Remove this when we are the peripheral
             anItem = [[UIMenuItem alloc] initWithTitle:@"Disconnect" action:@selector(disconnectSession:)];
             [menuOptions addObject:anItem];
         }
         anItem = [[UIMenuItem alloc] initWithTitle:@"Send BTC" action:@selector(sendBTC:)];
         [menuOptions addObject:anItem];
         anItem = [[UIMenuItem alloc] initWithTitle:@"Request BTC" action:@selector(requestBTC:)];
+        [menuOptions addObject:anItem];
+        anItem = [[UIMenuItem alloc] initWithTitle:@"Information" action:@selector(info:)];
         [menuOptions addObject:anItem];
     }else{
         
@@ -316,6 +319,15 @@
     [self presentViewController:transactionViewController animated:YES completion:nil];
     
 }
+
+-(void)info:(id)sender{
+    DLog(@"-> INFO");
+    BTC2InfoViewController* infoViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"BTC2InfoViewController"];
+    infoViewController.session = self.tappedSession;
+    
+    [self presentViewController:infoViewController animated:YES completion:nil];
+}
+
 -(void)requestBTC:(id)sender{
     DLog(@"-> requestBTC");
 }
