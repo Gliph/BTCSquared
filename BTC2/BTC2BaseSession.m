@@ -248,4 +248,10 @@
     }
 }
 
+#pragma mark - NSObject override
+
+-(NSString*)description{
+    return [NSString stringWithFormat:@"[0x%x] %@ - %@", [self hash], [self class], self.identity];
+}
+
 @end

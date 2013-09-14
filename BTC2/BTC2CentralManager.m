@@ -258,6 +258,12 @@
 }
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
     DLog(@"didDisconnectPeripheral - Reason: %@", error);
+    
+    BTC2DeviceSession* session = [self sessionForPeripheral:peripheral];
+
+    if (session) {
+        [NSObject btc2postNotification:kBTC2DidDisconnectSessionNotification withDict:@{kBTC2DeviceSessionKey: session}];
+    }
 }
 
 

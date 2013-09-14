@@ -26,7 +26,7 @@
 //  BTC2
 //
 //  Created by Joakim Fernstad on 9/2/13.
-//  Copyright (c) 2013 Joakim Fernstad. All rights reserved.
+//  Copyright (c) 2013 Joakim Fernstad. Releases under the MIT License.
 //
 
 #import "NSObject+BTC2Extensions.h"

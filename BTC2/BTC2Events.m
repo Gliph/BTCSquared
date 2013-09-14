@@ -33,3 +33,4 @@
 
 NSString* const kBTC2DidDiscoverPeripheralNotification = @"kBTC2DidDiscoverPeripheralNotification";
 NSString* const kBTC2DidFinalizeConnectionNotification = @"kBTC2DidFinalizeConnectionNotification";
+NSString* const kBTC2DidDisconnectSessionNotification  = @"kBTC2DidDisconnectSessionNotification";

@@ -62,9 +62,10 @@
 @property (nonatomic, weak) BTC2DeviceSession* tappedSession;
 @property (nonatomic, strong) BTC2NoticeView* noticeView;
 
--(void)peripheralAdded:(NSNotification*)not;
-
+-(void)peripheralDiscovered:(NSNotification*)not;
+-(void)peripheralConnected:(NSNotification*)not;
 -(void)didAttachWallet:(NSNotification*)not;
+-(void)sessionDisconnected:(NSNotification*)not;
 
 // Menu actions
 -(void)transactions:(id)sender;
@@ -93,13 +94,18 @@
     self.collectionView.backgroundView = background;
  
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(peripheralAdded:)
+                                             selector:@selector(peripheralDiscovered:)
                                                  name:kBTC2DidDiscoverPeripheralNotification
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(peripheralAdded:)
+                                             selector:@selector(peripheralConnected:)
                                                  name:kBTC2DidFinalizeConnectionNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(sessionDisconnected:)
+                                                 name:kBTC2DidDisconnectSessionNotification
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -265,9 +271,8 @@
 
 }
 
-
--(void)peripheralAdded:(NSNotification*)not{
-    DLog(@"peripheralAdded");
+-(void)peripheralDiscovered:(NSNotification *)not{
+    DLog(@"peripheralDiscovered");
     
     BTC2BaseSession* session = [not.object objectForKey:kBTC2DeviceSessionKey];
     
@@ -276,6 +281,35 @@
     DLog(@"%@ --  DEVICE UUID: %@", not.name, session.UUID);
     
     [self.peripherals addObject:session];
+    [self.collectionView reloadData];
+}
+
+-(void)peripheralConnected:(NSNotification*)not{
+    DLog(@"peripheralConnected");
+    
+    BTC2BaseSession* session = [not.object objectForKey:kBTC2DeviceSessionKey];
+
+    if (![self.peripherals containsObject:session]) {
+        // This should only happen when the central connects to a peripheral
+        session.delegate = self;
+        [self.peripherals addObject:session];
+    }
+    
+    [self.collectionView reloadData];
+}
+
+-(void)sessionDisconnected:(NSNotification *)not{
+    DLog(@"sessionDisconnected");
+    
+    BTC2BaseSession* session = [not.object objectForKey:kBTC2DeviceSessionKey];
+
+    DLog(@"Lost: %@", session);
+
+    if ([session isKindOfClass:[BTC2CentralSession class]]) {
+        // The central disconnecte from the peripheral, remove session from array
+        [self.peripherals removeObject:session];
+    }
+    
     [self.collectionView reloadData];
 }
 

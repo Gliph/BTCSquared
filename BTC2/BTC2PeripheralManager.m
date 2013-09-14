@@ -416,7 +416,14 @@
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic{
     DLog(@"didUnsubscribeFromCharacteristic");
-    // Not sure if we need to handle this.
+
+    // Only send the disconnected notification once. We have to notification characteristics, choose one.
+    if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kBTC2WalletNoticeNotificationUUID]]) {
+        if (self.connectedSession) {
+            [NSObject btc2postNotification:kBTC2DidDisconnectSessionNotification withDict:@{kBTC2DeviceSessionKey: self.connectedSession}];
+            self.connectedSession = nil;
+        }
+    }
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request{
